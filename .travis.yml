@@ -1,0 +1,13 @@
+language: java
+jdk:
+  - oraclejdk7
+
+script: cd MovieFinder && mvn install -DskipTests=true && mvn test
+
+branches:
+    only:
+        - master
+        - develop
+
+notifications:
+    email: false
