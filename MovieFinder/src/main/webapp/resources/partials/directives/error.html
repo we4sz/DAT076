@@ -1,0 +1,15 @@
+<div class="alert alert-danger" role="alert">
+    <h1>Ohh no, an error occurred!</h1>
+
+    <p><strong>Error:</strong> {{errorText}}</p>
+
+    <p>
+        <button type="button" class="btn btn-default" ng-click="goBack()">
+            Go Back
+        </button>
+
+        <button type="button" class="btn btn-danger" ng-click="retry()">
+            Retry
+        </button>
+    </p>
+</div>
