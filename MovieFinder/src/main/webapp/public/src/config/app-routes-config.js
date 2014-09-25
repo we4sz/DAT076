@@ -11,7 +11,7 @@
                 function ($routeProvider) {
                     $routeProvider
                             .when('/', {
-                                templateUrl: 'resources/partials/home.html'
+                                templateUrl: 'partials/home.html'
                             })
                             .otherwise({
                                 redirectTo: '/'

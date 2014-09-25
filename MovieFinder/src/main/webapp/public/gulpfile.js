@@ -8,7 +8,6 @@ var gutil = require('gulp-util');
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var del = require('del');
-var merge = require('merge-stream');
 var minifyCSS = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
 var replace = require('gulp-replace');
@@ -57,18 +56,26 @@ gulp.task('clean', function (cb) {
     del([BUILD_BASE_PATH], {force: true}, cb);
 });
 
-gulp.task('scripts', ['clean'], function () {
-    var extScripts = gulp.src(PATHS.external_scripts);
 
-    var appScripts = gulp.src(PATHS.scripts)
+gulp.task('extScripts', ['clean'], function() {
+    return gulp.src(PATHS.external_scripts)
         .pipe(plumber({
             errorHandler: onError
         }))
-        .pipe(uglify());
-        
-    return merge(extScripts, appScripts)
-        .pipe(concat('all.min.js'))
+        .pipe(uglify())
+        .pipe(concat('lib.min.js'))
         .pipe(gulp.dest(BUILD_JS_PATH));
+});
+
+gulp.task('scripts', ['clean', 'extScripts'], function () {
+    return gulp.src(PATHS.scripts)
+        .pipe(plumber({
+            errorHandler: onError
+        }))
+        .pipe(uglify())
+        .pipe(concat('app.min.js'))
+        .pipe(gulp.dest(BUILD_JS_PATH));
+        
 });
 
 gulp.task('css', ['clean'], function () {
@@ -88,7 +95,8 @@ gulp.task('images', ['clean'], function() {
 gulp.task('templates', ['clean', 'scripts'], function() {
     return gulp.src(PATHS.templates)
         .pipe(templateCache({
-            module: 'movieFinder.templates'
+            module: 'movieFinder.templates',
+            root: 'partials/'
         }))
         .pipe(gulp.dest(BUILD_TEMPLATE_PATH));
 });

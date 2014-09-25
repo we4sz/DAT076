@@ -2,10 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en" ng-app="movieFinder" ng-controller="AppCtrl as appCtrl" ng-strict-di>
-    
+
     <head>
         <base href="${pageContext.request.contextPath}/" />
-        
+
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -54,7 +54,8 @@
         <!-- Detect JS -->
         <script>document.body.className = document.body.className.replace('no-js', 'js');</script>
 
-        <script src="resources/js/all.min.js"></script>   
-        <script src="resources/js/templates.js"></script>   
+        <script src="resources/js/lib.min.js"></script>    
+        <script src="resources/js/app.min.js"></script>   
+        <script src="resources/js/templates.js"></script>  
     </body>
 </html>

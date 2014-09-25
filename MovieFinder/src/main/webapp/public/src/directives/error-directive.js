@@ -15,7 +15,7 @@
                             'errorText': '@'
                         },
                         restrict: 'E', // restrict E - can only be an element (<error></error>)
-                        templateUrl: 'resources/partials/directives/error.html',
+                        templateUrl: 'partials/directives/error.html',
                         link: function (scope) {
                             var history = [];
 
