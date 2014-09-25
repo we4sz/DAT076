@@ -146,6 +146,18 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.1.1</version>
+                <configuration>
+                    <!-- 
+                    The "public" dir of the webapp contains sources that are built to 
+                    "/build". No point in including in the .war, as they are not used 
+                    -->
+                    <warSourceExcludes>public/</warSourceExcludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5.1</version>
                 <configuration>
@@ -155,6 +167,26 @@
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.3.2</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <executable>npm</executable>
+                    <workingDirectory>src/main/webapp/public</workingDirectory>
+                    <arguments>
+                        <argument>install</argument>
+                    </arguments>
                 </configuration>
             </plugin>
         </plugins>

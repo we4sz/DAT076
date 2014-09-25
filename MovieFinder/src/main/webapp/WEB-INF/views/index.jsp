@@ -19,11 +19,8 @@
         <!-- <title ng:bind-template="{{'Movie Finder' : appCtrl.pageTitle}}"> -->
         <title>Movie Finder</title>
 
-        <!-- Bootstrap -->
-        <link href="resources/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+        <link href="resources/css/all.min.css" rel="stylesheet">
 
-        <!-- App main styles -->
-        <link href="resources/css/main.css" rel="stylesheet">
     </head>
     <body class="no-js">
 
@@ -57,25 +54,7 @@
         <!-- Detect JS -->
         <script>document.body.className = document.body.className.replace('no-js', 'js');</script>
 
-        <!-- JQuery -->
-        <script src="resources/bower_components/jquery/dist/jquery.js"></script>
-
-        <!-- Bootstrap js -->
-        <script src="resources/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-
-        <!-- Angular core -->
-        <script src="resources/bower_components/angular/angular.js"></script>
-        <script src="resources/bower_components/angular-route/angular-route.js"></script>
-
-        <!-- App -->
-        <script src="resources/src/app.js"></script>
-        <!--  App Config -->
-        <script src="resources/src/config/app-routes-config.js"></script>
-        <!-- App controllers -->
-        <script src="resources/src/controllers/app-controller.js"></script>
-        <!-- App directives -->
-        <script src="resources/src/directives/error-directive.js"></script>
-        <!-- App filters -->
-        <!-- App services -->    
+        <script src="resources/js/all.min.js"></script>   
+        <script src="resources/js/templates.js"></script>   
     </body>
 </html>
