@@ -189,7 +189,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>Test client side (npm build)</id>
+                        <id>Test client side (npm run-script test)</id>
                         <phase>test</phase>
                         <goals>
                             <goal>exec</goal>
@@ -204,7 +204,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>Build client side (npm build)</id>
+                        <id>Build client side (npm run-script build)</id>
                         <phase>prepare-package</phase>
                         <goals>
                             <goal>exec</goal>
