@@ -11,3 +11,8 @@ branches:
 
 notifications:
     email: false
+
+cache:
+  directories:
+    - MovieFinder/src/main/webapp/public/node_modules
+    - MovieFinder/src/main/webapp/public/bower_components

@@ -175,19 +175,34 @@
                 <version>1.3.2</version>
                 <executions>
                     <execution>
+                        <id>Install node and bower dependencies (npm install)</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>npm</executable>
+                            <workingDirectory>src/main/webapp/public</workingDirectory>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>Build client side (npm build)</id>
                         <phase>prepare-package</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
+                        <configuration>
+                            <executable>npm</executable>
+                            <workingDirectory>src/main/webapp/public</workingDirectory>
+                            <arguments>
+                                <argument>build</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <executable>npm</executable>
-                    <workingDirectory>src/main/webapp/public</workingDirectory>
-                    <arguments>
-                        <argument>install</argument>
-                    </arguments>
-                </configuration>
             </plugin>
         </plugins>
     </build>
