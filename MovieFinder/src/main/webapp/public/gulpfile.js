@@ -124,7 +124,14 @@ gulp.task('templates', ['clean', 'scripts'], function() {
 gulp.task('lint', function() {
     return gulp.src(PATHS.scripts)
         .pipe(jshint())
-        .pipe(jshint.reporter('default'));
+        .pipe(jshint.reporter('jshint-stylish'))
+        .pipe(jshint.reporter('fail'));
+});
+
+// Gulp test task
+// Runs tests on the frontend
+gulp.task('test', ['lint'], function() {
+
 });
 
 // Gulp task default
