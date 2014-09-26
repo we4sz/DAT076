@@ -1,6 +1,7 @@
+/* jshint node: true, strict: false */
 
+// Node modules
 var path = require('path');
-
 var gulp = require('gulp');
 
 // Gulp modules
@@ -10,13 +11,15 @@ var uglify = require('gulp-uglify');
 var del = require('del');
 var minifyCSS = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
-var replace = require('gulp-replace');
 var plumber = require('gulp-plumber');
 var templateCache = require('gulp-angular-templatecache');
+var jshint = require('gulp-jshint');
+var ngAnnotate = require('gulp-ng-annotate');
+var sourcemaps = require('gulp-sourcemaps');
 
 
 // The path of the bower_components folder
-var BOWER_PATH = path.join(__dirname, "bower_components");
+var BOWER_PATH = path.join(__dirname, 'bower_components');
 
 // The path of the output folders
 var BUILD_BASE_PATH = path.join(__dirname, '../build/');
@@ -25,6 +28,7 @@ var BUILD_CSS_PATH = path.join(BUILD_BASE_PATH, '/css');
 var BUILD_IMG_PATH = path.join(BUILD_BASE_PATH, '/img');
 var BUILD_TEMPLATE_PATH = path.join(BUILD_BASE_PATH, '/js');
 
+// Paths to input files/folders
 var PATHS = {
     scripts: ['src/**/*.js'],
     external_scripts: [
@@ -52,11 +56,14 @@ var onError = function (err) {
     console.log(err.stack);
 };
 
+// Gulp task clean
+// Removes the directory at BUILD_BASE_PATH
 gulp.task('clean', function (cb) {
     del([BUILD_BASE_PATH], {force: true}, cb);
 });
 
-
+// Gulp task extScripts
+// Combindes and uglifies all external scripts to a lib.min.js file.
 gulp.task('extScripts', ['clean'], function() {
     return gulp.src(PATHS.external_scripts)
         .pipe(plumber({
@@ -67,17 +74,24 @@ gulp.task('extScripts', ['clean'], function() {
         .pipe(gulp.dest(BUILD_JS_PATH));
 });
 
+// Gulp task scripts
+// Combindes and uglifies all app scripts to an app.min.js file.
 gulp.task('scripts', ['clean', 'extScripts'], function () {
     return gulp.src(PATHS.scripts)
         .pipe(plumber({
             errorHandler: onError
         }))
-        .pipe(uglify())
+        .pipe(sourcemaps.init())
+        .pipe(ngAnnotate())
         .pipe(concat('app.min.js'))
+        .pipe(uglify())
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest(BUILD_JS_PATH));
         
 });
 
+// Gulp task css
+// Minifies and combindes all css to an all.min.css file.
 gulp.task('css', ['clean'], function () {
     return gulp.src(PATHS.styles)
         .pipe(minifyCSS())
@@ -85,13 +99,16 @@ gulp.task('css', ['clean'], function () {
         .pipe(gulp.dest(BUILD_CSS_PATH));
 });
 
-// Copy all static images
+// Gulp task images
+// Runs all images through imagemin, compresssing them to save bandwidth.
 gulp.task('images', ['clean'], function() {
     return gulp.src(PATHS.images)
         .pipe(imagemin())
         .pipe(gulp.dest(BUILD_IMG_PATH));
 });
 
+// Gulp task templates
+// Combindes all angular js partials/templates to a file called templates.js.
 gulp.task('templates', ['clean', 'scripts'], function() {
     return gulp.src(PATHS.templates)
         .pipe(templateCache({
@@ -101,5 +118,16 @@ gulp.task('templates', ['clean', 'scripts'], function() {
         .pipe(gulp.dest(BUILD_TEMPLATE_PATH));
 });
 
-// The default task (called when you run `gulp` from cli)
-gulp.task('default', ['scripts', 'css', 'images', 'templates']);
+// Gulp task lint
+// Runs all the source javascript files trough jsHint, detecting 
+// various errors.
+gulp.task('lint', function() {
+    return gulp.src(PATHS.scripts)
+        .pipe(jshint())
+        .pipe(jshint.reporter('default'));
+});
+
+// Gulp task default
+// The default task (called when you run `gulp` from cli).
+// Runs all of the above tasks.
+gulp.task('default', ['lint', 'scripts', 'css', 'images', 'templates']);
