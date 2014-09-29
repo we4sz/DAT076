@@ -11,6 +11,8 @@
 
     angular.module('movieFinder.controllers')
             .controller('AppCtrl', function ($rootScope) {
+                var _this = this;
+
                 // An object for holding global error state. Used so 
                 // we can show something if a global error occures, like
                 // a route faling to load.
@@ -20,24 +22,23 @@
                 };
 
                 $rootScope.$on('$routeChangeStart', function () {
-                    this.error.isError = false;
-                }.bind(this));
+                    _this.error.isError = false;
+                });
 
                 $rootScope.$on('$routeChangeSuccess', function () {
                     // Might use this for some loading animation
-                }.bind(this));
+                });
 
                 $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
-                    console.error('ROUTE CHANGE ERROR: ', rejection);
-                    this.error.isError = true;
+                    _this.error.isError = true;
 
                     if (angular.isString(rejection.message)) {
-                        this.error.errorMessage = rejection.message;
+                        _this.error.errorMessage = rejection.message;
                     } else if (angular.isString(rejection)) {
-                        this.error.errorMessage = rejection;
+                        _this.error.errorMessage = rejection;
                     } else {
-                        this.error.errorMessage = 'An unexpected error occurred while loading the page.';
+                        _this.error.errorMessage = 'An unexpected error occurred while loading the page.';
                     }
-                }.bind(this));
+                });
             });
 })();
