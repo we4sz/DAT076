@@ -3,6 +3,7 @@
 // Node modules
 var path = require('path');
 var gulp = require('gulp');
+var karma = require('karma').server;
 
 // Gulp modules
 var gutil = require('gulp-util');
@@ -130,8 +131,12 @@ gulp.task('lint', function() {
 
 // Gulp test task
 // Runs tests on the frontend
-gulp.task('test', ['lint'], function() {
-
+gulp.task('test', ['lint'], function(done) {
+    karma.start({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true,
+        browsers: ['PhantomJS']
+    }, done);
 });
 
 // Gulp task default
