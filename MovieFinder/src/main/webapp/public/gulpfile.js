@@ -29,6 +29,9 @@ var BUILD_CSS_PATH = path.join(BUILD_BASE_PATH, '/css');
 var BUILD_IMG_PATH = path.join(BUILD_BASE_PATH, '/img');
 var BUILD_TEMPLATE_PATH = path.join(BUILD_BASE_PATH, '/js');
 
+// Folder location of the exploded war build folder
+var BUILD_WAR_BASE_PATH = path.join(__dirname, '../../../../target/MovieFinder-1.0-SNAPSHOT/build');
+
 // Paths to input files/folders
 var PATHS = {
     scripts: ['src/**/*.js'],
@@ -138,6 +141,31 @@ gulp.task('test', ['lint'], function(done) {
         browsers: ['PhantomJS']
     }, done);
 });
+
+
+// Task copyBuildFolder
+// HACK: also copies the resulting build directory to the 
+// exploded war's build directory used by tomcat to serve the files. 
+// This makes the files available directly without a restart of the server.
+// This was needed as netbeans did not pick up on gulp modifing the files.
+gulp.task('copyBuildFolder', ['scripts', 'css', 'images', 'templates'], function() {
+    return gulp.src(BUILD_BASE_PATH + '**/*')
+        .pipe(gulp.dest(BUILD_WAR_BASE_PATH));
+});
+
+
+// Gulp task watch
+// Watches for changes to files and builds them.
+gulp.task('watch', ['scripts', 'css', 'images', 'templates', 'copyBuildFolder'], function () {
+    var watchPaths = [];
+    for(var path in PATHS) {
+        if(PATHS.hasOwnProperty(path)) {
+            watchPaths.push(PATHS[path]);
+        }
+    }
+    gulp.watch(watchPaths, ['scripts', 'css', 'images', 'templates', 'copyBuildFolder']);
+});
+
 
 // Gulp task default
 // The default task (called when you run `gulp` from cli).
