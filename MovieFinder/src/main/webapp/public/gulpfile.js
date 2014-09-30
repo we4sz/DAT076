@@ -169,5 +169,5 @@ gulp.task('watch', ['scripts', 'css', 'images', 'templates', 'copyBuildFolder'],
 
 // Gulp task default
 // The default task (called when you run `gulp` from cli).
-// Runs all of the above tasks.
-gulp.task('default', ['lint', 'scripts', 'css', 'images', 'templates']);
+// Runs tasks to build the required resources.
+gulp.task('default', ['scripts', 'css', 'images', 'templates']);
