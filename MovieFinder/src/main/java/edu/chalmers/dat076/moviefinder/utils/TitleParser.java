@@ -15,14 +15,16 @@ import java.util.ArrayList;
 public class TitleParser {
 
     private StringBuilder sb;
-    
-    private final ArrayList<String> finalWords = new ArrayList<String>(){{
-        add("1080p");add("720p");add("1920x1080");add("1280x720");
-        add("mp4");add("avi");add("mkv");
-        add("Bluray");add("BrRip");add("WEBRip");add("HDTV");add("Blu-ray");add("FLAC");
-        add("AC3");add("h264");add("AAC");add("xvid");add("x264");
-        //add("");add("");add("");add("");add("");add("");add("");
-    }};
+
+    private final ArrayList<String> finalWords = new ArrayList<String>() {
+        {
+            add("1080p");add("720p");add("1920x1080");add("1280x720");
+            add("mp4");add("avi");add("mkv");
+            add("Bluray");add("BrRip");add("WEBRip");add("HDTV");add("Blu-ray");add("FLAC");
+            add("AC3");add("h264");add("AAC");add("xvid");add("x264");
+            //add("");add("");add("");add("");add("");add("");add("");
+        }
+    };
 
     //Default constructor. Do we want this or strictly util class?
     public TitleParser() {
@@ -46,56 +48,77 @@ public class TitleParser {
         if (sb.charAt(0) == '[') {
             removeBrackets(sb, 0);
         }
-        
+
         removeFormating(sb);
 
-        return sb.toString();
+        return sb.toString().trim();
     }
 
-    
+    /**
+     * This method rly does everything...
+     *
+     * @param mySb
+     */
     public void removeFormating(StringBuilder mySb) {
-        
+
         StringBuilder wordSb = new StringBuilder();
-        
-        for (int i = 0; i < mySb.length(); i++){
-            if (mySb.charAt(i) == '.' || mySb.charAt(i) == '-' || mySb.charAt(i) == '_') {
-                
-                if (finalWords.contains(wordSb.toString())){
-                    mySb.delete(i-(wordSb.length()+1), mySb.length());
+
+        boolean finalWord = true;
+
+        for (int i = 0; i < mySb.length(); i++) {
+            if (mySb.charAt(i) == '.' || mySb.charAt(i) == '-' || mySb.charAt(i) == '_' || mySb.charAt(i) == ' ') {
+
+                if (finalWords.contains(wordSb.toString())) {
+                    mySb.delete(i - (wordSb.length() + 1), mySb.length());
+                    finalWord = false;
                     break;
                 }
-                mySb.replace(i, i+1, " ");
+                mySb.replace(i, i + 1, " ");
+                wordSb.setLength(0);
+
+            } else if (mySb.charAt(i) == '[') {
+                
+                if (finalWords.contains(wordSb.toString())) {
+                    mySb.delete(i - (wordSb.length() + 1), mySb.length());
+                    finalWord = false;
+                    break;
+                }
                 wordSb.setLength(0);
                 
-            } else if (mySb.charAt(i) == '['){
                 //TODO Check if bracket contains something worth saving!!! 
                 removeBrackets(mySb, i);
-            }else {
+                i--; // Need to compensate for removing the bracket.
+            } else {
                 wordSb.append(mySb.charAt(i));
             }
         }
+        if (finalWord && finalWords.contains(wordSb.toString())) {
+            mySb.delete(mySb.length() - wordSb.length(), mySb.length());
+        }
     }
-    
+
     /**
      * in mySb replace every instance of char c with a space.
+     *
      * @param mySb
-     * @param c 
+     * @param c
      */
-    private void replaceChars(StringBuilder mySb, char c ){
-        
-        for (int i = 0; i < mySb.length(); i++){
-            if (mySb.charAt(i) == c ) {
-                mySb.replace(i, i+1, " ");
+    private void replaceChars(StringBuilder mySb, char c) {
+
+        for (int i = 0; i < mySb.length(); i++) {
+            if (mySb.charAt(i) == c) {
+                mySb.replace(i, i + 1, " ");
             }
         }
     }
-    
+
     /**
      * Delete everything in mySb from index n
+     *
      * @param mySb
-     * @param n 
+     * @param n
      */
-    public void deleteRest(StringBuilder mySb, int n){
+    public void deleteRest(StringBuilder mySb, int n) {
         mySb.delete(n, mySb.length());
     }
 
@@ -106,13 +129,14 @@ public class TitleParser {
      * @param mySb StringBuilder containing the String
      * @param n index to start looking from. First index is 0.
      */
-    public void removeBrackets(StringBuilder mySb, int n) {
+    public int removeBrackets(StringBuilder mySb, int n) {
         for (int i = n; i <= mySb.length(); i++) {
             if (mySb.charAt(i) == ']') {
                 mySb.delete(n, i + 1);
-                break;
+                return 1;
             }
         }
+        return 0;
     }
 
 }

@@ -60,6 +60,14 @@ public class titleParserTest {
         assertEquals("hej!", s);
         s = instance.parseTitle("Min.Speciella.Film.2007.1080p.mkv");
         assertEquals("Min Speciella Film 2007", s);
+        s = instance.parseTitle("[av mig]Min Speciella Film 2006 720p.mkv");
+        assertEquals("Min Speciella Film 2006", s);
+        s = instance.parseTitle("Min.Speciella.Film.2005.mkv");
+        assertEquals("Min Speciella Film 2005", s);
+        s = instance.parseTitle("[av mig]Min.Speciella.Film-2004_[1080p].mkv");
+        assertEquals("Min Speciella Film 2004", s);
+        s = instance.parseTitle("Min.Speciella.Film.2003.1080p[aaa].mkv");
+        assertEquals("Min Speciella Film 2003", s);
     }
     
     
