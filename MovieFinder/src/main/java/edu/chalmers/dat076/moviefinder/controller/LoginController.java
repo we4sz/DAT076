@@ -6,13 +6,14 @@
 package edu.chalmers.dat076.moviefinder.controller;
 
 import edu.chalmers.dat076.moviefinder.model.User;
+import edu.chalmers.dat076.moviefinder.model.UserLoginModel;
 import edu.chalmers.dat076.moviefinder.model.UserRole;
 import javax.servlet.http.HttpSession;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -25,13 +26,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    @ResponseBody
-    public User login(HttpSession s, @RequestParam(value = "username", required = true) String username, @RequestParam(value = "password", required = true) String password) {
+    public @ResponseBody
+    User login(HttpSession s, @RequestBody UserLoginModel login) {
         User u;
-        if (username.equals("admin")) {
-            u = new User(username, UserRole.ADMIN);
+
+        if (login.getUsername().equals("admin")) {
+            u = new User(login.getUsername(), UserRole.ADMIN);
         } else {
-            u = new User(username, UserRole.VIEWER);
+            u = new User(login.getUsername(), UserRole.VIEWER);
         }
 
         s.setAttribute("user", u);
@@ -39,9 +41,9 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/me", method = RequestMethod.GET)
-    @ResponseBody
-    public User getMe(HttpSession s) {
-        User u = (User)s.getAttribute("user");
+    public @ResponseBody
+    User getMe(HttpSession s) {
+        User u = (User) s.getAttribute("user");
         return u;
     }
 
