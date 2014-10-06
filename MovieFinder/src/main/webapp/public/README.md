@@ -25,11 +25,9 @@ The full process run by maven looks like;
 2. `npm run-script build`
 	1. External javascript files are minified and combinded to a single file.
 	2. App javascript files are annotated for angular, minified, combined to a single file and source mapped.
-	3. External and app css files are minified and combined to a single file.
+	3. External css files are minified and combined to a single file.
+	4. App css files are minified and combined to a single file.
 	4. Images are compressed.
 	5. Angular partials are combined to a single file.
 
 The different npm commands can also be run manually from a command line. The resulting files will be written to `../build/`.
-
-### Building on change
-It is possible to run the build process whenever a file is changed by running the command `npm run-script watch`. This will also copy the resulting build folder to the exploded .war used by the webservers, as to avoid re-running the maven build for each change.

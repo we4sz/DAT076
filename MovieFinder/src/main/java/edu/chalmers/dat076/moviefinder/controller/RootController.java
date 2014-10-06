@@ -22,4 +22,9 @@ public class RootController {
         return "index";
     }
 
+    @RequestMapping(value = "/dev", method = RequestMethod.GET)
+    public String devIndex() {
+        return "index-dev";
+    }
+
 }
