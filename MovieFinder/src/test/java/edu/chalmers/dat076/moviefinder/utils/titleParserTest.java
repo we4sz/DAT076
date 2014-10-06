@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.chalmers.dat076.moviefinder.utils;
 
 import org.junit.After;
@@ -18,39 +17,73 @@ import static org.junit.Assert.*;
  * @author Carl Jansson
  */
 public class titleParserTest {
+
+    TitleParser instance;
     
     public titleParserTest() {
     }
-    
-    @BeforeClass
+
+    /*@BeforeClass
     public static void setUpClass() {
-    }
-    
-    @AfterClass
+        This method is executed once, before the start of all tests. 
+        It is used to perform time intensive activities, for example, 
+        to connect to a database. Methods marked with this annotation 
+        need to be defined as static to work with JUnit.
+    }*/
+
+    /*@AfterClass
     public static void tearDownClass() {
-    }
-    
+        This method is executed once, after all tests have been finished. 
+        It is used to perform clean-up activities, for example, to disconnect 
+        from a database. Methods annotated with this annotation need to be 
+        defined as static to work with JUnit.
+    }*/
+
     @Before
     public void setUp() {
-    }
-    
-    @After
-    public void tearDown() {
+        /* This method is executed before each test. It is used to prepare 
+        the test environment (e.g., read input data, initialize the class).*/
+        
+        instance = new TitleParser();
     }
 
-    /**
-     * Test of returnTrue method, of class titleParser.
-     */
+    /*@After
+    public void tearDown() {
+        This method is executed after each test. It is used to cleanup 
+        the test environment (e.g., delete temporary data, restore defaults). 
+        It can also save memory by cleaning up expensive memory structures.
+    }*/
+
     @Test
-    public void testReturnTrue() {
-        System.out.println("returnTrue");
-        TitleParser instance = new TitleParser();
-        boolean expResult = true;
-        boolean result = instance.returnTrue();
-        assertEquals(expResult, result);
-        assertTrue(result);
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype." );
+    public void testParseTitle(){
+        System.out.println("parseTitle");
+        String s = instance.parseTitle("[]hej");
+        assertEquals("hej", s);
+        s = instance.parseTitle("[abcd()-/123]hej!");
+        assertEquals("hej!", s);
+    }
+    
+    
+    @Test
+    public void testRemoveFormating(){
+        System.out.println("removeFormating");
+        StringBuilder sb = new StringBuilder("min.egna-speciella_film!-_. Perfect");
+        instance.removeFormating(sb);
+        assertEquals("min egna speciella film!    Perfect", sb.toString());
+    }
+    
+    
+    @Test
+    public void testRemoveBrackets(){
+        System.out.println("removeBrackets");
+        StringBuilder sb = new StringBuilder("[]hej");
+        //assertTrue(sb.charAt(0) == '[');
+        instance.removeBrackets(sb, 0);
+        assertEquals("hej", sb.toString());
+        sb.append("[abcd()-/123] ok!");
+        //assertTrue(sb.charAt(3) == '[');
+        instance.removeBrackets(sb, 3);
+        assertEquals("hej ok!", sb.toString());
     }
     
 }
