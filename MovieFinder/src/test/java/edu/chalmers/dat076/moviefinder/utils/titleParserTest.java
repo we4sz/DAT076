@@ -5,10 +5,7 @@
  */
 package edu.chalmers.dat076.moviefinder.utils;
 
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -61,15 +58,17 @@ public class titleParserTest {
         assertEquals("hej", s);
         s = instance.parseTitle("[abcd()-/123]hej!");
         assertEquals("hej!", s);
+        s = instance.parseTitle("Min.Speciella.Film.2007.1080p.mkv");
+        assertEquals("Min Speciella Film 2007", s);
     }
     
     
     @Test
     public void testRemoveFormating(){
         System.out.println("removeFormating");
-        StringBuilder sb = new StringBuilder("min.egna-speciella_film!-_. Perfect");
+        StringBuilder sb = new StringBuilder("-min.egna-speciella_film!-_. Perfect.");
         instance.removeFormating(sb);
-        assertEquals("min egna speciella film!    Perfect", sb.toString());
+        assertEquals(" min egna speciella film!    Perfect ", sb.toString());
     }
     
     
@@ -83,6 +82,10 @@ public class titleParserTest {
         sb.append("[abcd()-/123] ok!");
         //assertTrue(sb.charAt(3) == '[');
         instance.removeBrackets(sb, 3);
+        assertEquals("hej ok!", sb.toString());
+        sb.append("[What if last char is bracket?]");
+        //assertTrue(sb.charAt(7) == '[');
+        instance.removeBrackets(sb, 7);
         assertEquals("hej ok!", sb.toString());
     }
     

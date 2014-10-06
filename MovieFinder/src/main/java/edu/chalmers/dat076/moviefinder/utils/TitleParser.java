@@ -5,6 +5,8 @@
  */
 package edu.chalmers.dat076.moviefinder.utils;
 
+import java.util.ArrayList;
+
 /**
  * A class for parsing movie and series file names and derive a title.
  *
@@ -13,6 +15,14 @@ package edu.chalmers.dat076.moviefinder.utils;
 public class TitleParser {
 
     private StringBuilder sb;
+    
+    private final ArrayList<String> finalWords = new ArrayList<String>(){{
+        add("1080p");add("720p");add("1920x1080");add("1280x720");
+        add("mp4");add("avi");add("mkv");
+        add("Bluray");add("BrRip");add("WEBRip");add("HDTV");add("Blu-ray");add("FLAC");
+        add("AC3");add("h264");add("AAC");add("xvid");add("x264");
+        //add("");add("");add("");add("");add("");add("");add("");
+    }};
 
     //Default constructor. Do we want this or strictly util class?
     public TitleParser() {
@@ -36,15 +46,34 @@ public class TitleParser {
         if (sb.charAt(0) == '[') {
             removeBrackets(sb, 0);
         }
+        
+        removeFormating(sb);
 
         return sb.toString();
     }
 
     
     public void removeFormating(StringBuilder mySb) {
-        replaceChars(mySb,'.');
-        replaceChars(mySb,'-');
-        replaceChars(mySb,'_');
+        
+        StringBuilder wordSb = new StringBuilder();
+        
+        for (int i = 0; i < mySb.length(); i++){
+            if (mySb.charAt(i) == '.' || mySb.charAt(i) == '-' || mySb.charAt(i) == '_') {
+                
+                if (finalWords.contains(wordSb.toString())){
+                    mySb.delete(i-(wordSb.length()+1), mySb.length());
+                    break;
+                }
+                mySb.replace(i, i+1, " ");
+                wordSb.setLength(0);
+                
+            } else if (mySb.charAt(i) == '['){
+                //TODO Check if bracket contains something worth saving!!! 
+                removeBrackets(mySb, i);
+            }else {
+                wordSb.append(mySb.charAt(i));
+            }
+        }
     }
     
     /**
@@ -56,8 +85,7 @@ public class TitleParser {
         
         for (int i = 0; i < mySb.length(); i++){
             if (mySb.charAt(i) == c ) {
-                mySb.deleteCharAt(i);
-                mySb.replace(i, i, " ");
+                mySb.replace(i, i+1, " ");
             }
         }
     }
