@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author John
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("api/admin")
 public class AdminController {
     
     

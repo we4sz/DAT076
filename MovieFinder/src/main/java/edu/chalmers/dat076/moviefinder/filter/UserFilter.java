@@ -40,11 +40,14 @@ public class UserFilter implements Filter {
         Object o = session.getAttribute("user");
 
         if (o == null) {
-            if (path.toLowerCase().startsWith("/moviefinder/login/login")) {
+            if (path.toLowerCase().startsWith("/moviefinder/api/login/login")) {
                 chain.doFilter(req, response);
                 return;
-            } else {
+            } else if (path.toLowerCase().startsWith("/moviefinder/api/")) {
                 httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            } else {
+                chain.doFilter(req, response);
                 return;
             }
         }

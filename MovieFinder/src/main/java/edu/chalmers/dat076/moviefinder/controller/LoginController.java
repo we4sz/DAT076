@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author John
  */
 @Controller
-@RequestMapping("/login")
+@RequestMapping("api/login")
 public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

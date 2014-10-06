@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 
 @Controller
-@RequestMapping("/files")
+@RequestMapping("api/files")
 public class FileController {
     
 }
