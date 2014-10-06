@@ -1,8 +1,8 @@
 //
 // app.js
 //
-// File for defining our modules, so that they can be used directly in the
-// other files
+// File for defining our main app modules and all its sub-modules, 
+// so that they can be used directly in other places.
 //
 
 (function () {

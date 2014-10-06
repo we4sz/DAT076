@@ -1,4 +1,5 @@
 describe('Controller: movieFinder.controllers.AppCtrl', function() {
+    'use strict';
 
     beforeEach(function() {
         module('movieFinder.controllers');
@@ -11,16 +12,16 @@ describe('Controller: movieFinder.controllers.AppCtrl', function() {
 
     it('should indicate an error on unsuccesful route', inject(function($controller, $rootScope) {
         var appCtrl = $controller('AppCtrl');
-        $rootScope.$emit('$routeChangeError', null, null, "message");
+        $rootScope.$emit('$routeChangeError', null, null, 'message');
         expect(appCtrl.error.isError).toBe(true);
-        expect(appCtrl.error.errorMessage).toBe("message");
+        expect(appCtrl.error.errorMessage).toBe('message');
     }));
 
     it('should cancel any errors when navigating to a new route', inject(function($controller, $rootScope) {
         var appCtrl = $controller('AppCtrl');
-        $rootScope.$emit('$routeChangeError', null, null, "message");
+        $rootScope.$emit('$routeChangeError', null, null, 'message');
         expect(appCtrl.error.isError).toBe(true);
-        $rootScope.$emit('$routeChangeStart', null, null, "message");
+        $rootScope.$emit('$routeChangeStart', null, null, 'message');
         expect(appCtrl.error.isError).toBe(false);
     }));
 

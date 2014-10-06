@@ -29,7 +29,7 @@
     <body class="no-js">
 
         <!-- The view area, where we load our views into -->
-        <div class="container" ng-view ng-hide="appCtrl.loading.isLoading || appCtrl.error.isError"></div>
+        <div class="container" ng-view ng-hide="appCtrl.error.isError"></div>
 
         <!-- If the user does not have javascript our site will not work very well -->
         <noscript>

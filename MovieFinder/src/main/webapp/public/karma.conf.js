@@ -2,6 +2,8 @@
 // Generated on Mon Sep 29 2014 13:20:26 GMT+0200 (W. Europe Daylight Time)
 
 module.exports = function (config) {
+    'use strict';
+
     config.set({
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '',
@@ -17,12 +19,10 @@ module.exports = function (config) {
             'test/**/*-spec.js'
         ],
         // list of files to exclude
-        exclude: [
-        ],
+        exclude: [],
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-        preprocessors: {
-        },
+        preprocessors: {},
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter

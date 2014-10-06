@@ -14,7 +14,7 @@
  
     <!-- Handles HTTP GET requests for /build/** by efficiently serving up static resources in the ${webappRoot}/build directory -->
     <resources mapping="/build/**" location="/build/" />
-    
+
     <!-- TODO: Remove 2 mapings below, only for dev. -->
     <resources mapping="/public/**" location="/public/" />
     <resources mapping="/partials/**" location="/public/partials/" />
