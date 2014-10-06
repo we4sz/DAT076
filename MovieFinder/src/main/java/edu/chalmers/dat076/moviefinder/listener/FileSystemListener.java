@@ -14,7 +14,7 @@ import java.util.List;
  */
 public interface FileSystemListener {
     
-    public void initFiles(List<String> paths);
+    public void initFile(String paths);
     
     public void newFile(String path);
     

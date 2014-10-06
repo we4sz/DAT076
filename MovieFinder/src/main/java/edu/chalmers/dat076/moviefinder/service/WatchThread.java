@@ -21,7 +21,6 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import static java.nio.file.LinkOption.*;
 import java.util.HashMap;
@@ -35,7 +34,7 @@ public class WatchThread extends Thread {
 
     private WatchService watcher;
     private final Path watchPath;
-    private static final List<String> videoTypes = Arrays.asList(new String[]{"mkv", "mp4"});
+    private static final List<String> videoTypes = Arrays.asList(new String[]{"avi", "mkv", "mp4"});
     private Map<WatchKey, Path> keys;
     private FileSystemListener listener;
 
@@ -98,12 +97,7 @@ public class WatchThread extends Thread {
             watcher = FileSystems.getDefault().newWatchService();
             registerAll(watchPath);
 
-            List<File> files = getAllPrograms(watchPath.toFile());
-            List<String> newFiles = new LinkedList<>();
-            for (File f : files) {
-                newFiles.add(f.getAbsolutePath());
-            }
-            listener.initFiles(newFiles);
+            findAllPrograms(watchPath.toFile());
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
@@ -168,20 +162,18 @@ public class WatchThread extends Thread {
         }
     }
 
-    private List<File> getAllPrograms(File dir) {
-        LinkedList l = new LinkedList<>();
+    private void findAllPrograms(File dir) {
         for (String fileName : dir.list()) {
             File t = new File(dir.getAbsolutePath() + "/" + fileName);
             if (t.isDirectory()) {
-                l.addAll(getAllPrograms(t));
+                findAllPrograms(t);
             } else {
                 String ending = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
                 if (videoTypes.contains(ending)) {
-                    l.add(t);
+                    listener.initFile(fileName);
                 }
             }
         }
-        return l;
     }
 
 }

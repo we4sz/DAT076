@@ -42,8 +42,8 @@ public class FileThreadService implements FileSystemListener{
     }
 
     @Override
-    public void initFiles(List<String> paths) {
-        System.out.println(paths.size());
+    public void initFile(String path) {
+        System.out.println(path);
     }
 
     @Override
