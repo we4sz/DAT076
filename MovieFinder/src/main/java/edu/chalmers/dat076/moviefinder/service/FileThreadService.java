@@ -5,21 +5,18 @@
  */
 package edu.chalmers.dat076.moviefinder.service;
 
+import edu.chalmers.dat076.moviefinder.listener.FileSystemListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author John
  */
-public class FileThreadService{
+public class FileThreadService implements FileSystemListener{
 
-    private static final Logger logger = LoggerFactory.getLogger(FileThreadService.class);
     private List<File> checkFolders;
     private LinkedList<WatchThread> threads;
     
@@ -29,6 +26,7 @@ public class FileThreadService{
         threads = new LinkedList<>();
         for(File f : checkFolders){  
             threads.add(new WatchThread(f));
+            threads.getLast().setListener(this);
             threads.getLast().start();
         }
     }
@@ -39,9 +37,23 @@ public class FileThreadService{
             try {
                 t.join();
             } catch (InterruptedException ex) {
-                java.util.logging.Logger.getLogger(FileThreadService.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    @Override
+    public void initFiles(List<String> paths) {
+        System.out.println(paths.size());
+    }
+
+    @Override
+    public void newFile(String path) {
+        System.out.println("created "+path);
+    }
+
+    @Override
+    public void oldPath(String path) {
+        System.out.println("delted "+path);
     }
 
 }
