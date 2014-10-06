@@ -11,8 +11,12 @@ package edu.chalmers.dat076.moviefinder.utils;
  *
  * @author Carl Jansson
  */
-public class titleParser {
+public class TitleParser {
     
+    
+    //Default constructor. Do we want this or strictly util class?
+    public TitleParser(){
+    }
     
     public boolean returnTrue(){
         return true;

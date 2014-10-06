@@ -44,12 +44,13 @@ public class titleParserTest {
     @Test
     public void testReturnTrue() {
         System.out.println("returnTrue");
-        titleParser instance = new titleParser();
+        TitleParser instance = new TitleParser();
         boolean expResult = true;
         boolean result = instance.returnTrue();
         assertEquals(expResult, result);
+        assertTrue(result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype." );
     }
     
 }
