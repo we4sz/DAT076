@@ -46,7 +46,7 @@ public class TitleParser {
         }
 
         if (sb.charAt(0) == '[') {
-            removeBrackets(sb, 0);
+            removeUntil(sb, 0, ']');
         }
 
         removeFormating(sb);
@@ -86,7 +86,19 @@ public class TitleParser {
                 wordSb.setLength(0);
                 
                 //TODO Check if bracket contains something worth saving!!! 
-                removeBrackets(mySb, i);
+                removeUntil(mySb, i, ']');
+                i--; // Need to compensate for removing the bracket.
+            } else if (mySb.charAt(i) == '(') {
+                
+                if (finalWords.contains(wordSb.toString())) {
+                    mySb.delete(i - (wordSb.length() + 1), mySb.length());
+                    finalWord = false;
+                    break;
+                }
+                wordSb.setLength(0);
+                
+                //TODO Check if bracket contains something worth saving!!! 
+                removeUntil(mySb, i, ')');
                 i--; // Need to compensate for removing the bracket.
             } else {
                 wordSb.append(mySb.charAt(i));
@@ -96,47 +108,20 @@ public class TitleParser {
             mySb.delete(mySb.length() - wordSb.length(), mySb.length());
         }
     }
-
+    
     /**
-     * in mySb replace every instance of char c with a space.
-     *
-     * @param mySb
-     * @param c
-     */
-    private void replaceChars(StringBuilder mySb, char c) {
-
-        for (int i = 0; i < mySb.length(); i++) {
-            if (mySb.charAt(i) == c) {
-                mySb.replace(i, i + 1, " ");
-            }
-        }
-    }
-
-    /**
-     * Delete everything in mySb from index n
+     * Removes everything starting from index n until the char c.
      *
      * @param mySb
      * @param n
+     * @param c
      */
-    public void deleteRest(StringBuilder mySb, int n) {
-        mySb.delete(n, mySb.length());
-    }
-
-    /**
-     * Removes brackets and their content from StringBuilder. Everything
-     * starting from index n until the char ']' will be removed.
-     *
-     * @param mySb StringBuilder containing the String
-     * @param n index to start looking from. First index is 0.
-     */
-    public int removeBrackets(StringBuilder mySb, int n) {
+    public void removeUntil(StringBuilder mySb, int n, char c) {
         for (int i = n; i <= mySb.length(); i++) {
-            if (mySb.charAt(i) == ']') {
+            if (mySb.charAt(i) == c) {
                 mySb.delete(n, i + 1);
-                return 1;
+                break;
             }
         }
-        return 0;
     }
-
 }
