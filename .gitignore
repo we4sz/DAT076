@@ -18,3 +18,13 @@ pom.xml.releaseBackup
 pom.xml.versionsBackup
 pom.xml.next
 release.properties
+
+# File created for glassfish
+glassfish-web.xml
+
+# Node dependencies + bower_components. These results in too long filenames. 
+node_modules
+bower_components
+
+# The front end build directory
+MovieFinder/src/main/webapp/build
