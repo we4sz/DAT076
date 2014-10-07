@@ -3,6 +3,10 @@ describe('Controller: movieFinder.controllers.AppCtrl', function() {
 
     beforeEach(function() {
         module('movieFinder.controllers');
+        
+        module(function ($provide) {
+          $provide.value('user', {});
+      });
     });
 
     it('should not indicate an error on succesful route', inject(function($controller) {
