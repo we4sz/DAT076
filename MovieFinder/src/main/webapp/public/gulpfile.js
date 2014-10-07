@@ -28,6 +28,7 @@ var BUILD_JS_PATH = path.join(BUILD_BASE_PATH, '/js');
 var BUILD_CSS_PATH = path.join(BUILD_BASE_PATH, '/css');
 var BUILD_IMG_PATH = path.join(BUILD_BASE_PATH, '/img');
 var BUILD_TEMPLATE_PATH = path.join(BUILD_BASE_PATH, '/js');
+var BUILD_FONT_PATH = path.join(BUILD_BASE_PATH, '/fonts');
 
 // Paths to input files/folders
 var PATHS = {
@@ -51,6 +52,9 @@ var PATHS = {
     ],
     templates: [
         'partials/**/*.html'
+    ],
+    fonts: [
+        path.join(BOWER_PATH, 'bootstrap/dist/fonts/*')
     ]
 };
 
@@ -96,6 +100,12 @@ gulp.task('scripts', ['clean', 'extScripts'], function () {
 
 });
 
+// Gulp task fonts
+// Copies required fonts
+gulp.task('fonts', ['clean'], function(){
+    return gulp.src(PATHS.fonts)
+        .pipe(gulp.dest(BUILD_FONT_PATH));
+});
 
 // Gulp task extCss
 // Combindes and uglifies all external css to a lib.min.css file. 
@@ -158,4 +168,4 @@ gulp.task('test', ['lint'], function (done) {
 // Gulp task default
 // The default task (called when you run `gulp` from cli).
 // Runs tasks to build the required resources.
-gulp.task('default', ['scripts', 'css', 'images', 'templates']);
+gulp.task('default', ['scripts', 'css', 'images', 'templates', 'fonts']);
