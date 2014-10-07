@@ -10,7 +10,7 @@
     'use strict';
 
     angular.module('movieFinder.controllers')
-            .controller('AppCtrl', function ($rootScope) {
+            .controller('AppCtrl', function ($rootScope, $http, user) {
                 var _this = this;
 
                 // An object for holding global error state. Used so 
@@ -20,6 +20,14 @@
                     isError: false,
                     errorMessage: null
                 };
+
+                // The global user service instance
+                this.user = user;
+
+
+                $rootScope.$on('auth-loginRequired', function () {
+                    _this.showLogin = true;
+                });
 
                 $rootScope.$on('$routeChangeStart', function () {
                     _this.error.isError = false;

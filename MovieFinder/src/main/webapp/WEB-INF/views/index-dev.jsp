@@ -65,8 +65,16 @@
 
         <!-- App scripts -->
         <script src="public/src/app.js"></script>
+        <!-- Config -->
         <script src="public/src/config/app-routes-config.js"></script>
+        <script src="public/src/config/http-interceptors-config.js"></script>
+        <!-- Services -->
+        <script src="public/src/services/auth-interceptor-service.js"></script>
+        <script src="public/src/services/user-service.js"></script>
+        <!-- Controllers --> 
         <script src="public/src/controllers/app-controller.js"></script>
+        <script src="public/src/controllers/home-controller.js"></script>
+        <!-- Directives -->
         <script src="public/src/directives/error-directive.js"></script>
     </body>
 </html>
