@@ -8,7 +8,8 @@ package edu.chalmers.dat076.moviefinder.utils;
 import java.util.ArrayList;
 
 /**
- * A class for parsing movie and series file names and derive a title.
+ * A class for parsing movie and series file names and deriving useful
+ * information.
  *
  * @author Carl Jansson
  */
@@ -131,7 +132,7 @@ public class TitleParser {
      * is assumed that vital season information is available in index 0.
      *
      * @param mySb
-     * @return true if mySb contains episode information
+     * @return true if mySb contains season and episode information
      */
     public boolean getEpisodePotential(StringBuilder mySb) {
 
@@ -163,7 +164,8 @@ public class TitleParser {
     /**
      * Before calling this method make sure mySb contains the right information
      * using getEpisodePotential. If data cant be found both season and episode
-     * are set as negative one.
+     * are set as negative one. It is assumed the first available number is
+     * season number and second number is episode.
      *
      * @param mySb
      * @return
@@ -196,10 +198,11 @@ public class TitleParser {
             if ('0' <= mySb.charAt(i) && mySb.charAt(i) <= '9') {
                 if (value < 0) {
                     value = 0;
+                } else {
+                    value = value * 10;
                 }
-                value = value * 10;
                 value = value + Character.getNumericValue(mySb.charAt(i));
-            } else if (value > 0 && !Character.isDigit(mySb.charAt(i))) {
+            } else if ( value > 0 ) {
                 mySb.delete(0, i);
                 deleteAll = false;
                 break;
