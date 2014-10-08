@@ -10,8 +10,7 @@
             .config(function ($routeProvider) {
                 $routeProvider
                         .when('/', {
-                            templateUrl: 'partials/home.html',
-                            controller: 'HomeCtrl as homeCtrl'
+                            templateUrl: 'partials/home.html'
                         })
                         .otherwise({
                             redirectTo: '/'
