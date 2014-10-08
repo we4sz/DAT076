@@ -28,37 +28,10 @@
     </head>
     <body class="no-js">
 
-        <!-- The view area, where we load our views into -->
-        <div class="container" ng-view ng-hide="appCtrl.error.isError"></div>
-
-        <!-- If the user does not have javascript our site will not work very well -->
-        <noscript>
-        <div class="container hide-js text-center">
-            <div class="row">
-                <div class="col-sm-6 col-md-4 col-md-offset-4 col-sm-offset-3">
-                    <h1>No Javascript Detected</h1>
-
-                    <p>Please <a href="http://www.enable-javascript.com/" target="_blank">Enable Javascript</a> in your
-                        browser.</p>
-                </div>
-            </div>
-        </div>
-        </noscript>
-
-        <!-- If we encounter an error loading a view, show it -->
-        <div class="container" ng-show="appCtrl.error.isError">
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2">
-                    <error error-text="{{appCtrl.error.errorMessage}}"></error>
-                </div>
-            </div>
-        </div>
+        <%@ include file="partials/index-content.html" %>
 
         <!-- Reminder that this is the dev version (i.e. not using the built js files) -->
         <script>console.log('%c=== DEV VERSION ===', 'color: #FF0000');</script>
-
-        <!-- Detect JS -->
-        <script>document.body.className = document.body.className.replace('no-js', 'js');</script>
 
         <!-- 3rd party combined scripts, defined in gulpfile.js as "external_scripts"-->
         <script src="build/js/lib.min.js"></script>
