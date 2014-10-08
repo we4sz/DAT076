@@ -10,7 +10,7 @@
     'use strict';
 
     angular.module('movieFinder.controllers')
-            .controller('AppCtrl', function ($rootScope, $http, user) {
+            .controller('AppCtrl', function ($rootScope, user) {
                 var _this = this;
 
                 // An object for holding global error state. Used so 
