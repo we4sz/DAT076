@@ -38,6 +38,7 @@ var PATHS = {
         path.join(BOWER_PATH, 'bootstrap/dist/js/bootstrap.min.js'),
         path.join(BOWER_PATH, 'angular/angular.min.js'),
         path.join(BOWER_PATH, 'angular-route/angular-route.min.js'),
+        path.join(BOWER_PATH, 'angular-animate/angular-animate.min.js'),
         path.join(BOWER_PATH, 'angular-strap/dist/angular-strap.min.js'),
         path.join(BOWER_PATH, 'angular-strap/dist/angular-strap.tpl.min.js')
     ],
@@ -45,7 +46,8 @@ var PATHS = {
         'css/**/*.css'
     ],
     external_styles: [
-        path.join(BOWER_PATH, 'bootstrap/dist/css/bootstrap.css')
+        path.join(BOWER_PATH, 'bootstrap/dist/css/bootstrap.css'),
+        path.join(BOWER_PATH, 'angular-motion/dist/angular-motion.min.css')
     ],
     images: [
         'img/**/*.png',
