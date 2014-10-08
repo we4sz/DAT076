@@ -24,11 +24,6 @@
                 // The global user service instance
                 this.user = user;
 
-
-                $rootScope.$on('auth-loginRequired', function () {
-                    _this.showLogin = true;
-                });
-
                 $rootScope.$on('$routeChangeStart', function () {
                     _this.error.isError = false;
                 });
