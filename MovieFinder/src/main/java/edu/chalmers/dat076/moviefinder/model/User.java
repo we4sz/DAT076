@@ -12,6 +12,8 @@ import java.io.Serializable;
  * @author John
  */
 public class User implements Serializable {
+    static final long serialVersionUID = 1L;
+    
     
     private String username;
     private UserRole role;
