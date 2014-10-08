@@ -137,7 +137,7 @@ public class TitleParser {
         if (mySb.charAt(0) == 'S' || mySb.charAt(0) == 's') {
 
             // Season 01 Episode 01
-            if (mySb.substring(0, 6).equalsIgnoreCase("season")) {
+            if ( mySb.length() > 13 && mySb.substring(0, 6).equalsIgnoreCase("season")) {
 
                 mySb.delete(0, 6);
 
@@ -146,19 +146,24 @@ public class TitleParser {
                 for (int i = 0; i < mySb.length()-7; i++) {
                     if (mySb.substring(i, i+7).equalsIgnoreCase("episode")) {
                         mySb.delete(0, i+7);
+                        episode = returnNextNumber(mySb);
                         break;
                     }
                 }
-                episode = returnNextNumber(mySb);
                 
+            } else if ( Character.isDigit(mySb.charAt(1)) ) {
                 
+                season = returnNextNumber(mySb);
+                if (mySb.charAt(0) == 'E' || mySb.charAt(0) == 'e'){
+                    episode = returnNextNumber(mySb);
+                }
             }
-            //TODO S01E03
-            
-            
             
         } else if ('0' <= mySb.charAt(0) && mySb.charAt(0) <= '9') {
-            //TODO check for info in some.series.3x01.blablabla.720p_hdtv_x264-fov.mkv
+            season = returnNextNumber(mySb);
+                if (mySb.charAt(0) == 'x' || mySb.charAt(0) == 'X'){
+                    episode = returnNextNumber(mySb);
+                }
         }
 
         return new Episode(season, episode);

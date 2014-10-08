@@ -23,9 +23,6 @@ public class titleParserTest {
 
     @Before
     public void setUp() {
-        /* This method is executed before each test. It is used to prepare 
-        the test environment (e.g., read input data, initialize the class).*/
-        
         instance = new TitleParser();
     }
 
@@ -130,32 +127,44 @@ public class titleParserTest {
         sb = new StringBuilder("Season01Episode02");
         e = instance.getEpisodeInfo(sb);
         assertTrue(e.getSeason()==1 && e.getEpisode()==2);
-        
         sb = new StringBuilder("Season11Episode22");
         e = instance.getEpisodeInfo(sb);
         assertTrue(e.getSeason()==11 && e.getEpisode()==22);
-        
         sb = new StringBuilder("Season3 Episode04");
         e = instance.getEpisodeInfo(sb);
         assertTrue(e.getSeason()==3 && e.getEpisode()==4);
-        
         sb = new StringBuilder("Season13 Episode24");
         e = instance.getEpisodeInfo(sb);
         assertTrue(e.getSeason()==13 && e.getEpisode()==24);
-        
         sb = new StringBuilder("Season 05 Episode 06");
         e = instance.getEpisodeInfo(sb);
         assertTrue(e.getSeason()==5 && e.getEpisode()==6);
         
-        /*sb = new StringBuilder("S1E2");
+        sb = new StringBuilder("S1E2");
+        e = instance.getEpisodeInfo(sb);
+        assertEquals("1 2", e.getSeason() + " " + e.getEpisode());
+        assertTrue(e.getSeason()==1 && e.getEpisode()==2);
         sb = new StringBuilder("s01e02");
+        e = instance.getEpisodeInfo(sb);
+        assertEquals("1 2", e.getSeason() + " " + e.getEpisode());
         sb = new StringBuilder("s11e22");
+        e = instance.getEpisodeInfo(sb);
+        assertEquals("11 22", e.getSeason() + " " + e.getEpisode());
         
         sb = new StringBuilder("1x2");
+        e = instance.getEpisodeInfo(sb);
+        assertEquals("1 2", e.getSeason() + " " + e.getEpisode());
         sb = new StringBuilder("1x02");
+        e = instance.getEpisodeInfo(sb);
+        assertEquals("1 2", e.getSeason() + " " + e.getEpisode());
         sb = new StringBuilder("01x02");
+        e = instance.getEpisodeInfo(sb);
+        assertEquals("1 2", e.getSeason() + " " + e.getEpisode());
         sb = new StringBuilder("11x22");
-        */
+        e = instance.getEpisodeInfo(sb);
+        assertEquals("11 22", e.getSeason() + " " + e.getEpisode());
+        
+        
         
     }
     
