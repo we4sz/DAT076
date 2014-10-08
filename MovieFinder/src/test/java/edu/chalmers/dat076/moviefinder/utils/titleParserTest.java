@@ -77,43 +77,78 @@ public class titleParserTest {
     public void testReturnNextNumber(){
         System.out.println("returnNextNumber");
         StringBuilder sb = new StringBuilder("1asd");
-        int e = instance.returnNextNumber(sb);
+        int e = instance.getNextNumber(sb);
         assertTrue(e==1);
         assertEquals("asd",sb.toString());
         sb = new StringBuilder("asd1");
-        e = instance.returnNextNumber(sb);
+        e = instance.getNextNumber(sb);
         assertTrue(e==1);
         assertEquals("",sb.toString());
         sb = new StringBuilder(" 01asd");
-        e = instance.returnNextNumber(sb);
+        e = instance.getNextNumber(sb);
         assertTrue(e==1);
         assertEquals("asd",sb.toString());
         sb = new StringBuilder("asdfs01asd");
-        e = instance.returnNextNumber(sb);
+        e = instance.getNextNumber(sb);
         assertTrue(e==1);
         assertEquals("asd",sb.toString());
         sb = new StringBuilder("asd01");
-        e = instance.returnNextNumber(sb);
+        e = instance.getNextNumber(sb);
         assertTrue(e==1);
         assertEquals("",sb.toString());
         sb = new StringBuilder(" 23asd");
-        e = instance.returnNextNumber(sb);
+        e = instance.getNextNumber(sb);
         assertTrue(e==23);
         assertEquals("asd",sb.toString());
         sb = new StringBuilder("asd23");
-        e = instance.returnNextNumber(sb);
+        e = instance.getNextNumber(sb);
         assertTrue(e==23);
         assertEquals("",sb.toString());
         sb = new StringBuilder("asdfs2343asd");
-        e = instance.returnNextNumber(sb);
+        e = instance.getNextNumber(sb);
         assertTrue(e==2343);
         assertEquals("asd",sb.toString());
         sb = new StringBuilder("asdfsasd");
-        e = instance.returnNextNumber(sb);
+        e = instance.getNextNumber(sb);
         assertTrue(e==-1);
         assertEquals("asdfsasd",sb.toString());
     }
         
+    
+    @Test
+    public void testGetEpisodePotential(){
+        System.out.println("getEpisodePotential");
+        StringBuilder sb = new StringBuilder("Season1Episode2");
+        assertTrue(instance.getEpisodePotential(sb));
+        
+        sb = new StringBuilder("Season01Episode02");
+        assertTrue(instance.getEpisodePotential(sb));
+        sb = new StringBuilder("Season11Episode22");
+        assertTrue(instance.getEpisodePotential(sb));
+        sb = new StringBuilder("Season3 Episode04");
+        assertTrue(instance.getEpisodePotential(sb));
+        sb = new StringBuilder("Season13 Episode24");
+        assertTrue(instance.getEpisodePotential(sb));
+        sb = new StringBuilder("Season 05 Episode 06");
+        assertTrue(instance.getEpisodePotential(sb));
+        
+        sb = new StringBuilder("S1E2");
+        assertTrue(instance.getEpisodePotential(sb));
+        sb = new StringBuilder("s01e02");
+        assertTrue(instance.getEpisodePotential(sb));
+        sb = new StringBuilder("s11e22");
+        assertTrue(instance.getEpisodePotential(sb));
+        
+        sb = new StringBuilder("1x2");
+        assertTrue(instance.getEpisodePotential(sb));
+        sb = new StringBuilder("1x02");
+        assertTrue(instance.getEpisodePotential(sb));
+        sb = new StringBuilder("01x02");
+        assertTrue(instance.getEpisodePotential(sb));
+        sb = new StringBuilder("11x22");
+        assertTrue(instance.getEpisodePotential(sb));
+        
+    }
     
     
     @Test

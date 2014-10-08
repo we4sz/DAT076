@@ -42,7 +42,7 @@ public class TitleParser {
         if (fileName.isEmpty()) {
             throw new IllegalArgumentException();
         }
-        
+
         sb.setLength(0);
         sb.append(fileName);
 
@@ -78,26 +78,26 @@ public class TitleParser {
                 wordSb.setLength(0);
 
             } else if (mySb.charAt(i) == '[') {
-                
+
                 if (finalWords.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
                     finalWord = false;
                     break;
                 }
                 wordSb.setLength(0);
-                
+
                 //TODO Check if bracket contains something worth saving!!! 
                 removeUntil(mySb, i, ']');
                 i--; // Need to compensate for removing the bracket.
             } else if (mySb.charAt(i) == '(') {
-                
+
                 if (finalWords.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
                     finalWord = false;
                     break;
                 }
                 wordSb.setLength(0);
-                
+
                 //TODO Check if bracket contains something worth saving!!! 
                 removeUntil(mySb, i, ')');
                 i--; // Need to compensate for removing the bracket.
@@ -109,10 +109,7 @@ public class TitleParser {
             mySb.delete(mySb.length() - wordSb.length(), mySb.length());
         }
     }
-    
-    
-    
-    
+
     /**
      * Removes everything starting from index n until the char c.
      *
@@ -128,77 +125,92 @@ public class TitleParser {
             }
         }
     }
-    
-    
-    public Episode getEpisodeInfo(StringBuilder mySb) {
 
-        int season = -1;
-        int episode = -1;
-        if (mySb.charAt(0) == 'S' || mySb.charAt(0) == 's') {
+    /**
+     * Check if mySb has the potential to contain an episode of some series. It
+     * is assumed that vital season information is available in index 0.
+     *
+     * @param mySb
+     * @return true if mySb contains episode information
+     */
+    public boolean getEpisodePotential(StringBuilder mySb) {
 
-            // Season 01 Episode 01
-            if ( mySb.length() > 13 && mySb.substring(0, 6).equalsIgnoreCase("season")) {
+        if (mySb.length() >= 4 && (mySb.charAt(0) == 'S' || mySb.charAt(0) == 's')) {
 
-                mySb.delete(0, 6);
-
-                season = returnNextNumber(mySb);
-                
-                for (int i = 0; i < mySb.length()-7; i++) {
-                    if (mySb.substring(i, i+7).equalsIgnoreCase("episode")) {
-                        mySb.delete(0, i+7);
-                        episode = returnNextNumber(mySb);
-                        break;
+            if (Character.isDigit(mySb.charAt(1))) {
+                if (Character.isDigit(mySb.charAt(3)) && (mySb.charAt(2) == 'E' || mySb.charAt(2) == 'e')) {
+                    return true; // SxEx
+                } else if (mySb.length() >= 6 && (Character.isDigit(mySb.charAt(2)) && Character.isDigit(mySb.charAt(4)) && (mySb.charAt(3) == 'E' || mySb.charAt(3) == 'e'))) {
+                    return true; //SxxEx
+                }
+            } else if (mySb.length() > 13 && mySb.substring(0, 6).equalsIgnoreCase("season")) {
+                for (int i = 6; i < mySb.length() - 7; i++) {
+                    if (mySb.substring(i, i + 7).equalsIgnoreCase("episode")) {
+                        return true; // season ... episode
                     }
                 }
-                
-            } else if ( Character.isDigit(mySb.charAt(1)) ) {
-                
-                season = returnNextNumber(mySb);
-                if (mySb.charAt(0) == 'E' || mySb.charAt(0) == 'e'){
-                    episode = returnNextNumber(mySb);
-                }
             }
-            
-        } else if ('0' <= mySb.charAt(0) && mySb.charAt(0) <= '9') {
-            season = returnNextNumber(mySb);
-                if (mySb.charAt(0) == 'x' || mySb.charAt(0) == 'X'){
-                    episode = returnNextNumber(mySb);
-                }
+        } else if (mySb.length() >= 3 && Character.isDigit(mySb.charAt(0))) {
+            if ((Character.isDigit(mySb.charAt(2)) && (mySb.charAt(1) == 'x' || mySb.charAt(1) == 'X'))
+                    || (mySb.length() >= 4 && Character.isDigit(mySb.charAt(1))
+                    && Character.isDigit(mySb.charAt(3)) && (mySb.charAt(2) == 'x' || mySb.charAt(2) == 'X'))) {
+                return true; // xXx xxXx
+            }
         }
+        return false;
+    }
 
+    /**
+     * Before calling this method make sure mySb contains the right information
+     * using getEpisodePotential. If data cant be found both season and episode
+     * are set as negative one.
+     *
+     * @param mySb
+     * @return
+     */
+    public Episode getEpisodeInfo(StringBuilder mySb) {
+        int season = getNextNumber(mySb);
+        int episode = getNextNumber(mySb);
+        if (season < 0 || episode < 0) {
+            season = -1;
+            episode = -1;
+            // Or throw some exception
+        }
         return new Episode(season, episode);
     }
-    
+
     /**
-     * returns next number in mySb and deletes it and everything before it in mySb.
+     * returns next number in mySb and deletes it and everything before it in
+     * mySb.
+     *
      * @param mySb
-     * @return 
+     * @return
      */
-    public int returnNextNumber(StringBuilder mySb) {
-        int tmp = -1;
+    public int getNextNumber(StringBuilder mySb) {
+        int value = -1;
         boolean deleteAll = true;
 
         for (int i = 0; i < mySb.length(); i++) {
 
             // Character.isDigit(i) better or worse?
             if ('0' <= mySb.charAt(i) && mySb.charAt(i) <= '9') {
-                if (tmp<0){
-                    tmp = 0;
+                if (value < 0) {
+                    value = 0;
                 }
-                tmp = tmp * 10;
-                tmp = tmp + Character.getNumericValue(mySb.charAt(i));
-            } else if (tmp > 0 && !Character.isDigit(mySb.charAt(i))) {
+                value = value * 10;
+                value = value + Character.getNumericValue(mySb.charAt(i));
+            } else if (value > 0 && !Character.isDigit(mySb.charAt(i))) {
                 mySb.delete(0, i);
                 deleteAll = false;
                 break;
             }
         }
-        if ( deleteAll && tmp>0 ){
+        if (deleteAll && value > 0) {
             mySb.setLength(0);
         }
-        return tmp;
+        return value;
     }
-    
+
     
     public class Episode{
         private final int season;
