@@ -56,7 +56,7 @@ public class TitleParser {
     }
 
     /**
-     * This method does everything...
+     * This method kind of controls everything...
      *
      * @param mySb
      */
@@ -130,19 +130,56 @@ public class TitleParser {
     }
     
     
+    public Episode getEpisodeInfo(StringBuilder mySb) {
+
+        int season = -1;
+        int episode = -1;
+        if (mySb.charAt(0) == 'S' || mySb.charAt(0) == 's') {
+
+            // Season 01 Episode 01
+            if (mySb.substring(0, 6).equalsIgnoreCase("season")) {
+
+                mySb.delete(0, 6);
+
+                season = returnNextNumber(mySb);
+                
+                for (int i = 0; i < mySb.length()-7; i++) {
+                    if (mySb.substring(i, i+7).equalsIgnoreCase("episode")) {
+                        mySb.delete(0, i+7);
+                        break;
+                    }
+                }
+                episode = returnNextNumber(mySb);
+                
+                
+            }
+            //TODO S01E03
+            
+            
+            
+        } else if ('0' <= mySb.charAt(0) && mySb.charAt(0) <= '9') {
+            //TODO check for info in some.series.3x01.blablabla.720p_hdtv_x264-fov.mkv
+        }
+
+        return new Episode(season, episode);
+    }
+    
     /**
      * returns next number in mySb and deletes it and everything before it in mySb.
      * @param mySb
      * @return 
      */
     public int returnNextNumber(StringBuilder mySb) {
-        int tmp = 0;
+        int tmp = -1;
         boolean deleteAll = true;
 
         for (int i = 0; i < mySb.length(); i++) {
 
-            // Character.isDigit('some char') better or worse?
+            // Character.isDigit(i) better or worse?
             if ('0' <= mySb.charAt(i) && mySb.charAt(i) <= '9') {
+                if (tmp<0){
+                    tmp = 0;
+                }
                 tmp = tmp * 10;
                 tmp = tmp + Character.getNumericValue(mySb.charAt(i));
             } else if (tmp > 0 && !Character.isDigit(mySb.charAt(i))) {
