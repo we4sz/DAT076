@@ -10,6 +10,7 @@
 
     angular.module('movieFinder', [
         'ngRoute',
+        'mgcrea.ngStrap',
         'movieFinder.controllers',
         'movieFinder.directives',
         'movieFinder.filters',

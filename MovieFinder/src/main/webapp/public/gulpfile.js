@@ -37,7 +37,9 @@ var PATHS = {
         path.join(BOWER_PATH, 'jquery/dist/jquery.min.js'),
         path.join(BOWER_PATH, 'bootstrap/dist/js/bootstrap.min.js'),
         path.join(BOWER_PATH, 'angular/angular.min.js'),
-        path.join(BOWER_PATH, 'angular-route/angular-route.min.js')
+        path.join(BOWER_PATH, 'angular-route/angular-route.min.js'),
+        path.join(BOWER_PATH, 'angular-strap/dist/angular-strap.min.js'),
+        path.join(BOWER_PATH, 'angular-strap/dist/angular-strap.tpl.min.js')
     ],
     styles: [
         'css/**/*.css'
