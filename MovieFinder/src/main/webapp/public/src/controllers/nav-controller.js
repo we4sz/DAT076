@@ -17,6 +17,8 @@
                 };
 
                 this.showSignInModal = function () {
+                    this.error.signIn = '';
+                    
                     signInModal = $modal({
                         scope: $scope,
                         template: 'partials/modals/sign-in.html',
