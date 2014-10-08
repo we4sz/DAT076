@@ -21,13 +21,14 @@ public class TitleParser {
             add("1080p");add("720p");add("1920x1080");add("1280x720");
             add("mp4");add("avi");add("mkv");
             add("Bluray");add("BrRip");add("WEBRip");add("HDTV");add("Blu-ray");add("FLAC");
-            add("AC3");add("h264");add("AAC");add("xvid");add("x264");
-            //add("");add("");add("");add("");add("");add("");add("");
+            add("AC3");add("h264");add("AAC");add("xvid");add("divx");add("x264");
+            //add("");add("");add("");add("");add("");add("");
         }
     };
 
     //Default constructor. Do we want this or strictly util class?
     public TitleParser() {
+        sb = new StringBuilder();
     }
 
     /**
@@ -38,12 +39,12 @@ public class TitleParser {
      * @return a hopefully better String
      */
     public String parseTitle(String fileName) {
-        if (sb == null) {
-            sb = new StringBuilder(fileName);
-        } else {
-            sb.setLength(0);
-            sb.append(fileName);
+        if (fileName.isEmpty()) {
+            throw new IllegalArgumentException();
         }
+        
+        sb.setLength(0);
+        sb.append(fileName);
 
         if (sb.charAt(0) == '[') {
             removeUntil(sb, 0, ']');
@@ -55,7 +56,7 @@ public class TitleParser {
     }
 
     /**
-     * This method rly does everything...
+     * This method does everything...
      *
      * @param mySb
      */
@@ -109,6 +110,9 @@ public class TitleParser {
         }
     }
     
+    
+    
+    
     /**
      * Removes everything starting from index n until the char c.
      *
@@ -123,5 +127,45 @@ public class TitleParser {
                 break;
             }
         }
+    }
+    
+    
+    /**
+     * returns next number in mySb and deletes it and everything before it in mySb.
+     * @param mySb
+     * @return 
+     */
+    public int returnNextNumber(StringBuilder mySb) {
+        int tmp = 0;
+        boolean deleteAll = true;
+
+        for (int i = 0; i < mySb.length(); i++) {
+
+            // Character.isDigit('some char') better or worse?
+            if ('0' <= mySb.charAt(i) && mySb.charAt(i) <= '9') {
+                tmp = tmp * 10;
+                tmp = tmp + Character.getNumericValue(mySb.charAt(i));
+            } else if (tmp > 0 && !Character.isDigit(mySb.charAt(i))) {
+                mySb.delete(0, i);
+                deleteAll = false;
+                break;
+            }
+        }
+        if ( deleteAll && tmp>0 ){
+            mySb.setLength(0);
+        }
+        return tmp;
+    }
+    
+    
+    public class Episode{
+        private final int season;
+        private final int episode;
+        public Episode(int s, int e){
+            this.season=s;
+            this.episode=e;
+        }
+        public int getSeason(){ return season; }
+        public int getEpisode(){ return episode; }
     }
 }

@@ -5,9 +5,10 @@
  */
 package edu.chalmers.dat076.moviefinder.utils;
 
+import edu.chalmers.dat076.moviefinder.utils.TitleParser.Episode;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -74,5 +75,46 @@ public class titleParserTest {
         instance.removeUntil(sb, 7, ']');
         assertEquals("hej ok!", sb.toString());
     }
+    
+    @Test
+    public void testReturnNextNumber(){
+        System.out.println("returnNextNumber");
+        StringBuilder sb = new StringBuilder("1asd");
+        int e = instance.returnNextNumber(sb);
+        assertTrue(e==1);
+        assertEquals("asd",sb.toString());
+        sb = new StringBuilder("asd1");
+        e = instance.returnNextNumber(sb);
+        assertTrue(e==1);
+        assertEquals("",sb.toString());
+        sb = new StringBuilder("01asd");
+        e = instance.returnNextNumber(sb);
+        assertTrue(e==1);
+        assertEquals("asd",sb.toString());
+        sb = new StringBuilder("asdfs01asd");
+        e = instance.returnNextNumber(sb);
+        assertTrue(e==1);
+        assertEquals("asd",sb.toString());
+        sb = new StringBuilder("asd01");
+        e = instance.returnNextNumber(sb);
+        assertTrue(e==1);
+        assertEquals("",sb.toString());
+        sb = new StringBuilder("23asd");
+        e = instance.returnNextNumber(sb);
+        assertTrue(e==23);
+        assertEquals("asd",sb.toString());
+        sb = new StringBuilder("asd23");
+        e = instance.returnNextNumber(sb);
+        assertTrue(e==23);
+        assertEquals("",sb.toString());
+        sb = new StringBuilder("asdfs2343asd");
+        e = instance.returnNextNumber(sb);
+        assertTrue(e==2343);
+        assertEquals("asd",sb.toString());
+    }
+        
+    
+    
+    
     
 }
