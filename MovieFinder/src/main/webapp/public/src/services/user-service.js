@@ -7,11 +7,22 @@
     'use strict';
 
     angular.module('movieFinder.services')
-        .factory('user', function($http) {
+        .factory('user', function($http, $window) {
 
             var loggedIn = false;
             var role = '';
             var username = '';
+
+            var setUserData = function setUserData(userData) {
+                loggedIn = true;
+                role = userData.role;
+                username = userData.username;
+            };
+
+            if($window.session_user){
+                setUserData($window.session_user);
+                $window.session_user = null;
+            }
 
             return {
                 'logout': function() {
@@ -22,16 +33,10 @@
                     });
                 },
                 'login': function(name, pass) {
-                    return $http
-                        .post('api/login/login', {
+                    return $http.post('api/login/login', {
                             'username': name,
                             'password': pass
-                        })
-                        .success(function(userData) {
-                            loggedIn = true;
-                            role = userData.role;
-                            username = userData.username;
-                        });
+                        }).success(setUserData);
                 },
                 'isLoggedIn': function() {
                     return loggedIn;

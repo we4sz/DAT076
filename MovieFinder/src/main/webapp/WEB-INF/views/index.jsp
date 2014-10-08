@@ -27,6 +27,15 @@
 
         <%@ include file="partials/index-content.html" %>
 
+        <c:if test="${sessionScope.user != null}">
+        <script>
+            window.session_user = {
+                username: '${sessionScope.user.username}',
+                role: '${sessionScope.user.role}'
+            }
+        </script>
+        </c:if>
+
         <script src="build/js/lib.min.js"></script>
         <script src="build/js/app.min.js"></script>
         <script src="build/js/templates.js"></script>

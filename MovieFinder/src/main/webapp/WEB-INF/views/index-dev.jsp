@@ -33,6 +33,16 @@
         <!-- Reminder that this is the dev version (i.e. not using the built js files) -->
         <script>console.log('%c=== DEV VERSION ===', 'color: #FF0000');</script>
 
+        <!-- Inject user session state if available -->
+        <c:if test="${sessionScope.user != null}">
+        <script>
+            window.session_user = {
+                username: '${sessionScope.user.username}',
+                role: '${sessionScope.user.role}'
+            }
+        </script>
+        </c:if>
+
         <!-- 3rd party combined scripts, defined in gulpfile.js as "external_scripts"-->
         <script src="build/js/lib.min.js"></script>
 
@@ -47,6 +57,7 @@
         <!-- Controllers --> 
         <script src="public/src/controllers/app-controller.js"></script>
         <script src="public/src/controllers/home-controller.js"></script>
+        <script src="public/src/controllers/nav-controller.js"></script>
         <!-- Directives -->
         <script src="public/src/directives/error-directive.js"></script>
     </body>

@@ -2,6 +2,7 @@
 <div id="top-navbar"
      class="navbar navbar-default"
      role="navigation"
+     ng-controller="NavCtrl as navCtrl"
      bs-navbar>
     <div class="container-fluid">
         <div class="navbar-header">
@@ -25,14 +26,15 @@
             <form class="navbar-form navbar-right hide-no-js"
                 ng-hide="appCtrl.user.isLoggedIn()">
                 <button type="submit"
-                        class="btn btn-primary">
+                        class="btn btn-primary"
+                        ng-click="navCtrl.showSignInModal()">
                     <span class="glyphicon glyphicon-user"></span> Sign In
                 </button>
             </form>
             <p class="navbar-right navbar-text hide-no-js ng-hide" 
                 ng-show="appCtrl.user.isLoggedIn()">
                 Signed in as {{appCtrl.user.getUsername()}} &mdash;
-                <a href="#" class="navbar-link">Sign Out</a>
+                <a href="" class="navbar-link" ng-click="navCtrl.logout()">Sign Out</a>
             </p>
         </div>
     </div>
