@@ -56,7 +56,6 @@
         <script src="public/src/services/user-service.js"></script>
         <!-- Controllers --> 
         <script src="public/src/controllers/app-controller.js"></script>
-        <script src="public/src/controllers/home-controller.js"></script>
         <script src="public/src/controllers/nav-controller.js"></script>
         <!-- Directives -->
         <script src="public/src/directives/error-directive.js"></script>
