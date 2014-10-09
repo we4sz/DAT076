@@ -8,6 +8,8 @@ describe('Service: movieFinder.services.user', function() {
         module('movieFinder.services', function($provide) {
             // Set up all dependencies the service requires
             $provide.value('$window', {});
+            $provide.value('AUTH_EVENTS', {});
+            $provide.value('USER_ROLES', {role: 'role'});
         });
 
         // Get an instance of the service itself and

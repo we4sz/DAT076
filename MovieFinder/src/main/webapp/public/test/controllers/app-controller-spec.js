@@ -5,7 +5,11 @@ describe('Controller: movieFinder.controllers.AppCtrl', function() {
         module('movieFinder.controllers');
         
         module(function ($provide) {
-          $provide.value('user', {});
+            $provide.value('user', {});
+            $provide.value('$route', {
+                reload: function(){}
+            });
+            $provide.value('AUTH_EVENTS', {});
       });
     });
 
