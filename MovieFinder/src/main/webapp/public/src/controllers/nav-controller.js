@@ -7,7 +7,7 @@
     'use strict';
 
     angular.module('movieFinder.controllers')
-            .controller('NavCtrl', function ($scope, $rootScope, $modal, AUTH_EVENTS, history, user) {
+            .controller('NavCtrl', function ($scope, $rootScope, $location, $modal, AUTH_EVENTS, user) {
                 var _this = this;
 
                 var signInModal;
@@ -57,7 +57,9 @@
                     user.logout();
                 };
 
-                this.goBack = history.goBack;
+                this.modalCancel = function() {
+                    $location.path('/');
+                }
 
                 $scope.$on(AUTH_EVENTS.loginRequired, function(){
                     _this.showSignInModal(true, 'loginRequired');

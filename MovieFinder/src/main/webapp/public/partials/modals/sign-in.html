@@ -5,7 +5,7 @@
                 <button type="button" class="close" 
                         ng-hide="navCtrl.modalForce" ng-click="$hide()">&times;</button>
                 <button type="button" class="close" 
-                        ng-hide="!navCtrl.modalForce" ng-click="navCtrl.goBack()">&times;</button>
+                        ng-hide="!navCtrl.modalForce" ng-click="navCtrl.modalCancel()">&times;</button>
                 <h4 class="modal-title" ng-switch="navCtrl.modalState">
                     <span ng-switch-when="forbidden">Forbidden</span>
                     <span ng-switch-when="loginRequired">Login Required</span>
@@ -59,7 +59,7 @@
                             <button 
                                 class="btn btn-link"
                                 ng-show="navCtrl.modalForce"
-                                ng-click="navCtrl.goBack()">
+                                ng-click="navCtrl.modalCancel()">
                                 Cancel
                             </button>
                         </div>
