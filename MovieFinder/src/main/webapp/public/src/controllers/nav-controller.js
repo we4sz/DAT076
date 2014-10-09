@@ -59,7 +59,7 @@
 
                 this.modalCancel = function() {
                     $location.path('/');
-                }
+                };
 
                 $scope.$on(AUTH_EVENTS.loginRequired, function(){
                     _this.showSignInModal(true, 'loginRequired');
