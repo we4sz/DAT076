@@ -51,8 +51,13 @@
         <!-- Config -->
         <script src="public/src/config/app-routes-config.js"></script>
         <script src="public/src/config/http-interceptors-config.js"></script>
+        <!-- Constants -->
+        <script src="public/src/constants/user-constants.js"></script>
+        <script src="public/src/constants/auth-constants.js"></script>
         <!-- Services -->
         <script src="public/src/services/auth-interceptor-service.js"></script>
+        <script src="public/src/services/auth-helper-service.js"></script>
+        <script src="public/src/services/history-service.js"></script>
         <script src="public/src/services/user-service.js"></script>
         <!-- Controllers --> 
         <script src="public/src/controllers/app-controller.js"></script>

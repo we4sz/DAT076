@@ -2,10 +2,30 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" ng-click="$hide()">&times;</button>
-                <h4 class="modal-title">Sign In</h4>
+                <button type="button" class="close" 
+                        ng-hide="navCtrl.modalForce" ng-click="$hide()">&times;</button>
+                <button type="button" class="close" 
+                        ng-hide="!navCtrl.modalForce" ng-click="navCtrl.goBack()">&times;</button>
+                <h4 class="modal-title" ng-switch="navCtrl.modalState">
+                    <span ng-switch-when="forbidden">Forbidden</span>
+                    <span ng-switch-when="loginRequired">Login Required</span>
+                    <span ng-switch-default>Sign In</span>
+                </h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-warning" ng-show="navCtrl.modalState">
+                    <p ng-show="navCtrl.modalState == 'forbidden'">
+                        <strong>You are not allowed access to this resource!</strong>
+                        <br>
+                        Your current account does not have the required permisions to view this resource. Please sign in as a user that does.
+                    </p>
+                    <p ng-show="navCtrl.modalState == 'loginRequired'">
+                        <strong>You must login to access this resource!</strong>
+                        <br>
+                        Sign in is required to view this resource. Please sign in below.
+                    </p>
+                </div>
+
                 <div class="alert alert-danger" role="alert" ng-show="navCtrl.error.signIn">
                     <p>
                         <strong>An error occurred while signing in!</strong>
@@ -35,6 +55,12 @@
                                 class="btn btn-default"
                                 ng-click="navCtrl.login(signInUsername, signInPassword)">
                                 Sign in
+                            </button>
+                            <button 
+                                class="btn btn-link"
+                                ng-show="navCtrl.modalForce"
+                                ng-click="navCtrl.goBack()">
+                                Cancel
                             </button>
                         </div>
                     </div>
