@@ -12,15 +12,15 @@
     'use strict';
 
     angular.module('movieFinder.services')
-        .factory('authInterceptor', function($q, $rootScope) {
+        .factory('authInterceptor', function($q, $rootScope, AUTH_EVENTS) {
             return {
                 'responseError': function(rejection) {
                     if(rejection.status === 401) {
                         // Unathorized, brodcast a loginRequired event
-                        $rootScope.$broadcast('auth-loginRequired', rejection);
+                        $rootScope.$broadcast(AUTH_EVENTS.loginRequired, rejection);
                     } else if(rejection.status === 403) {
                         // Forbidden (role not high enough)
-                        $rootScope.$broadcast('auth-forbidden', rejection);
+                        $rootScope.$broadcast(AUTH_EVENTS.forbidden, rejection);
                     }
                     return $q.reject(rejection);
                 }
