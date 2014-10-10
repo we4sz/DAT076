@@ -5,11 +5,15 @@
  */
 package edu.chalmers.dat076.moviefinder.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author John
  */
-public class User {
+public class User implements Serializable {
+    static final long serialVersionUID = 1L;
+    
     
     private String username;
     private UserRole role;

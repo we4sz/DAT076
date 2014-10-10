@@ -10,10 +10,13 @@
 
     angular.module('movieFinder', [
         'ngRoute',
+        'ngAnimate',
+        'mgcrea.ngStrap',
         'movieFinder.controllers',
         'movieFinder.directives',
         'movieFinder.filters',
         'movieFinder.services',
+        'movieFinder.constants',
         'movieFinder.templates'
     ]);
 
@@ -21,5 +24,6 @@
     angular.module('movieFinder.directives', []);
     angular.module('movieFinder.filters', []);
     angular.module('movieFinder.services', []);
+    angular.module('movieFinder.constants', []);
     angular.module('movieFinder.templates', []);
 })();

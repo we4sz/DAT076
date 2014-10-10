@@ -3,6 +3,14 @@ describe('Controller: movieFinder.controllers.AppCtrl', function() {
 
     beforeEach(function() {
         module('movieFinder.controllers');
+        
+        module(function ($provide) {
+            $provide.value('user', {});
+            $provide.value('$route', {
+                reload: function(){}
+            });
+            $provide.value('AUTH_EVENTS', {});
+      });
     });
 
     it('should not indicate an error on succesful route', inject(function($controller) {
