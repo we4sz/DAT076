@@ -10,6 +10,7 @@ describe('Controller: movieFinder.controllers.AppCtrl', function() {
                 reload: function(){}
             });
             $provide.value('AUTH_EVENTS', {});
+            $provide.value('authHelper', {});
       });
     });
 

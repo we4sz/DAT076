@@ -12,5 +12,6 @@
                 forbidden: 'auth-forbidden',
                 loginSuccessful: 'auth-loginSuccessful',
                 logoutSuccessful: 'auth-logoutSuccessful'
-            });
+            })
+            .constant('AUTH_LOGIN_PATH', '/login');
 })();

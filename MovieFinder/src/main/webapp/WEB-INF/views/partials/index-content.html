@@ -16,10 +16,10 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <form class="navbar-form navbar-right hide-no-js"
-                ng-hide="appCtrl.user.isLoggedIn()">
+                ng-hide="appCtrl.user.isLoggedIn() || navCtrl.isLoginPage">
                 <button type="submit"
                         class="btn btn-primary"
-                        ng-click="navCtrl.showSignInModal()">
+                        ng-click="navCtrl.login()">
                     <span class="glyphicon glyphicon-user"></span> Sign In
                 </button>
             </form>

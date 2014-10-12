@@ -10,7 +10,7 @@
     'use strict';
 
     angular.module('movieFinder.controllers')
-            .controller('AppCtrl', function ($rootScope, $route, AUTH_EVENTS, user) {
+            .controller('AppCtrl', function ($rootScope, $route, AUTH_EVENTS, user, authHelper) {
                 var _this = this;
 
                 var onLoginStateChange = function() {
@@ -38,10 +38,10 @@
                 $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
                     if (rejection === AUTH_EVENTS.loginRequired) {
                         // Login is required for this view
-                        $rootScope.$broadcast(AUTH_EVENTS.loginRequired);
+                        authHelper.redirectToLoginPage(AUTH_EVENTS.loginRequired);
                     } else if (rejection === AUTH_EVENTS.forbidden) {
                         // The user's role is not allowed on this view
-                        $rootScope.$broadcast(AUTH_EVENTS.forbidden);
+                        authHelper.redirectToLoginPage(AUTH_EVENTS.forbidden);
                     } else {
                         // Unknown error, show the rejection message
                         _this.error.isError = true;

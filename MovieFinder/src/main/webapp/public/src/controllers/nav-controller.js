@@ -3,75 +3,28 @@
 // Contains the controller for the nav-bar.
 //
 
-(function () {
+(function() {
     'use strict';
 
     angular.module('movieFinder.controllers')
-            .controller('NavCtrl', function ($scope, $rootScope, $location, $modal, AUTH_EVENTS, user) {
-                var _this = this;
+        .controller('NavCtrl', function($rootScope, $location, authHelper, AUTH_LOGIN_PATH, user) {
+            var _this = this;
 
-                var signInModal;
+            // Flag used to hide the Sign In button when already
+            // on the login page.
+            this.isLoginPage = ($location.url() === AUTH_LOGIN_PATH);
 
-                var hideSignInModal = function() {
-                    if(signInModal) {
-                        signInModal.$promise.then(signInModal.hide);
-                    }
-                };
+            this.logout = function() {
+                user.logout();
+            };
 
-                this.error = {
-                    signIn: ''
-                };
+            this.login = function() {
+                authHelper.redirectToLoginPage();
+            };
 
-                this.modalState = null;
-
-                // Shows a sign in modal. If force is true, the modal
-                // will not be dismissible and will instead present a
-                // go back option.
-                // State is a string that is used in the modal template
-                // to show the user why the modal is shown.
-                this.showSignInModal = function (force, state) {
-                    hideSignInModal();
-
-                    this.error.signIn = '';
-                    this.modalState = state;
-                    this.modalForce = force;
-                    
-                    signInModal = $modal({
-                        scope: $scope,
-                        template: 'partials/modals/sign-in.html',
-                        container: 'body',
-                        keyboard: force ? false : true,
-                        backdrop: force ? 'static' : true
-                      });
-                };
-
-                this.login = function (username, password) {
-                    user.login(username, password).success(function(){
-                        hideSignInModal();
-                    }).error(function(){
-                        _this.error.signIn = 'Some error message';
-                    });
-                };
-
-                this.logout = function() {
-                    user.logout();
-                };
-
-                this.modalCancel = function() {
-                    $location.path('/');
-                };
-
-                $scope.$on(AUTH_EVENTS.loginRequired, function(){
-                    _this.showSignInModal(true, 'loginRequired');
-                });
-
-                $scope.$on(AUTH_EVENTS.forbidden, function(){
-                    _this.showSignInModal(true, 'forbidden');
-                });
-
-                $rootScope.$on('$routeChangeStart', function () {
-                    hideSignInModal();
-                });
-
+            $rootScope.$on('$locationChangeSuccess', function() {
+                _this.isLoginPage = ($location.url() === AUTH_LOGIN_PATH);
             });
+
+        });
 })();
