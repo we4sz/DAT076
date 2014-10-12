@@ -62,6 +62,7 @@
         <!-- Controllers --> 
         <script src="public/src/controllers/app-controller.js"></script>
         <script src="public/src/controllers/nav-controller.js"></script>
+        <script src="public/src/controllers/login-view-controller.js"></script>
         <!-- Directives -->
         <script src="public/src/directives/error-directive.js"></script>
     </body>
