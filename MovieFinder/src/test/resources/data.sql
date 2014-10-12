@@ -1,0 +1,1 @@
+insert into Movie (id, title) values (1, 'testMovie1');
