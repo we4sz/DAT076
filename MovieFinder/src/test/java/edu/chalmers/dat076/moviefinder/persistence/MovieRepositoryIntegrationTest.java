@@ -6,7 +6,7 @@
 package edu.chalmers.dat076.moviefinder.persistence;
 
 import edu.chalmers.dat076.moviefinder.AbstractIntegrationTest;
-import edu.chalmers.dat076.moviefinder.TestApplicationConfig;
+import edu.chalmers.dat076.moviefinder.TestRepositoryConfig;
 import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -21,7 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
  *
  * @author Peter
  */
-@ContextConfiguration(classes = TestApplicationConfig.class)
+@ContextConfiguration(classes = TestRepositoryConfig.class)
 public class MovieRepositoryIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
@@ -34,6 +34,7 @@ public class MovieRepositoryIntegrationTest extends AbstractIntegrationTest {
     }
     
     @Test
+    @SuppressWarnings("unchecked")
     public void findByTitleContaining() {
         Pageable pageable = new PageRequest(0, 1);
         Page<Movie> page = repository.findByTitleContaining("testMovie", pageable);
