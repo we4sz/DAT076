@@ -50,7 +50,7 @@ public class LoginController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
     public void logout(HttpSession s) {
-        s.invalidate();
+        s.removeAttribute("user");
     }
 
 }
