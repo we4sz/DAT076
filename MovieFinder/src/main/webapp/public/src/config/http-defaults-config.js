@@ -14,12 +14,9 @@
         var csrfValue = angular.element(document.querySelector('meta[name="_csrf"]')).attr('content');
 
 
-        // Set up $http to provide the csrf header on all POST, PUT and 
-        // DELETE requests made.
+        // Set up $http to provide the csrf header on all requests
         if(csrfHeader && csrfValue) {
-            $httpProvider.defaults.headers.post[csrfHeader] = csrfValue;
-            $httpProvider.defaults.headers.put[csrfHeader] = csrfValue;
-            $httpProvider.defaults.headers.delete[csrfHeader] = csrfValue;
+            $httpProvider.defaults.headers.common[csrfHeader] = csrfValue;
         }
     });
 })();
