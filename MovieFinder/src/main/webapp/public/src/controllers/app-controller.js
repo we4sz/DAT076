@@ -13,8 +13,12 @@
             .controller('AppCtrl', function ($rootScope, $route, AUTH_EVENTS, user, authHelper) {
                 var _this = this;
 
-                var onLoginStateChange = function() {
+                var onLoginStateChange = function () {
                     $route.reload();
+                };
+
+                this.loading = {
+                    isLoading: false
                 };
 
                 // An object for holding global error state. Used so 
@@ -29,13 +33,21 @@
                 this.user = user;
 
                 $rootScope.$on('$routeChangeStart', function () {
+                    _this.loading.isLoading = true;
                     _this.error.isError = false;
+                });
+
+                $rootScope.$on('$routeChangeSuccess', function () {
+                    _this.loading.isLoading = false;
                 });
 
                 $rootScope.$on(AUTH_EVENTS.loginSuccessful, onLoginStateChange);
                 $rootScope.$on(AUTH_EVENTS.logoutSuccessful, onLoginStateChange);
 
                 $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
+                    
+                    _this.loading.isLoading = false;
+                    
                     if (rejection === AUTH_EVENTS.loginRequired) {
                         // Login is required for this view
                         authHelper.redirectToLoginPage(AUTH_EVENTS.loginRequired);
