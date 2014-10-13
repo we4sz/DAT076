@@ -1,6 +1,6 @@
 //
-// nav-controller.js
-// Contains the controller for the nav-bar.
+// login-view-controller.js
+// Contains the controller for the login view.
 //
 
 (function () {
