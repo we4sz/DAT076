@@ -10,11 +10,20 @@
     'use strict';
 
     angular.module('movieFinder.controllers')
-            .controller('AppCtrl', function ($rootScope, $route, AUTH_EVENTS, user, authHelper) {
+            .controller('AppCtrl', function ($rootScope, $route, $timeout, AUTH_EVENTS, user, authHelper) {
                 var _this = this;
 
-                var onLoginStateChange = function() {
+                var onLoginStateChange = function () {
                     $route.reload();
+                };
+
+                // Flag used to delay showing of loading animation a few
+                // ms to make sure the route actually has something to load
+
+                var stillLoading = false;
+
+                this.loading = {
+                    isLoading: false
                 };
 
                 // An object for holding global error state. Used so 
@@ -28,14 +37,34 @@
                 // The global user service instance
                 this.user = user;
 
-                $rootScope.$on('$routeChangeStart', function () {
+                $rootScope.$on('$routeChangeStart', function (evt, next) {
+                    // Only show loading anim if route has something to load
+                    if (next && next.resolve) {
+                        // Even with something to load, make sure loading takes
+                        // atleast 100 ms before showing loading anim, or we
+                        // are just wasting our users time
+                        stillLoading = true;
+                        $timeout(function () {
+                            if (stillLoading) {
+                                _this.loading.isLoading = true;
+                            }
+                        }, 100);
+                    }
                     _this.error.isError = false;
+                });
+
+                $rootScope.$on('$routeChangeSuccess', function () {
+                    stillLoading = false;
+                    _this.loading.isLoading = false;
                 });
 
                 $rootScope.$on(AUTH_EVENTS.loginSuccessful, onLoginStateChange);
                 $rootScope.$on(AUTH_EVENTS.logoutSuccessful, onLoginStateChange);
 
                 $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
+
+                    _this.loading.isLoading = false;
+
                     if (rejection === AUTH_EVENTS.loginRequired) {
                         // Login is required for this view
                         authHelper.redirectToLoginPage(AUTH_EVENTS.loginRequired);

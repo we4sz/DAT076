@@ -34,7 +34,7 @@
 
 
 <!-- The view area, where we load our views into -->
-<div class="container" ng-view ng-hide="appCtrl.error.isError"></div>
+<div class="container" ng-view ng-hide="appCtrl.error.isError || appCtrl.loading.isLoading"></div>
 
 <!-- If the user does not have javascript our site will not work very well -->
 <noscript>
@@ -49,6 +49,17 @@
     </div>
 </div>
 </noscript>
+
+<div id="loadingOverlay" class="ng-cloak hide-no-js" ng-show="appCtrl.loading.isLoading">
+    <h1>Loading...</h1>
+    <div class="spinner">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
+</div>
 
 <!-- If we encounter an error loading a view, show it -->
 <div class="container" ng-show="appCtrl.error.isError">
