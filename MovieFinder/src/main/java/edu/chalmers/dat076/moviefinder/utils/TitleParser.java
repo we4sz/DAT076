@@ -5,7 +5,6 @@
  */
 package edu.chalmers.dat076.moviefinder.utils;
 
-import java.util.ArrayList;
 
 /**
  * A class for parsing movie and series file names and deriving useful
@@ -17,16 +16,7 @@ public class TitleParser {
 
     private StringBuilder sb;
 
-    private final ArrayList<String> finalWords = new ArrayList<String>() {
-        {
-            add("1080p");add("720p");add("1920x1080");add("1280x720");
-            add("mp4");add("avi");add("mkv");
-            add("Bluray");add("BrRip");add("WEBRip");add("HDTV");add("Blu-ray");add("FLAC");
-            add("AC3");add("h264");add("AAC");add("xvid");add("divx");add("x264");
-            //add("");add("");add("");add("");add("");add("");
-        }
-    };
-
+    
     //Default constructor. Do we want this or strictly util class?
     public TitleParser() {
         sb = new StringBuilder();
@@ -70,7 +60,7 @@ public class TitleParser {
         for (int i = 0; i < mySb.length(); i++) {
             if (mySb.charAt(i) == '.' || mySb.charAt(i) == '-' || mySb.charAt(i) == '_' || mySb.charAt(i) == ' ') {
 
-                if (finalWords.contains(wordSb.toString())) {
+                if (Constants.finalWords.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
                     finalWord = false;
                     break;
@@ -80,7 +70,7 @@ public class TitleParser {
 
             } else if (mySb.charAt(i) == '[') {
 
-                if (finalWords.contains(wordSb.toString())) {
+                if (Constants.finalWords.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
                     finalWord = false;
                     break;
@@ -92,7 +82,7 @@ public class TitleParser {
                 i--; // Need to compensate for removing the bracket.
             } else if (mySb.charAt(i) == '(') {
 
-                if (finalWords.contains(wordSb.toString())) {
+                if (Constants.finalWords.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
                     finalWord = false;
                     break;
@@ -106,7 +96,7 @@ public class TitleParser {
                 wordSb.append(mySb.charAt(i));
             }
         }
-        if (finalWord && finalWords.contains(wordSb.toString())) {
+        if (finalWord && Constants.finalWords.contains(wordSb.toString())) {
             mySb.delete(mySb.length() - wordSb.length(), mySb.length());
         }
     }
