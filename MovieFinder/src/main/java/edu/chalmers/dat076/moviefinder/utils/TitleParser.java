@@ -101,18 +101,6 @@ public class TitleParser {
                     i--; // Need to compensate for removing the bracket.
                 }
                 
-            /*} else if (mySb.charAt(i) == '(') {
-
-                if (Constants.finalWords.contains(wordSb.toString())) {
-                    mySb.delete(i - (wordSb.length() + 1), mySb.length());
-                    finalWord = false;
-                    break;
-                }
-                wordSb.setLength(0);
-
-                //TODO Check if bracket contains something worth saving? 
-                removeUntil(mySb, i, ')');
-                i--; // Need to compensate for removing the bracket.*/
             } else {
                 wordSb.append(mySb.charAt(i));
             }
