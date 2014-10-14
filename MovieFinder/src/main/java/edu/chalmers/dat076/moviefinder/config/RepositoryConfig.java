@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -28,21 +29,25 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * and http://docs.spring.io/spring-data/jpa/docs/1.7.0.RELEASE/reference/html/#jpa.java-config
  */
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages="edu.chalmers.dat076.moviefinder.persistence")
 @EnableTransactionManagement
 public class RepositoryConfig {
 
     @Bean
     public DataSource dataSource() {
-        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
-        return builder.setType(EmbeddedDatabaseType.HSQL).build();
+        DriverManagerDataSource ds = new DriverManagerDataSource();
+        ds.setDriverClassName("org.apache.derby.jdbc.EmbeddedDriver");
+        ds.setUrl("jdbc:derby:derbyDB;create=true");
+        ds.setUsername(null);
+        ds.setPassword(null);
+        return ds;
     }
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setDatabase(Database.HSQL);
+        vendorAdapter.setDatabase(Database.DERBY);
         vendorAdapter.setGenerateDdl(true);
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
