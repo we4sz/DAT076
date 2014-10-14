@@ -5,7 +5,8 @@
  */
 package edu.chalmers.dat076.moviefinder.utils;
 
-import edu.chalmers.dat076.moviefinder.utils.TitleParser.Episode;
+
+import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,36 +26,97 @@ public class titleParserTest {
     public void setUp() {
         instance = new TitleParser();
     }
-
-
-    @Test
-    public void testParseTitle(){
-        System.out.println("parseTitle");
-        String s = instance.parseTitle("[]hej");
-        assertEquals("hej", s);
-        s = instance.parseTitle("[abcd()-/123]hej!");
-        assertEquals("hej!", s);
-        s = instance.parseTitle("Min.Speciella.Film.2007.1080p.mkv");
-        assertEquals("Min Speciella Film 2007", s);
-        s = instance.parseTitle("[av mig]Min Speciella Film 2006 720p.mkv");
-        assertEquals("Min Speciella Film 2006", s);
-        s = instance.parseTitle("Min.Speciella.Film.2005.mkv");
-        assertEquals("Min Speciella Film 2005", s);
-        s = instance.parseTitle("[av mig]Min.Speciella.Film-2004_[1080p].mkv");
-        assertEquals("Min Speciella Film 2004", s);
-        s = instance.parseTitle("Min.Speciella.Film.2003.(slutligen)1080p[aaa].mkv");
-        assertEquals("Min Speciella Film 2003", s);
-    }
-    
     
     @Test
-    public void testRemoveFormating(){
-        System.out.println("removeFormating");
-        StringBuilder sb = new StringBuilder("-min.egna-speciella_film!-_. Perfect.");
-        instance.removeFormating(sb);
-        assertEquals(" min egna speciella film!    Perfect ", sb.toString());
+    public void testParseMedia(){
+        System.out.println("parseMedia");
+        
+        // Movie Tests
+        TemporaryMedia t = instance.parseMedia("[]hej");
+        assertEquals("hej", t.getName());
+        assertTrue(t.IsMovie());
+        t = instance.parseMedia("[abcd()-/123]hej!");
+        assertEquals("hej!", t.getName());
+        assertTrue(t.IsMovie());
+        t = instance.parseMedia("Min.Speciella.Film.2007.1080p.mkv");
+        assertEquals("Min Speciella Film 2007", t.getName());
+        assertTrue(t.IsMovie());
+        t = instance.parseMedia("[av mig]Min Speciella Film 2006 720p.mkv");
+        assertEquals("Min Speciella Film 2006", t.getName());
+        assertTrue(t.IsMovie());
+        t = instance.parseMedia("Min.Speciella.Film.2005.mkv");
+        assertEquals("Min Speciella Film 2005", t.getName());
+        assertTrue(t.IsMovie());
+        t = instance.parseMedia("[av mig]Min.Speciella.Film-2004_[1080p].mkv");
+        assertEquals("Min Speciella Film 2004", t.getName());
+        assertTrue(t.IsMovie());
+        t = instance.parseMedia("Min.Speciella.Film-2003_(slutligen)1080p[aaa].mkv");
+        assertEquals("Min Speciella Film 2003", t.getName());
+        assertTrue(t.IsMovie());
+        
+        // Series tests
+        t = instance.parseMedia("min serie! Season1Episode2");
+        assertEquals("min serie!", t.getName());
+        assertTrue( !t.IsMovie());
+        assertEquals( 1, t.getSeason());
+        assertEquals( 2, t.getEpisode());
+        t = instance.parseMedia("[blaaa]_min.serie!_Season13 Episode24");
+        assertEquals("min serie!", t.getName());
+        assertTrue( !t.IsMovie());
+        assertEquals( 13, t.getSeason());
+        assertEquals( 24, t.getEpisode());
+        t = instance.parseMedia("min serie! Season 05 Episode 06");
+        assertEquals("min serie!", t.getName());
+        assertTrue( !t.IsMovie());
+        assertEquals( 5, t.getSeason());
+        assertEquals( 6, t.getEpisode());
+        t = instance.parseMedia("min serie! Season1Episode2");
+        assertEquals("min serie!", t.getName());
+        assertTrue( !t.IsMovie());
+        assertEquals( 1, t.getSeason());
+        assertEquals( 2, t.getEpisode());
+        
+        t = instance.parseMedia("min serie! S1E2");
+        assertEquals("min serie!", t.getName());
+        assertTrue( !t.IsMovie());
+        assertEquals( 1, t.getSeason());
+        assertEquals( 2, t.getEpisode());
+        t = instance.parseMedia("min serie! S01E02.mp4");
+        assertEquals("min serie!", t.getName());
+        assertTrue( !t.IsMovie());
+        assertEquals( 1, t.getSeason());
+        assertEquals( 2, t.getEpisode());
+        t = instance.parseMedia("min.serie![2012]-S11E12.1080p.mkv");
+        assertEquals("min serie!", t.getName());
+        assertTrue( !t.IsMovie());
+        assertEquals( 11, t.getSeason());
+        assertEquals( 12, t.getEpisode());
+        
+        t = instance.parseMedia("min.serie![2012]-1x2.1080p.mkv");
+        assertEquals("min serie!", t.getName());
+        assertTrue( !t.IsMovie());
+        assertEquals( 1, t.getSeason());
+        assertEquals( 2, t.getEpisode());
+        t = instance.parseMedia("min.serie![2012]-01x02.1080p.mkv");
+        assertEquals("min serie!", t.getName());
+        assertTrue( !t.IsMovie());
+        assertEquals( 1, t.getSeason());
+        assertEquals( 2, t.getEpisode());
+        t = instance.parseMedia("min.serie!(2012)-11x23.1080p.mkv");
+        assertEquals("min serie!", t.getName());
+        assertTrue( !t.IsMovie());
+        assertEquals( 11, t.getSeason());
+        assertEquals( 23, t.getEpisode());
+        
+        t = instance.parseMedia("min.serie![2012]-11x23.2012-1080p.mkv");
+        assertEquals("min serie!  2012", t.getName());
+        assertTrue( !t.IsMovie());
+        assertEquals( 11, t.getSeason());
+        assertEquals( 23, t.getEpisode());
+        
+        
     }
-    
+
     
     @Test
     public void testRemoveUntil(){
@@ -155,52 +217,49 @@ public class titleParserTest {
     public void testGetEpisodeInfo(){
         System.out.println("getEpisodeInfo");
         StringBuilder sb = new StringBuilder("Season1Episode2");
-        Episode e = instance.getEpisodeInfo(sb);
-        assertTrue(e.getSeason()==1 && e.getEpisode()==2);
-        assertEquals("1 2", e.getSeason() + " " + e.getEpisode());
+        TemporaryMedia t = instance.getEpisodeInfo(sb);
+        assertTrue(t.getSeason()==1 && t.getEpisode()==2);
+        assertEquals("1 2", t.getSeason() + " " + t.getEpisode());
         
         sb = new StringBuilder("Season01Episode02");
-        e = instance.getEpisodeInfo(sb);
-        assertTrue(e.getSeason()==1 && e.getEpisode()==2);
+        t = instance.getEpisodeInfo(sb);
+        assertTrue(t.getSeason()==1 && t.getEpisode()==2);
         sb = new StringBuilder("Season11Episode22");
-        e = instance.getEpisodeInfo(sb);
-        assertTrue(e.getSeason()==11 && e.getEpisode()==22);
+        t = instance.getEpisodeInfo(sb);
+        assertTrue(t.getSeason()==11 && t.getEpisode()==22);
         sb = new StringBuilder("Season3 Episode04");
-        e = instance.getEpisodeInfo(sb);
-        assertTrue(e.getSeason()==3 && e.getEpisode()==4);
+        t = instance.getEpisodeInfo(sb);
+        assertTrue(t.getSeason()==3 && t.getEpisode()==4);
         sb = new StringBuilder("Season13 Episode24");
-        e = instance.getEpisodeInfo(sb);
-        assertTrue(e.getSeason()==13 && e.getEpisode()==24);
+        t = instance.getEpisodeInfo(sb);
+        assertTrue(t.getSeason()==13 && t.getEpisode()==24);
         sb = new StringBuilder("Season 05 Episode 06");
-        e = instance.getEpisodeInfo(sb);
-        assertTrue(e.getSeason()==5 && e.getEpisode()==6);
+        t = instance.getEpisodeInfo(sb);
+        assertTrue(t.getSeason()==5 && t.getEpisode()==6);
         
         sb = new StringBuilder("S1E2");
-        e = instance.getEpisodeInfo(sb);
-        assertEquals("1 2", e.getSeason() + " " + e.getEpisode());
-        assertTrue(e.getSeason()==1 && e.getEpisode()==2);
+        t = instance.getEpisodeInfo(sb);
+        assertEquals("1 2", t.getSeason() + " " + t.getEpisode());
+        assertTrue(t.getSeason()==1 && t.getEpisode()==2);
         sb = new StringBuilder("s01e02");
-        e = instance.getEpisodeInfo(sb);
-        assertEquals("1 2", e.getSeason() + " " + e.getEpisode());
+        t = instance.getEpisodeInfo(sb);
+        assertEquals("1 2", t.getSeason() + " " + t.getEpisode());
         sb = new StringBuilder("s11e22");
-        e = instance.getEpisodeInfo(sb);
-        assertEquals("11 22", e.getSeason() + " " + e.getEpisode());
+        t = instance.getEpisodeInfo(sb);
+        assertEquals("11 22", t.getSeason() + " " + t.getEpisode());
         
         sb = new StringBuilder("1x2");
-        e = instance.getEpisodeInfo(sb);
-        assertEquals("1 2", e.getSeason() + " " + e.getEpisode());
+        t = instance.getEpisodeInfo(sb);
+        assertEquals("1 2", t.getSeason() + " " + t.getEpisode());
         sb = new StringBuilder("1x02");
-        e = instance.getEpisodeInfo(sb);
-        assertEquals("1 2", e.getSeason() + " " + e.getEpisode());
+        t = instance.getEpisodeInfo(sb);
+        assertEquals("1 2", t.getSeason() + " " + t.getEpisode());
         sb = new StringBuilder("01x02");
-        e = instance.getEpisodeInfo(sb);
-        assertEquals("1 2", e.getSeason() + " " + e.getEpisode());
+        t = instance.getEpisodeInfo(sb);
+        assertEquals("1 2", t.getSeason() + " " + t.getEpisode());
         sb = new StringBuilder("11x22");
-        e = instance.getEpisodeInfo(sb);
-        assertEquals("11 22", e.getSeason() + " " + e.getEpisode());
-        
-        
-        
+        t = instance.getEpisodeInfo(sb);
+        assertEquals("11 22", t.getSeason() + " " + t.getEpisode());
     }
     
 }

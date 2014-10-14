@@ -7,13 +7,12 @@
 package edu.chalmers.dat076.moviefinder.model;
 
 /**
+ * Class for temporarily saving movie and or series information.
  *
  * @author Carl Jansson
  */
 public class TemporaryMedia {
     
-    
-    //private int year;
     private String name;
     // If it isnt a movie it must be a series
     private boolean isMovie;
@@ -23,6 +22,7 @@ public class TemporaryMedia {
     
     
     public TemporaryMedia(){
+        this.isMovie = true;
     }
     
     public void setName(String name){
@@ -41,6 +41,10 @@ public class TemporaryMedia {
     public String getName(){
         return this.name;
     }
+    /**
+     * If it is not a movie it must be an episode!
+     * @return true if it is a movie
+     */
     public boolean IsMovie(){
         return this.isMovie;
     }

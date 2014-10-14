@@ -5,6 +5,8 @@
  */
 package edu.chalmers.dat076.moviefinder.utils;
 
+import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
+
 
 /**
  * A class for parsing movie and series file names and deriving useful
@@ -21,38 +23,41 @@ public class TitleParser {
     public TitleParser() {
         sb = new StringBuilder();
     }
-
+    
     /**
-     * Parses a String and tries to derive a comprehensive movie or series title
-     * from it.
+     * Parses a String and tries to derive comprehensive movie or series
+     * information from it.
      *
      * @param fileName The file name to be parsed
-     * @return a hopefully better String
+     * @return TemporaryMedia with hopefully useful information
      */
-    public String parseTitle(String fileName) {
+    public TemporaryMedia parseMedia(String fileName){
         if (fileName.isEmpty()) {
             throw new IllegalArgumentException();
         }
-
+        if (sb == null) {
+            sb = new StringBuilder();
+        }
+        
         sb.setLength(0);
         sb.append(fileName);
 
         if (sb.charAt(0) == '[') {
             removeUntil(sb, 0, ']');
         }
-
-        removeFormating(sb);
-
-        return sb.toString().trim();
+        
+        return getInformation(sb);
     }
-
+    
     /**
      * This method kind of controls everything...
      *
      * @param mySb
+     * @return 
      */
-    public void removeFormating(StringBuilder mySb) {
+    private TemporaryMedia getInformation(StringBuilder mySb) {
 
+        TemporaryMedia myMedia= new TemporaryMedia();
         StringBuilder wordSb = new StringBuilder();
 
         boolean finalWord = true;
@@ -64,11 +69,21 @@ public class TitleParser {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
                     finalWord = false;
                     break;
+                } else if ( mySb.charAt(i+1) == 'S' || mySb.charAt(i+1) == 's' || Character.isDigit(mySb.charAt(i+1))){
+                    
+                    StringBuilder whatsLeft = new StringBuilder(mySb.subSequence(i+1, mySb.length()));
+                        if ( getEpisodePotential(whatsLeft) ){
+                            TemporaryMedia tmpMedia = getEpisodeInfo(whatsLeft);
+                            myMedia.setIsMovie(false);
+                            myMedia.setSeason(tmpMedia.getSeason());
+                            myMedia.setEpisode(tmpMedia.getEpisode());
+                            mySb.delete(i+1, mySb.length()-whatsLeft.length());
+                        }
                 }
                 mySb.replace(i, i + 1, " ");
                 wordSb.setLength(0);
 
-            } else if (mySb.charAt(i) == '[') {
+            } else if (mySb.charAt(i) == '[' || mySb.charAt(i) == '(') {
 
                 if (Constants.finalWords.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
@@ -77,10 +92,16 @@ public class TitleParser {
                 }
                 wordSb.setLength(0);
 
-                //TODO Check if bracket contains something worth saving!!! 
-                removeUntil(mySb, i, ']');
-                i--; // Need to compensate for removing the bracket.
-            } else if (mySb.charAt(i) == '(') {
+                if (mySb.charAt(i) == '[') {
+                    removeUntil(mySb, i, ']');
+                } else if ( mySb.charAt(i) == '(' ) {
+                    removeUntil(mySb, i, ')');
+                }
+                if ( i > 0){
+                    i--; // Need to compensate for removing the bracket.
+                }
+                
+            /*} else if (mySb.charAt(i) == '(') {
 
                 if (Constants.finalWords.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
@@ -89,9 +110,9 @@ public class TitleParser {
                 }
                 wordSb.setLength(0);
 
-                //TODO Check if bracket contains something worth saving!!! 
+                //TODO Check if bracket contains something worth saving? 
                 removeUntil(mySb, i, ')');
-                i--; // Need to compensate for removing the bracket.
+                i--; // Need to compensate for removing the bracket.*/
             } else {
                 wordSb.append(mySb.charAt(i));
             }
@@ -99,6 +120,9 @@ public class TitleParser {
         if (finalWord && Constants.finalWords.contains(wordSb.toString())) {
             mySb.delete(mySb.length() - wordSb.length(), mySb.length());
         }
+        myMedia.setName(mySb.toString().trim());
+        
+        return myMedia;
     }
 
     /**
@@ -158,9 +182,9 @@ public class TitleParser {
      * season number and second number is episode.
      *
      * @param mySb
-     * @return
+     * @return TemporaryMedia containing season and episode
      */
-    public Episode getEpisodeInfo(StringBuilder mySb) {
+    public TemporaryMedia getEpisodeInfo(StringBuilder mySb) {
         int season = getNextNumber(mySb);
         int episode = getNextNumber(mySb);
         if (season < 0 || episode < 0) {
@@ -168,7 +192,10 @@ public class TitleParser {
             episode = -1;
             // Or throw some exception
         }
-        return new Episode(season, episode);
+        TemporaryMedia tmp = new TemporaryMedia();
+        tmp.setSeason(season);
+        tmp.setEpisode(episode);
+        return tmp;
     }
 
     /**
@@ -202,17 +229,5 @@ public class TitleParser {
             mySb.setLength(0);
         }
         return value;
-    }
-
-    
-    public class Episode{
-        private final int season;
-        private final int episode;
-        public Episode(int s, int e){
-            this.season=s;
-            this.episode=e;
-        }
-        public int getSeason(){ return season; }
-        public int getEpisode(){ return episode; }
     }
 }
