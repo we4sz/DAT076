@@ -29,7 +29,6 @@ public class titleParserTest {
     
     @Test
     public void testParseMedia(){
-        System.out.println("parseMedia");
         
         // Movie Tests
         TemporaryMedia t = instance.parseMedia("[]hej");
@@ -107,20 +106,17 @@ public class titleParserTest {
         assertTrue( !t.IsMovie());
         assertEquals( 11, t.getSeason());
         assertEquals( 23, t.getEpisode());
-        
         t = instance.parseMedia("min.serie![2012]-11x23.2012-1080p.mkv");
         assertEquals("min serie!  2012", t.getName());
         assertTrue( !t.IsMovie());
         assertEquals( 11, t.getSeason());
         assertEquals( 23, t.getEpisode());
-        
-        
     }
 
     
     @Test
     public void testRemoveUntil(){
-        System.out.println("removeUntil");
+        
         StringBuilder sb = new StringBuilder("[]hej");
         //assertTrue(sb.charAt(0) == '[');
         instance.removeUntil(sb, 0, ']');
@@ -137,7 +133,7 @@ public class titleParserTest {
     
     @Test
     public void testReturnNextNumber(){
-        System.out.println("returnNextNumber");
+        
         StringBuilder sb = new StringBuilder("1asd");
         int e = instance.getNextNumber(sb);
         assertTrue(e==1);
@@ -179,7 +175,7 @@ public class titleParserTest {
     
     @Test
     public void testGetEpisodePotential(){
-        System.out.println("getEpisodePotential");
+        
         StringBuilder sb = new StringBuilder("Season1Episode2");
         assertTrue(instance.getEpisodePotential(sb));
         
@@ -209,13 +205,12 @@ public class titleParserTest {
         assertTrue(instance.getEpisodePotential(sb));
         sb = new StringBuilder("11x22");
         assertTrue(instance.getEpisodePotential(sb));
-        
     }
     
     
     @Test
     public void testGetEpisodeInfo(){
-        System.out.println("getEpisodeInfo");
+        
         StringBuilder sb = new StringBuilder("Season1Episode2");
         TemporaryMedia t = instance.getEpisodeInfo(sb);
         assertTrue(t.getSeason()==1 && t.getEpisode()==2);
