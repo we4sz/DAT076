@@ -24,6 +24,8 @@
 
         <!-- App styles -->
         <link href="public/css/main.css" rel="stylesheet">
+        <!-- Loading animation -->
+        <link href="public/css/loading.css" rel="stylesheet">
 
     </head>
     <body class="no-js">
