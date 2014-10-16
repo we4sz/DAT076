@@ -32,7 +32,10 @@ var BUILD_FONT_PATH = path.join(BUILD_BASE_PATH, '/fonts');
 
 // Paths to input files/folders
 var PATHS = {
-    scripts: ['src/**/*.js'],
+    scripts: [
+        'src/**/*.js', 
+        '!src/util/dev-version-reminder.js'
+    ],
     external_scripts: [
         path.join(BOWER_PATH, 'jquery/dist/jquery.min.js'),
         path.join(BOWER_PATH, 'bootstrap/dist/js/bootstrap.min.js'),
@@ -46,6 +49,7 @@ var PATHS = {
         'css/**/*.css'
     ],
     external_styles: [
+        path.join(BOWER_PATH, 'angular/angular-csp.css'),
         path.join(BOWER_PATH, 'bootstrap/dist/css/bootstrap.css'),
         path.join(BOWER_PATH, 'angular-motion/dist/angular-motion.min.css')
     ],

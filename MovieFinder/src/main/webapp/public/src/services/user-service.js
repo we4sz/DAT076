@@ -7,8 +7,7 @@
     'use strict';
 
     angular.module('movieFinder.services')
-        .factory('user', function($http, $window, $rootScope, USER_ROLES, AUTH_EVENTS) {
-
+        .factory('user', function($http, $rootScope, USER_ROLES, AUTH_EVENTS) {
             var _loggedIn = false;
             var _role = null;
             var _username = null;
@@ -31,9 +30,13 @@
                 $rootScope.$broadcast(AUTH_EVENTS.logoutSuccessful);
             };
 
-            if($window.session_user){
-                _setUserData($window.session_user);
-                $window.session_user = null;
+            var injectedUser = {
+                username: angular.element(document.querySelector('meta[name="_user_username"]')).attr('content'),
+                role: angular.element(document.querySelector('meta[name="_user_role"]')).attr('content')
+            };
+
+            if(injectedUser.username && injectedUser.role){
+                _setUserData(injectedUser);
             } else {
                 _clearUserData();
             }
