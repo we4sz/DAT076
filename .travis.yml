@@ -2,7 +2,7 @@ language: java
 jdk:
   - oraclejdk7
 
-script: cd MovieFinder && mvn install -DskipTests=true && mvn test
+script: cd MovieFinder && mvn test
 
 branches:
     only:
