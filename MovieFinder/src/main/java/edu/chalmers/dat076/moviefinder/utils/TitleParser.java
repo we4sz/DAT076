@@ -7,7 +7,6 @@ package edu.chalmers.dat076.moviefinder.utils;
 
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
 import java.util.Calendar;
-import sun.util.calendar.BaseCalendar.Date;
 
 
 /**
@@ -44,10 +43,6 @@ public class TitleParser {
         sb.setLength(0);
         sb.append(fileName);
 
-        if (sb.charAt(0) == '[') {
-            removeUntil(sb, 0, ']');
-        }
-        
         return getInformation(sb);
     }
     
@@ -63,13 +58,14 @@ public class TitleParser {
         StringBuilder wordSb = new StringBuilder();
 
         int tmpYear;
-        int year = 0;
+        int year = -1;
+        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
         
         boolean deleteYear = false;
         boolean finalWord = true;
 
         for (int i = 0; i < mySb.length(); i++) {
-            if (mySb.charAt(i) == '.' || mySb.charAt(i) == '-' || mySb.charAt(i) == '_' || mySb.charAt(i) == ' ') {
+            if (mySb.charAt(i) == '.' || mySb.charAt(i) == ' ' || mySb.charAt(i) == '-' || mySb.charAt(i) == '_') {
 
                 if (Constants.finalWords.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
@@ -79,7 +75,7 @@ public class TitleParser {
                 mySb.replace(i, i + 1, " ");
                 
                 tmpYear = checkForYear(wordSb);
-                if (tmpYear > 1900 && tmpYear < Calendar.getInstance().get(Calendar.YEAR)) {
+                if (tmpYear > 1900 && tmpYear < thisYear) {
                     year = tmpYear;
                     deleteYear = true;
                 }
@@ -93,11 +89,10 @@ public class TitleParser {
                     returnMedia.setIsMovie(false);
                     returnMedia.setSeason(tmpMedia.getSeason());
                     returnMedia.setEpisode(tmpMedia.getEpisode());
-                    //mySb.replace(i, mySb.length() - whatsLeft.length(), " ");
                     mySb.delete(i, mySb.length() - whatsLeft.length());
-                    if (i > 0) {
-                        i--; // Need to compensate for deleting.
-                    }
+                    //if (i > 0){ if it becomes -1 it will become 0 next loop
+                    i--; // Need to compensate for deleting.
+                    
                 } else {
                     wordSb.append(mySb.charAt(i));
                 }
@@ -109,7 +104,7 @@ public class TitleParser {
                     break;
                 }
                 tmpYear = checkForYear(wordSb);
-                if (tmpYear > 1900 && tmpYear < Calendar.getInstance().get(Calendar.YEAR)) {
+                if (tmpYear > 1900 && tmpYear < thisYear) {
                     year = tmpYear;
                     deleteYear = true;
                 }
@@ -120,23 +115,22 @@ public class TitleParser {
                 } else if (mySb.charAt(i) == '(') {
                     tmpYear = removeUntil(mySb, i, ')');
                 }
-                if (tmpYear > 1900 && tmpYear < Calendar.getInstance().get(Calendar.YEAR)) {
+                if (tmpYear > 1900 && tmpYear < thisYear) {
                     year = tmpYear;
                     deleteYear = false;
                 }
-                if (i > 0) {
-                    i--; // Need to compensate for removing the bracket.
-                }
-
+                i--; // Need to compensate for removing bracket.
+                
             } else {
                 wordSb.append(mySb.charAt(i));
             }
         }
+        
         if (finalWord && Constants.finalWords.contains(wordSb.toString())) {
             mySb.delete(mySb.length() - wordSb.length(), mySb.length());
         } else {
             tmpYear = checkForYear(wordSb);
-            if (tmpYear > 1900 && tmpYear < Calendar.getInstance().get(Calendar.YEAR)) {
+            if (tmpYear > 1900 && tmpYear < thisYear) {
                 year = tmpYear;
                 deleteYear = true;
             }
