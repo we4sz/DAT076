@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,15 @@ public class MovieRepositoryIntegrationTest extends AbstractIntegrationTest {
     public void createMovie() {
         Movie movie = new Movie("MovieTest2", "movieTest2.avi");
         repository.save(movie);
+    }
+
+    @Test(expected = DataIntegrityViolationException.class)
+    public void createMultipleMoviesWithSameFilePath() {
+        // File path is unique, this should not be possible.
+        Movie m1 = new Movie("MovieTest2", "movieTest2.avi");
+        Movie m2 = new Movie("MovieTest3", "movieTest2.avi");
+        repository.save(m1);
+        repository.save(m2);
     }
     
     @Test
