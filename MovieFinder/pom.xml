@@ -298,6 +298,7 @@
                             <goal>exec</goal>
                         </goals>
                         <configuration>
+                            <skip>${skipClientBuild}</skip>
                             <executable>npm</executable>
                             <workingDirectory>src/main/webapp/public</workingDirectory>
                             <arguments>
