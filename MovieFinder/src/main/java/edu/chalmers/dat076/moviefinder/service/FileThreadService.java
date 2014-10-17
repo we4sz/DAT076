@@ -17,7 +17,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PreDestroy;
 import org.springframework.dao.DataIntegrityViolationException;
 
 /**
@@ -38,17 +40,22 @@ public class FileThreadService implements FileSystemListener{
     private LinkedList<WatchThread> threads;
 
     @PostConstruct
-    public void init() throws IOException {
+    public void init() {
         checkFolders = new LinkedList<>();
         checkFolders.add(new File("C:/film"));
         threads = new LinkedList<>();
         for(File f : checkFolders){  
-            threads.add(new WatchThread(f));
-            threads.getLast().setListener(this);
-            threads.getLast().start();
+            try {
+                threads.add(new WatchThread(f));
+                threads.getLast().setListener(this);
+                threads.getLast().start();
+            } catch (IOException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
         }
     }
     
+    @PreDestroy
     public void destory(){
         for(WatchThread t : threads){
             t.interrupt();

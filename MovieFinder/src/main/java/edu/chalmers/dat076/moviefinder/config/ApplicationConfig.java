@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
 @Import({RepositoryConfig.class, WebConfig.class})
 public class ApplicationConfig {
 
-    @Bean(name = "FileThreadService", destroyMethod = "destory")
+    @Bean
     public FileThreadService fileThreadService() {
         return new FileThreadService();
     }
