@@ -2,9 +2,11 @@ package edu.chalmers.dat076.moviefinder.config;
 
 import edu.chalmers.dat076.moviefinder.service.FileThreadService;
 import edu.chalmers.dat076.moviefinder.utils.TitleParser;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.io.ClassPathResource;
 
 /**
  * Created by Peter on 2014-10-17.
@@ -12,6 +14,14 @@ import org.springframework.context.annotation.Import;
 @Configuration
 @Import({RepositoryConfig.class, WebConfig.class})
 public class ApplicationConfig {
+
+    @Bean
+    PropertyPlaceholderConfigurer getPropertyPlaceholderConfigurer() {
+        PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
+        ppc.setLocation(new ClassPathResource("application.properties"));
+        ppc.setIgnoreUnresolvablePlaceholders(true);
+        return ppc;
+    }
 
     @Bean
     public FileThreadService fileThreadService() {
@@ -22,5 +32,4 @@ public class ApplicationConfig {
     public TitleParser titleParser() {
         return new TitleParser();
     }
-
 }
