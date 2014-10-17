@@ -6,6 +6,7 @@
 package edu.chalmers.dat076.moviefinder.utils;
 
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
+import java.util.Calendar;
 
 
 /**
@@ -42,10 +43,6 @@ public class TitleParser {
         sb.setLength(0);
         sb.append(fileName);
 
-        if (sb.charAt(0) == '[') {
-            removeUntil(sb, 0, ']');
-        }
-        
         return getInformation(sb);
     }
     
@@ -53,36 +50,52 @@ public class TitleParser {
      * This method kind of controls everything...
      *
      * @param mySb
-     * @return 
+     * @return TemporaryMedia with everything
      */
     private TemporaryMedia getInformation(StringBuilder mySb) {
 
-        TemporaryMedia myMedia= new TemporaryMedia();
+        TemporaryMedia returnMedia= new TemporaryMedia();
         StringBuilder wordSb = new StringBuilder();
 
+        int tmpYear;
+        int year = -1;
+        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+        
+        boolean deleteYear = false;
         boolean finalWord = true;
 
         for (int i = 0; i < mySb.length(); i++) {
-            if (mySb.charAt(i) == '.' || mySb.charAt(i) == '-' || mySb.charAt(i) == '_' || mySb.charAt(i) == ' ') {
+            if (mySb.charAt(i) == '.' || mySb.charAt(i) == ' ' || mySb.charAt(i) == '-' || mySb.charAt(i) == '_') {
 
                 if (Constants.finalWords.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
                     finalWord = false;
                     break;
-                } else if ( mySb.charAt(i+1) == 'S' || mySb.charAt(i+1) == 's' || Character.isDigit(mySb.charAt(i+1))){
-                    
-                    StringBuilder whatsLeft = new StringBuilder(mySb.subSequence(i+1, mySb.length()));
-                        if ( getEpisodePotential(whatsLeft) ){
-                            TemporaryMedia tmpMedia = getEpisodeInfo(whatsLeft);
-                            myMedia.setIsMovie(false);
-                            myMedia.setSeason(tmpMedia.getSeason());
-                            myMedia.setEpisode(tmpMedia.getEpisode());
-                            mySb.delete(i+1, mySb.length()-whatsLeft.length());
-                        }
                 }
                 mySb.replace(i, i + 1, " ");
+                
+                tmpYear = checkForYear(wordSb);
+                if (tmpYear > 1900 && tmpYear < thisYear) {
+                    year = tmpYear;
+                    deleteYear = true;
+                }
                 wordSb.setLength(0);
 
+            } else if ( wordSb.length()==0 && (mySb.charAt(i) == 'S' || mySb.charAt(i) == 's' || Character.isDigit(mySb.charAt(i)))) {
+
+                StringBuilder whatsLeft = new StringBuilder(mySb.subSequence(i, mySb.length()));
+                if (getEpisodePotential(whatsLeft)) {
+                    TemporaryMedia tmpMedia = getEpisodeInfo(whatsLeft);
+                    returnMedia.setIsMovie(false);
+                    returnMedia.setSeason(tmpMedia.getSeason());
+                    returnMedia.setEpisode(tmpMedia.getEpisode());
+                    mySb.delete(i, mySb.length() - whatsLeft.length());
+                    //if (i > 0){ if it becomes -1 it will become 0 next loop
+                    i--; // Need to compensate for deleting.
+                    
+                } else {
+                    wordSb.append(mySb.charAt(i));
+                }
             } else if (mySb.charAt(i) == '[' || mySb.charAt(i) == '(') {
 
                 if (Constants.finalWords.contains(wordSb.toString())) {
@@ -90,43 +103,89 @@ public class TitleParser {
                     finalWord = false;
                     break;
                 }
+                tmpYear = checkForYear(wordSb);
+                if (tmpYear > 1900 && tmpYear < thisYear) {
+                    year = tmpYear;
+                    deleteYear = true;
+                }
                 wordSb.setLength(0);
 
                 if (mySb.charAt(i) == '[') {
-                    removeUntil(mySb, i, ']');
-                } else if ( mySb.charAt(i) == '(' ) {
-                    removeUntil(mySb, i, ')');
+                    tmpYear = removeUntil(mySb, i, ']');
+                } else if (mySb.charAt(i) == '(') {
+                    tmpYear = removeUntil(mySb, i, ')');
                 }
-                if ( i > 0){
-                    i--; // Need to compensate for removing the bracket.
+                if (tmpYear > 1900 && tmpYear < thisYear) {
+                    year = tmpYear;
+                    deleteYear = false;
                 }
+                i--; // Need to compensate for removing bracket.
                 
             } else {
                 wordSb.append(mySb.charAt(i));
             }
         }
+        
         if (finalWord && Constants.finalWords.contains(wordSb.toString())) {
             mySb.delete(mySb.length() - wordSb.length(), mySb.length());
+        } else {
+            tmpYear = checkForYear(wordSb);
+            if (tmpYear > 1900 && tmpYear < thisYear) {
+                year = tmpYear;
+                deleteYear = true;
+            }
         }
-        myMedia.setName(mySb.toString().trim());
+        if (deleteYear) {
+            int i = mySb.lastIndexOf( year + "" );
+            mySb.delete( i, i+4 ) ;
+        }
         
-        return myMedia;
+        returnMedia.setYear(year);
+        returnMedia.setName(mySb.toString().trim());
+        
+        return returnMedia;
+    }
+    
+    
+    public int checkForYear(CharSequence cs){
+        int year = 0;
+        if (cs.length() == 4){
+            
+            for (int i = 0; i < 4; i++) {
+                if (Character.isDigit(cs.charAt(i))) {
+                    year = year * 10;
+                    year = year + Character.getNumericValue(cs.charAt(i));
+                } else {
+                    return -1;
+                }
+            }
+        }
+        return year;
     }
 
     /**
-     * Removes everything starting from index n until the char c.
+     * Removes everything starting from index n until the char c. If interval
+     * contains a positive 4 digit number (and nothing else) it is returned,
+     * otherwise -1 is returned.
      *
      * @param mySb
      * @param n
      * @param c
+     * @return if interval contains a number it is returned
      */
-    public void removeUntil(StringBuilder mySb, int n, char c) {
+    public int removeUntil(StringBuilder mySb, int n, char c) {
+        int re = -1;
+
         for (int i = n; i <= mySb.length(); i++) {
             if (mySb.charAt(i) == c) {
+                if (i - n == 5) {
+                    re = checkForYear(mySb.subSequence(n + 1, i));
+                }
                 mySb.delete(n, i + 1);
                 break;
             }
         }
+        return re;
     }
 
     /**
