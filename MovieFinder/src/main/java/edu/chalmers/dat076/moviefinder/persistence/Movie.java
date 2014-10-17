@@ -23,25 +23,23 @@ public class Movie extends AbstractEntity {
 
     @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false, unique = true)
+    private String filePath;
     
     private Double imdbRating;
-    
-    @ElementCollection(fetch = FetchType.EAGER)
-    private Set<String> genres = new HashSet<>();
 
     protected Movie() {
     }
     
-    public Movie(String title) {
-        this(title, null, null);
+    public Movie(String title, String filePath) {
+        this(title, filePath, null);
     }
     
-    public Movie(String title, Double imdbRating, Set<String> genres) {
+    public Movie(String title, String filePath, Double imdbRating) {
         this.title = title;
+        this.filePath = filePath;
         this.imdbRating = imdbRating;
-        if(genres != null) {
-            this.genres = new HashSet<>(genres);
-        }
     }
 
     public String getTitle() {
@@ -52,7 +50,16 @@ public class Movie extends AbstractEntity {
         return imdbRating;
     }
 
-    public Set<String> getGenres() {
-        return Collections.unmodifiableSet(genres);
+    public String getFilePath() {
+        return filePath;
+    }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "title='" + title + '\'' +
+                ", filePath='" + filePath + '\'' +
+                ", imdbRating=" + imdbRating +
+                '}';
     }
 }

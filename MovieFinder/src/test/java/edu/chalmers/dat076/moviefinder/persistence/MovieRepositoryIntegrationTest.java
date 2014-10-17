@@ -29,7 +29,7 @@ public class MovieRepositoryIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void createMovie() {
-        Movie movie = new Movie("MovieTest2");
+        Movie movie = new Movie("MovieTest2", "movieTest2.avi");
         repository.save(movie);
     }
     
@@ -41,5 +41,11 @@ public class MovieRepositoryIntegrationTest extends AbstractIntegrationTest {
         
         assertThat(page.getContent(), hasSize(1));
         assertThat(page, Matchers.<Movie> hasItems(hasProperty("title", is("testMovie1"))));
+    }
+
+    @Test
+    public void findByFileName() {
+        Movie m = repository.findByFilePath("testMovie1.avi");
+        assertThat(m.getTitle(), is("testMovie1"));
     }
 }

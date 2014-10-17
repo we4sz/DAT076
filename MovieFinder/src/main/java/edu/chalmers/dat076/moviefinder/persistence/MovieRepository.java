@@ -19,5 +19,7 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface MovieRepository extends CrudRepository<Movie, Long> {
     public Page<Movie> findByTitleContaining(String name, Pageable pageable);
+
+    public Movie findByFilePath(String filePath);
     
 }
