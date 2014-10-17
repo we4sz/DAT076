@@ -17,7 +17,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("edu.chalmers.dat076.moviefinder.controller")
+@ComponentScan(basePackages = { "edu.chalmers.dat076.moviefinder.controller", "edu.chalmers.dat076.moviefinder.filter" })
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
@@ -46,15 +46,4 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         viewResolver.setSuffix(".jsp");
         return viewResolver;
     }
-
-    @Bean(name = "FileThreadService", initMethod = "init", destroyMethod = "destory")
-    public FileThreadService fileThreadService() {
-        return new FileThreadService();
-    }
-
-    @Bean
-    public TitleParser titleParser() {
-        return new TitleParser();
-    }
-
 }

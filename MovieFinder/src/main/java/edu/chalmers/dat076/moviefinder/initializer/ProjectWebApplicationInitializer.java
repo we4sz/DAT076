@@ -5,6 +5,8 @@
  */
 package edu.chalmers.dat076.moviefinder.initializer;
 
+import edu.chalmers.dat076.moviefinder.config.ApplicationConfig;
+import edu.chalmers.dat076.moviefinder.config.RepositoryConfig;
 import edu.chalmers.dat076.moviefinder.config.WebConfig;
 
 import javax.servlet.ServletContext;
@@ -25,7 +27,7 @@ public class ProjectWebApplicationInitializer implements WebApplicationInitializ
         // Create the 'root' Spring application context
         AnnotationConfigWebApplicationContext applicationContext
                 = new AnnotationConfigWebApplicationContext();
-        applicationContext.register(WebConfig.class);
+        applicationContext.register(ApplicationConfig.class);
 
         // Register and map the dispatcher servlet
         ServletRegistration.Dynamic dispatcher = container.addServlet("dispatcher", 
