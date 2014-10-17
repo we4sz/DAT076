@@ -7,66 +7,51 @@ package edu.chalmers.dat076.moviefinder.filter;
 
 import edu.chalmers.dat076.moviefinder.model.User;
 import edu.chalmers.dat076.moviefinder.model.UserRole;
-import java.io.IOException;
-import javax.servlet.Filter;
+import org.springframework.web.filter.OncePerRequestFilter;
+
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.springframework.context.annotation.Configuration;
+import java.io.IOException;
 
 /**
  *
  * @author John
  */
-@Configuration
 @WebFilter("/*")
-public class UserFilter implements Filter {
+public class UserFilter extends OncePerRequestFilter {
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-        HttpSession session = request.getSession(true);
-        String path = request.getRequestURI();
-
-        System.out.println(path);
+    protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws ServletException, IOException {
+        HttpSession session = req.getSession(true);
+        String path = req.getRequestURI().substring(req.getContextPath().length());
 
         Object o = session.getAttribute("user");
 
         if (o == null) {
-            if (path.toLowerCase().startsWith("/moviefinder/api/login/login")) {
-                chain.doFilter(req, response);
+            if (path.toLowerCase().startsWith("/api/login/login")) {
+                chain.doFilter(req, res);
                 return;
-            } else if (path.toLowerCase().startsWith("/moviefinder/api/")) {
-                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            } else if (path.toLowerCase().startsWith("/api/")) {
+                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             } else {
-                chain.doFilter(req, response);
+                chain.doFilter(req, res);
                 return;
             }
         }
 
         User u = (User) o;
         if (path.contains("/admin") && u.getRole() != UserRole.ADMIN) {
-            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
-        chain.doFilter(req, response);
+        chain.doFilter(req, res);
     }
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
-
-    @Override
-    public void destroy() {
-    }
 
 }
