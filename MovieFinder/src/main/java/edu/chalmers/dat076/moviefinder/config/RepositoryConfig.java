@@ -36,10 +36,10 @@ public class RepositoryConfig {
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName("org.apache.derby.jdbc.EmbeddedDriver");
-        ds.setUrl("jdbc:derby:derbyDB;create=true");
-        ds.setUsername(null);
-        ds.setPassword(null);
+        ds.setDriverClassName("org.apache.derby.jdbc.ClientDriver");
+        ds.setUrl("jdbc:derby://localhost:1527/MovieFinder;create=true");
+        ds.setUsername("app");
+        ds.setPassword("app");
         return ds;
     }
 
