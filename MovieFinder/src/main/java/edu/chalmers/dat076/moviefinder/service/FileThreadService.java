@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
+import org.springframework.dao.DataIntegrityViolationException;
 
 /**
  *
@@ -64,7 +65,12 @@ public class FileThreadService implements FileSystemListener{
 
         TemporaryMedia temporaryMedia = titleParser.parseMedia(path);
         Movie movie = new Movie(temporaryMedia.getName(), path);
-        movieRepository.save(movie);
+        
+        try {
+            movieRepository.save(movie);
+        } catch (DataIntegrityViolationException e) {
+            // A Movie at this path already exist.
+        }
     }
 
     @Override
@@ -73,7 +79,11 @@ public class FileThreadService implements FileSystemListener{
 
         TemporaryMedia temporaryMedia = titleParser.parseMedia(path);
         Movie movie = new Movie(temporaryMedia.getName(), path);
-        movieRepository.save(movie);
+        try {
+            movieRepository.save(movie);
+        } catch (DataIntegrityViolationException e) {
+            // A Movie at this path already exist.
+        }
     }
 
     @Override
