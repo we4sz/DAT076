@@ -5,8 +5,6 @@
  */
 package edu.chalmers.dat076.moviefinder.config;
 
-import edu.chalmers.dat076.moviefinder.service.FileThreadService;
-import edu.chalmers.dat076.moviefinder.utils.TitleParser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

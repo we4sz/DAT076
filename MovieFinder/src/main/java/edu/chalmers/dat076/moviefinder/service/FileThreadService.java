@@ -9,7 +9,6 @@ import edu.chalmers.dat076.moviefinder.listener.FileSystemListener;
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
 import edu.chalmers.dat076.moviefinder.persistence.Movie;
 import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
-import edu.chalmers.dat076.moviefinder.utils.TitleParser;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -21,11 +20,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PreDestroy;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author John
  */
+@Service
 public class FileThreadService implements FileSystemListener{
 
     private final static Logger LOGGER = Logger.getLogger(FileThreadService.class.getName());

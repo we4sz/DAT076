@@ -3,9 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.chalmers.dat076.moviefinder.utils;
+package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
+import edu.chalmers.dat076.moviefinder.utils.Constants;
+import org.springframework.stereotype.Service;
+
 import java.util.Calendar;
 
 
@@ -15,6 +18,7 @@ import java.util.Calendar;
  *
  * @author Carl Jansson
  */
+@Service
 public class TitleParser {
 
     private StringBuilder sb;
