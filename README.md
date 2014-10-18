@@ -18,7 +18,12 @@ The build process requires a few tools to be already installed on the local mach
 git clone https://github.com/we4sz/DAT076.git
 ```
 
-### Step 2 - Package the application using maven
+### Step 2 - Set your database settings
+The application requries a database to run. As to allow for different database setups the database settings are stored in a gitignored settings file.
+
+Depending on what database setup you would like, choose one of the application.*.properites files in the `MovieFinder/src/main/resources/` directory and rename it to application.properties.
+
+### Step 3 - Package the application using maven
 
 ```
 cd MovieFinder

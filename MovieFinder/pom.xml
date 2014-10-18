@@ -84,7 +84,7 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
-            <version>4.1.9.Final</version>
+            <version>4.3.6.Final</version>
             <scope>runtime</scope>
         </dependency>
 		
@@ -104,6 +104,14 @@
         </dependency>
 
         <!-- Derby -->
+        <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derbyclient</artifactId>
+            <version>10.11.1.1</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Derby embedded -->
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>

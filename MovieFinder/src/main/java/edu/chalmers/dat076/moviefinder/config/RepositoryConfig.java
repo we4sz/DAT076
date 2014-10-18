@@ -5,21 +5,20 @@
  */
 package edu.chalmers.dat076.moviefinder.config;
 
-import javax.sql.DataSource;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  *
@@ -33,15 +32,44 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class RepositoryConfig {
 
+    @Value("${jdbc.driverClassName}")
+    private String jdbcDriverClassName;
+
+    @Value("${jdbc.url}")
+    private String jdbcUrl;
+
+    @Value("${jdbc.username}")
+    private String jdbcUsername;
+
+    @Value("${jdbc.password}")
+    private String jdbcPassword;
+
+    @Value("${hibernate.dialect}")
+    private String hibernateDialect;
+
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String hibernateHbm2ddlAuto;
+
+    @Value("${hibernate.show_sql}")
+    private String hibernateShowSql;
+
+    @Value("${hibernate.format_sql}")
+    private String hibernateFormatSql;
+
+    @Value("${hibernate.use_sql_comments}")
+    private String hibernateUseSqlComments;
+
+
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName("org.apache.derby.jdbc.EmbeddedDriver");
-        ds.setUrl("jdbc:derby:derbyDB;create=true");
-        ds.setUsername(null);
-        ds.setPassword(null);
+        ds.setDriverClassName(jdbcDriverClassName);
+        ds.setUrl(jdbcUrl);
+        ds.setUsername(jdbcUsername);
+        ds.setPassword(jdbcPassword);
         return ds;
     }
+
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
@@ -50,10 +78,20 @@ public class RepositoryConfig {
         vendorAdapter.setDatabase(Database.DERBY);
         vendorAdapter.setGenerateDdl(true);
 
+
+        Properties jpaProperties = new Properties();
+        jpaProperties.setProperty("hibernate.dialect", hibernateDialect);
+        jpaProperties.setProperty("hibernate.hbm2ddl.auto", hibernateHbm2ddlAuto);
+        jpaProperties.setProperty("hibernate.show_sql", hibernateShowSql);
+        jpaProperties.setProperty("hibernate.format_sql", hibernateFormatSql);
+        jpaProperties.setProperty("hibernate.use_sql_comments", hibernateUseSqlComments);
+
+
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan("edu.chalmers.dat076.moviefinder");
+        factory.setPackagesToScan("edu.chalmers.dat076.moviefinder.persistence");
         factory.setDataSource(dataSource());
+        factory.setJpaProperties(jpaProperties);
 
         return factory;
     }

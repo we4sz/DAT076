@@ -61,5 +61,16 @@ public class TemporaryMedia {
     public int getYear(){
         return year;
     }
-    
+
+
+    @Override
+    public String toString() {
+        return "TemporaryMedia{" +
+                "name='" + name + '\'' +
+                ", isMovie=" + isMovie +
+                ", year=" + year +
+                ", season=" + season +
+                ", episode=" + episode +
+                '}';
+    }
 }

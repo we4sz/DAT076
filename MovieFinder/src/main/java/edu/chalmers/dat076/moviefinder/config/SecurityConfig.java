@@ -18,7 +18,6 @@ import org.springframework.security.web.header.writers.StaticHeadersWriter;
  */
 @Configuration
 @EnableWebMvcSecurity
-@ComponentScan("edu.chalmers.dat076.moviefinder")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
