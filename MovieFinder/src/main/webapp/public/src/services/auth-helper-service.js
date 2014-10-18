@@ -27,7 +27,7 @@
                  * to later.
                  */
                 'saveAttemptRoute': function() {
-                    if ($location.path().toLowerCase() !== AUTH_LOGIN_PATH) {
+                    if ($location.path().toLowerCase() !== AUTH_LOGIN_PATH.toLowerCase()) {
                         _attemptRoute = $location.path();
                     } else {
                         _attemptRoute = '/';
@@ -65,7 +65,7 @@
                  * limit.
                  * @param  {String|Array} allowedRoles A string or array of
                  *                                     allowed roles for the route.
-                 * @return {Promise|Bool} Returns a rejected promise if user is not allowed
+                 * @return {Promise|Boolean} Returns a rejected promise if user is not allowed
                  *                        to see the current route. Or true if authenticated.
                  */
                 'restrictRoute': function(allowedRoles) {
