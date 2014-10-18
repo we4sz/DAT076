@@ -3,51 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.chalmers.dat076.moviefinder.utils;
+package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
 /**
  *
  * @author Carl Jansson, Peter Eliasson
  */
+@Service
 public class OmdbHandler {
-    
+
+    @Autowired
+    @Qualifier("JacksonHtmlRestTemplate")
     RestTemplate restTemplate;
-    
-    public OmdbHandler(){
-        init();
-    }
-    
-    /*
-    configure RestTemplate so it can reseive text/html as json
-    */
-    private void init(){
-        restTemplate = new RestTemplate();
-        
-        MappingJackson2HttpMessageConverter jacksonConverter = new MappingJackson2HttpMessageConverter();
-        
-        // OMDB returns json but with the HTTP Content-Type header set to "text/html",
-        // so we have to add that as an accepted contet type for our jackson converter
-        // or it will not trigger for the response
-        List<MediaType> mediaTypes = new ArrayList<>();
-        mediaTypes.add(new MediaType("text", "html", AbstractJackson2HttpMessageConverter.DEFAULT_CHARSET));
-        jacksonConverter.setSupportedMediaTypes(mediaTypes);
-        
-        // Add the custom jacksonConverter to the available messageConverters
-        // of the restTemplate
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
-        messageConverters.add(jacksonConverter);
-        restTemplate.setMessageConverters(messageConverters);
-    }
-    
+
     /**
      * 
      * @param title
