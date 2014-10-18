@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.chalmers.dat076.moviefinder;
+package edu.chalmers.dat076.moviefinder.test.config;
 
 import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author Peter
  */
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages="edu.chalmers.dat076.moviefinder.persistence")
 @EnableTransactionManagement
 public class TestRepositoryConfig {
 
@@ -45,7 +45,7 @@ public class TestRepositoryConfig {
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPackagesToScan(getClass().getPackage().getName());
+        factory.setPackagesToScan("edu.chalmers.dat076.moviefinder.persistence");
         factory.setDataSource(dataSource());
 
         return factory;

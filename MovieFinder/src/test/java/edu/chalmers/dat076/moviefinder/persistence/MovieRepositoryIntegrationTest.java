@@ -5,8 +5,9 @@
  */
 package edu.chalmers.dat076.moviefinder.persistence;
 
-import edu.chalmers.dat076.moviefinder.AbstractIntegrationTest;
-import edu.chalmers.dat076.moviefinder.TestRepositoryConfig;
+import edu.chalmers.dat076.moviefinder.test.AbstractIntegrationTest;
+import edu.chalmers.dat076.moviefinder.test.config.TestApplicationConfig;
+import edu.chalmers.dat076.moviefinder.test.config.TestRepositoryConfig;
 import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -22,7 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
  *
  * @author Peter
  */
-@ContextConfiguration(classes = TestRepositoryConfig.class)
+@ContextConfiguration(classes = TestApplicationConfig.class)
 public class MovieRepositoryIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
