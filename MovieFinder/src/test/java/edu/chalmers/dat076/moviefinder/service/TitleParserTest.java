@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.chalmers.dat076.moviefinder.utils;
+package edu.chalmers.dat076.moviefinder.service;
 
 
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
 import static org.junit.Assert.*;
+
+import edu.chalmers.dat076.moviefinder.service.TitleParser;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,11 +17,11 @@ import org.junit.Test;
  *
  * @author Carl Jansson
  */
-public class titleParserTest {
+public class TitleParserTest {
 
     TitleParser instance;
     
-    public titleParserTest() {
+    public TitleParserTest() {
     }
 
     @Before
