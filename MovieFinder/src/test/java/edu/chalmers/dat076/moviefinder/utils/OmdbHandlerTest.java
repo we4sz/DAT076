@@ -71,8 +71,13 @@ public class OmdbHandlerTest {
         assertEquals("tt0076759", result.getImdbID());
         
         title = "absolotely nonsense asdfasdfs";
-        result = instance.getOMDB(title, year);
-        assertEquals(null, result.getTitle());
+        try {
+            result = instance.getOMDB(title, year);
+            fail("exception not cast by: absolotely nonsense asdfasdfs");
+        } catch (NullPointerException e){
+            // Deafault not failing
+        }
+        
     }
     
     @Test
@@ -89,7 +94,6 @@ public class OmdbHandlerTest {
         result = instance.getMoreOMDB(imdbID);
         assertEquals("True Grit", result.getTitle());
         assertEquals(1969, result.getYear());
-        
         
     }
 }

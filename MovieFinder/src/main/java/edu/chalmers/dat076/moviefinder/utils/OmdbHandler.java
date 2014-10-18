@@ -16,7 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  *
- * @author Carl Jansson
+ * @author Carl Jansson, Peter Eliasson
  */
 public class OmdbHandler {
     
@@ -53,8 +53,11 @@ public class OmdbHandler {
      * @param title
      * @return the most recent movie with the best title match
      */
-    public OmdbMediaResponse getOMDB(String title){
+    public OmdbMediaResponse getOMDB(String title) throws NullPointerException{
         OmdbMediaResponse movie = restTemplate.getForObject("http://www.omdbapi.com/?t=" + title, OmdbMediaResponse.class);
+        if ( movie.getTitle() == null ) {
+            throw new NullPointerException();
+        }
         return movie;
     }
     
@@ -64,8 +67,11 @@ public class OmdbHandler {
      * @param year
      * @return the biggest thing from the year with the best title match
      */
-    public OmdbMediaResponse getOMDB(String title, int year){
+    public OmdbMediaResponse getOMDB(String title, int year) throws NullPointerException{
         OmdbMediaResponse movie = restTemplate.getForObject("http://www.omdbapi.com/?t=" + title + "&y=" + year, OmdbMediaResponse.class);
+        if ( movie.getTitle() == null ) {
+            throw new NullPointerException();
+        }
         return movie;
     }
     
@@ -74,8 +80,11 @@ public class OmdbHandler {
      * @param imdbID
      * @return The omdb thing with the right imdbID
      */
-    public OmdbMediaResponse getMoreOMDB(String imdbID){
+    public OmdbMediaResponse getMoreOMDB(String imdbID) throws NullPointerException{
         OmdbMediaResponse movie = restTemplate.getForObject("http://www.omdbapi.com/?i=" + imdbID, OmdbMediaResponse.class);
+        if ( movie.getTitle() == null ) {
+            throw new NullPointerException();
+        }
         return movie;
     }
     

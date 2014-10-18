@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A class for handling restful media response from OMDB
  *
- * @author Carl Jansson
+ * @author Carl Jansson, Peter Eliasson
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OmdbMediaResponse {
