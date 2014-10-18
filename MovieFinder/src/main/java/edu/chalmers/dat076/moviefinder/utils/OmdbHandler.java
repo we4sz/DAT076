@@ -5,7 +5,7 @@
  */
 package edu.chalmers.dat076.moviefinder.utils;
 
-import edu.chalmers.dat076.moviefinder.persistence.OmdbMediaResponse;
+import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.http.MediaType;

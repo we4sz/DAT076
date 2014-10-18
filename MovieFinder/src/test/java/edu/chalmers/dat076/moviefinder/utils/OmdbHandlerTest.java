@@ -6,7 +6,7 @@
 
 package edu.chalmers.dat076.moviefinder.utils;
 
-import edu.chalmers.dat076.moviefinder.persistence.OmdbMediaResponse;
+import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
 import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;

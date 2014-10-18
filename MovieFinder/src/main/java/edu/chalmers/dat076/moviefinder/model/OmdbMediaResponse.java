@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package edu.chalmers.dat076.moviefinder.persistence;
+package edu.chalmers.dat076.moviefinder.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
