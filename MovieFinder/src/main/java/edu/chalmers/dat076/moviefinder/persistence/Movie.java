@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -29,11 +30,11 @@ public class Movie extends AbstractEntity implements Serializable {
     private Double imdbRating;
     private Integer runtime;
     private String plot;
-    private Integer year;
-    @ManyToOne
-    private ArrayList<String> genres;
-    @ManyToOne
-    private ArrayList<String> actors;
+    private String year;
+    @ElementCollection
+    private List<String> genres;
+    @ElementCollection
+    private List<String> actors;
     private String imdbId;
 
     protected Movie() {
@@ -74,7 +75,7 @@ public class Movie extends AbstractEntity implements Serializable {
         return plot;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
@@ -90,7 +91,7 @@ public class Movie extends AbstractEntity implements Serializable {
         return filePath;
     }
 
-    public int getRuntime() {
+    public Integer getRuntime() {
         return runtime;
     }
 
