@@ -137,14 +137,14 @@ public class WatchThread extends Thread {
                             ending = ending.substring(ending.lastIndexOf(".") + 1, ending.length());
 
                             if (videoTypes.contains(ending)) {
-                                listener.newFile(child.toString());
+                                listener.newFile(child.toString(), child.getFileName().toString());
                             }
                         }
                     } catch (IOException x) {
                         // ignore to keep sample readbale
                     }
                 } else if (kind == ENTRY_DELETE) {
-                    listener.oldPath(child.toString());
+                    listener.oldPath(child.toString(), child.getFileName().toString());
                 }
             }
 
@@ -170,7 +170,7 @@ public class WatchThread extends Thread {
             } else {
                 String ending = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
                 if (videoTypes.contains(ending)) {
-                    listener.initFile(t.getAbsolutePath());
+                    listener.initFile(t.getAbsolutePath(), fileName);
                 }
             }
         }
