@@ -5,13 +5,8 @@
  */
 package edu.chalmers.dat076.moviefinder.persistence;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 
 /**
  * A movie entity.
@@ -23,23 +18,23 @@ public class Movie extends AbstractEntity {
 
     @Column(nullable = false)
     private String title;
-
     @Column(nullable = false, unique = true)
     private String filePath;
-    
     private Double imdbRating;
+    private String runtime;
 
     protected Movie() {
     }
     
     public Movie(String title, String filePath) {
-        this(title, filePath, null);
+        this(title, filePath, null, null);
     }
     
-    public Movie(String title, String filePath, Double imdbRating) {
+    public Movie(String title, String filePath, Double imdbRating, String runtime) {
         this.title = title;
         this.filePath = filePath;
         this.imdbRating = imdbRating;
+        this.runtime = runtime;
     }
 
     public String getTitle() {
@@ -53,6 +48,10 @@ public class Movie extends AbstractEntity {
     public String getFilePath() {
         return filePath;
     }
+    
+    public String getRuntime() {
+        return runtime;
+    }
 
     @Override
     public String toString() {
@@ -60,6 +59,7 @@ public class Movie extends AbstractEntity {
                 "title='" + title + '\'' +
                 ", filePath='" + filePath + '\'' +
                 ", imdbRating=" + imdbRating +
+                ", runtime=" + runtime +
                 '}';
     }
 }
