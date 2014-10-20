@@ -1,4 +1,3 @@
-<head> <link href="public/css/home.css" rel="stylesheet"></head>
 
 <h2>You own these movies:</h2>
 
@@ -21,11 +20,11 @@
     </thead>
     <tbody>
         <tr ng-repeat="movie in homeCtrl.movies">
-            <td>{{movie.Title}}</td>
-            <td>{{movie.Director}}</td>
-            <td>{{movie.Genre}}</td>
+            <td>{{movie.title}}</td>
+            <td>{{movie.director}}</td>
+            <td>{{movie.genre}}</td>
             <td>{{movie.imdbRating}}</td>
-            <td>{{movie.Runtime}}</td>
+            <td>{{movie.runtime}}</td>
             <td>
                 <a href="#/products/details/{{product.id}}">Details</a>
             </td>
