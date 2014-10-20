@@ -1,4 +1,3 @@
-
 package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
@@ -14,17 +13,17 @@ import org.springframework.stereotype.Service;
  * @author Peter
  */
 @Service
-public class MovieFileDatabaseHelper { 
-    
+public class MovieFileDatabaseHelper {
+
     @Autowired
     private TitleParser titleParser;
-    
+
     @Autowired
     private OmdbHandler omdbHandler;
-    
+
     @Autowired
     private MovieRepository movieRepository;
-    
+
     public boolean saveFile(String path, String name) {
         TemporaryMedia temporaryMedia = titleParser.parseMedia(name);
         OmdbMediaResponse omdbData = omdbHandler.getOMDB(temporaryMedia.getName());
@@ -32,11 +31,7 @@ public class MovieFileDatabaseHelper {
         if (omdbData == null) {
             return false;
         } else {
-            Movie movie = new Movie(
-                    omdbData.getTitle(),
-                    path,
-                    omdbData.getImdbRating(),
-                    omdbData.getRuntime());
+            Movie movie = new Movie(path, omdbData);
             try {
                 movieRepository.save(movie);
             } catch (DataIntegrityViolationException e) {
@@ -45,7 +40,7 @@ public class MovieFileDatabaseHelper {
         }
         return true;
     }
-    
+
     public boolean removeFile(String path, String name) {
         Movie movie = movieRepository.findByFilePath(path);
         if (movie != null) {

@@ -5,8 +5,13 @@
  */
 package edu.chalmers.dat076.moviefinder.persistence;
 
+import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 /**
  * A movie entity.
@@ -21,21 +26,57 @@ public class Movie extends AbstractEntity {
     @Column(nullable = false, unique = true)
     private String filePath;
     private Double imdbRating;
-    private String runtime;
+    private int runtime;
+    private String plot;
+    private int year;
+    private ArrayList<String> genres;
+    private ArrayList<String> actors;
+    private String imdbId;
+    
 
     protected Movie() {
     }
     
-    public Movie(String title, String filePath) {
-        this(title, filePath, null, null);
+    public Movie(String filePath) {
+        this(filePath, null);
     }
     
-    public Movie(String title, String filePath, Double imdbRating, String runtime) {
-        this.title = title;
+    public Movie(String filePath, OmdbMediaResponse omdb) {
         this.filePath = filePath;
-        this.imdbRating = imdbRating;
-        this.runtime = runtime;
+        if(omdb != null){
+            title = omdb.getTitle();
+            imdbRating = omdb.getImdbRating();
+            year = omdb.getYear();
+            plot = omdb.getPlot();
+            imdbId = omdb.getImdbID();
+            runtime = Integer.parseInt(omdb.getRuntime().substring(0, omdb.getRuntime().indexOf(" ")));
+            actors = new ArrayList<String>(Arrays.asList(omdb.getActors().split(", ")));
+            genres = new ArrayList<String>(Arrays.asList(omdb.getGenre().split(", ")));
+        }
     }
+
+    @ManyToOne
+    public List<String> getActors() {
+        return actors;
+    }
+
+    @ManyToOne
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public String getPlot() {
+        return plot;
+    }
+
+    public int getYear() {
+        return year;
+    }
+       
 
     public String getTitle() {
         return title;
@@ -49,7 +90,7 @@ public class Movie extends AbstractEntity {
         return filePath;
     }
     
-    public String getRuntime() {
+    public int getRuntime() {
         return runtime;
     }
 
