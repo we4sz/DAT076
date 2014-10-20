@@ -10,7 +10,16 @@
             .config(function ($routeProvider, USER_ROLES, AUTH_LOGIN_PATH) {
                 $routeProvider
                         .when('/', {
-                            templateUrl: 'partials/home.html'
+                            templateUrl: 'partials/home.html',
+                            controller: 'HomeCtrl as homeCtrl',
+                            resolve: {
+                                'homeCtrlData' : function(homeCtrlDataLoader) {
+                                    return homeCtrlDataLoader();
+                                },
+                                auth: function(authHelper) {
+                                    return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
+                                }
+                            }
                         })
                         .when(AUTH_LOGIN_PATH, {
                             templateUrl: 'partials/login.html',
