@@ -10,11 +10,11 @@
         .factory('homeCtrlDataLoader', function($q, movie) {
             return function() {
                 return $q(function(resolve, reject){
-                    movie.getMovies().success(function(data){
+                    movie.getMovies().then(function(data){
                         resolve({
                             movies: data
                         });
-                    }).error(function(err){
+                    }, function(err){
                         reject(err);
                     });
                 });
