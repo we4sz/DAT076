@@ -44,7 +44,7 @@ public class OmdbMediaResponse {
     private String title;
 
     @JsonProperty("Year")
-    private int year;
+    private String year;
 
     @JsonProperty("Rated")
     private String rated;
@@ -107,7 +107,7 @@ public class OmdbMediaResponse {
         return title;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
