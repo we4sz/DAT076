@@ -6,7 +6,7 @@
 package edu.chalmers.dat076.moviefinder.persistence;
 
 import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import javax.persistence.Column;
@@ -20,8 +20,9 @@ import javax.persistence.FetchType;
  * @author Peter
  */
 @Entity
-public class Movie extends AbstractEntity {
+public class Movie extends AbstractEntity implements Serializable {
 
+    
     @Column(nullable = false)
     private String title;
     @Column(nullable = false, unique = true)
@@ -56,8 +57,8 @@ public class Movie extends AbstractEntity {
             if(!omdb.getRuntime().equals("N/A")){
                 runtime = Integer.parseInt(omdb.getRuntime().substring(0, omdb.getRuntime().indexOf(" ")));
             }
-            actors = new ArrayList<String>(Arrays.asList(omdb.getActors().split(", ")));
-            genres = new ArrayList<String>(Arrays.asList(omdb.getGenre().split(", ")));
+            actors = Arrays.asList(omdb.getActors().split(", "));
+            genres = Arrays.asList(omdb.getGenre().split(", "));
         }
     }
 
