@@ -6,6 +6,7 @@
 package edu.chalmers.dat076.moviefinder.persistence;
 
 import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,35 +16,37 @@ import javax.persistence.ManyToOne;
 
 /**
  * A movie entity.
- * 
+ *
  * @author Peter
  */
 @Entity
-public class Movie extends AbstractEntity {
+public class Movie extends AbstractEntity implements Serializable {
 
     @Column(nullable = false)
     private String title;
     @Column(nullable = false, unique = true)
     private String filePath;
     private Double imdbRating;
-    private int runtime;
+    private Integer runtime;
     private String plot;
-    private int year;
+    private Integer year;
+    @ManyToOne
     private ArrayList<String> genres;
+    @ManyToOne
     private ArrayList<String> actors;
     private String imdbId;
-    
 
     protected Movie() {
     }
-    
-    public Movie(String filePath) {
-        this(filePath, null);
+
+    public Movie(String filePath, String title) {
+        this.filePath = filePath;
+        this.title = title;
     }
-    
+
     public Movie(String filePath, OmdbMediaResponse omdb) {
         this.filePath = filePath;
-        if(omdb != null){
+        if (omdb != null) {
             title = omdb.getTitle();
             imdbRating = omdb.getImdbRating();
             year = omdb.getYear();
@@ -55,12 +58,10 @@ public class Movie extends AbstractEntity {
         }
     }
 
-    @ManyToOne
     public List<String> getActors() {
         return actors;
     }
 
-    @ManyToOne
     public List<String> getGenres() {
         return genres;
     }
@@ -76,7 +77,6 @@ public class Movie extends AbstractEntity {
     public int getYear() {
         return year;
     }
-       
 
     public String getTitle() {
         return title;
@@ -89,18 +89,18 @@ public class Movie extends AbstractEntity {
     public String getFilePath() {
         return filePath;
     }
-    
+
     public int getRuntime() {
         return runtime;
     }
 
     @Override
     public String toString() {
-        return "Movie{" +
-                "title='" + title + '\'' +
-                ", filePath='" + filePath + '\'' +
-                ", imdbRating=" + imdbRating +
-                ", runtime=" + runtime +
-                '}';
+        return "Movie{"
+                + "title='" + title + '\''
+                + ", filePath='" + filePath + '\''
+                + ", imdbRating=" + imdbRating
+                + ", runtime=" + runtime
+                + '}';
     }
 }
