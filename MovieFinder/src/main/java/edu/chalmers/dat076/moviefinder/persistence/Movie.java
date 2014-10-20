@@ -6,14 +6,13 @@
 package edu.chalmers.dat076.moviefinder.persistence;
 
 import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.FetchType;
 
 /**
  * A movie entity.
@@ -21,7 +20,7 @@ import javax.persistence.ManyToOne;
  * @author Peter
  */
 @Entity
-public class Movie extends AbstractEntity implements Serializable {
+public class Movie extends AbstractEntity {
 
     @Column(nullable = false)
     private String title;
@@ -30,10 +29,10 @@ public class Movie extends AbstractEntity implements Serializable {
     private Double imdbRating;
     private Integer runtime;
     private String plot;
-    private String year;
-    @ElementCollection
+    private String releaseYear;
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> genres;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> actors;
     private String imdbId;
 
@@ -50,10 +49,13 @@ public class Movie extends AbstractEntity implements Serializable {
         if (omdb != null) {
             title = omdb.getTitle();
             imdbRating = omdb.getImdbRating();
-            year = omdb.getYear();
+            releaseYear = omdb.getYear();
             plot = omdb.getPlot();
             imdbId = omdb.getImdbID();
-            runtime = Integer.parseInt(omdb.getRuntime().substring(0, omdb.getRuntime().indexOf(" ")));
+            System.out.println(omdb.getRuntime());
+            if(!omdb.getRuntime().equals("N/A")){
+                runtime = Integer.parseInt(omdb.getRuntime().substring(0, omdb.getRuntime().indexOf(" ")));
+            }
             actors = new ArrayList<String>(Arrays.asList(omdb.getActors().split(", ")));
             genres = new ArrayList<String>(Arrays.asList(omdb.getGenre().split(", ")));
         }
@@ -75,8 +77,8 @@ public class Movie extends AbstractEntity implements Serializable {
         return plot;
     }
 
-    public String getYear() {
-        return year;
+    public String getReleaseYear() {
+        return releaseYear;
     }
 
     public String getTitle() {
