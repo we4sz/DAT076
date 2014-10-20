@@ -1,36 +1,36 @@
-describe('Service: movieFinder.services.user', function() {
+describe('Service: movieFinder.services.user', function () {
     'use strict';
 
     var httpBackend, userService;
 
-    beforeEach(function (){
+    beforeEach(function () {
         // Set up the module that hold our service
-        module('movieFinder.services', function($provide) {
+        module('movieFinder.services', function ($provide) {
             // Set up all dependencies the service requires
             $provide.value('$window', {});
             $provide.value('AUTH_EVENTS', {});
             $provide.value('USER_ROLES', {role: 'role'});
         });
 
-        // Get an instance of the service itself and
+        // Get an instance of the service itself
         // and instance of the http mock service.
-        inject(function($httpBackend, _user_) {
+        inject(function ($httpBackend, _user_) {
             httpBackend = $httpBackend;
             userService = _user_;
         });
     });
 
-    afterEach(function() {
+    afterEach(function () {
         // Make sure no http requests are missing after each test
         httpBackend.verifyNoOutstandingExpectation();
         httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should not indicate a logged in user by default', function() {
+    it('should not indicate a logged in user by default', function () {
         expect(userService.isLoggedIn()).toBe(false);
     });
 
-    it('should send username and password on login', function(){
+    it('should send username and password on login', function () {
         var response = {
             username: 'name',
             role: 'role'
@@ -48,7 +48,7 @@ describe('Service: movieFinder.services.user', function() {
         // no need for any expects of our own.
     });
 
-    it('should set user info on successful login', function(){
+    it('should set user info on successful login', function () {
         var response = {
             username: 'name',
             role: 'role'
@@ -57,7 +57,7 @@ describe('Service: movieFinder.services.user', function() {
 
         httpBackend.expectPOST('api/login/login').respond(response);
 
-        userService.login('a', 'b').then(function(){
+        userService.login('a', 'b').then(function () {
             promiseResolved = true;
         });
         httpBackend.flush();
@@ -68,7 +68,7 @@ describe('Service: movieFinder.services.user', function() {
         expect(promiseResolved).toBe(true);
     });
 
-    it('should clear user info on successful logout', function() {
+    it('should clear user info on successful logout', function () {
         // Set up user as logged in
         var loginResponse = {
             username: 'name',
@@ -77,12 +77,12 @@ describe('Service: movieFinder.services.user', function() {
         httpBackend.expectPOST('api/login/login').respond(loginResponse);
         userService.login('a', 'b');
         httpBackend.flush();
-        
+
         // Test logout
         var promiseResolved = false;
 
         httpBackend.expectPOST('api/login/logout').respond(200);
-        userService.logout().then(function(){
+        userService.logout().then(function () {
             promiseResolved = true;
         });
         httpBackend.flush();
@@ -93,11 +93,11 @@ describe('Service: movieFinder.services.user', function() {
         expect(promiseResolved).toBe(true);
     });
 
-    it('should not set user info on unsuccessful login', function(){
+    it('should not set user info on unsuccessful login', function () {
         var promiseResolved = false;
 
         httpBackend.expectPOST('api/login/login').respond(401);
-        userService.login('a', 'b').then(function(){
+        userService.login('a', 'b').then(function () {
             promiseResolved = true;
         });
         httpBackend.flush();
@@ -106,7 +106,7 @@ describe('Service: movieFinder.services.user', function() {
         expect(promiseResolved).toBe(false);
     });
 
-    it('should not clear user info on unsuccessful logout', function() {
+    it('should not clear user info on unsuccessful logout', function () {
         // Set up user as logged in
         var loginResponse = {
             username: 'name',
@@ -115,12 +115,12 @@ describe('Service: movieFinder.services.user', function() {
         httpBackend.expectPOST('api/login/login').respond(loginResponse);
         userService.login('a', 'b');
         httpBackend.flush();
-        
+
         // Test logout
         var promiseResolved = false;
 
         httpBackend.expectPOST('api/login/logout').respond(500);
-        userService.logout().then(function(){
+        userService.logout().then(function () {
             promiseResolved = true;
         });
         httpBackend.flush();

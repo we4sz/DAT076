@@ -16,6 +16,7 @@ public class TemporaryMedia {
     private String name;
     // If it isnt a movie it must be a series
     private boolean isMovie;
+    private int year;
     private int season;
     private int episode;
     
@@ -37,22 +38,39 @@ public class TemporaryMedia {
     public void setEpisode(int episode){
         this.episode=episode;
     }
+    public void setYear(int year){
+        this.year = year;
+    }
     
     public String getName(){
-        return this.name;
+        return name;
     }
     /**
      * If it is not a movie it must be an episode!
      * @return true if it is a movie
      */
     public boolean IsMovie(){
-        return this.isMovie;
+        return isMovie;
     }
     public int getSeason(){
-        return this.season;
+        return season;
     }
     public int getEpisode(){
-        return this.episode;
+        return episode;
     }
-    
+    public int getYear(){
+        return year;
+    }
+
+
+    @Override
+    public String toString() {
+        return "TemporaryMedia{" +
+                "name='" + name + '\'' +
+                ", isMovie=" + isMovie +
+                ", year=" + year +
+                ", season=" + season +
+                ", episode=" + episode +
+                '}';
+    }
 }

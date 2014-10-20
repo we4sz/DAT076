@@ -170,7 +170,7 @@ public class WatchThread extends Thread {
             } else {
                 String ending = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
                 if (videoTypes.contains(ending)) {
-                    listener.initFile(fileName);
+                    listener.initFile(t.getAbsolutePath());
                 }
             }
         }

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="en" ng-app="movieFinder" ng-controller="AppCtrl as appCtrl">
+<html lang="en" ng-app="movieFinder" ng-controller="AppCtrl as appCtrl" ng-csp>
 
     <head>
         <base href="${pageContext.request.contextPath}/" />
@@ -9,6 +9,14 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- CSRF token -->
+        <meta name="_csrf" content="${_csrf.token}"/>
+        <meta name="_csrf_header" content="${_csrf.headerName}"/>
+        
+        <!-- User data -->
+        <meta name="_user_username" content="${sessionScope.user.username}" />
+        <meta name="_user_role" content="${sessionScope.user.role}" />
 
         <!-- TODO: Description! -->
         <meta name="description" content="">
@@ -33,17 +41,9 @@
         <%@ include file="partials/index-content.html" %>
 
         <!-- Reminder that this is the dev version (i.e. not using the built js files) -->
-        <script>console.log('%c=== DEV VERSION ===', 'color: #FF0000');</script>
-
-        <!-- Inject user session state if available -->
-        <c:if test="${sessionScope.user != null}">
-        <script>
-            window.session_user = {
-                username: '${sessionScope.user.username}',
-                role: '${sessionScope.user.role}'
-            }
-        </script>
-        </c:if>
+        <script src="public/src/util/dev-version-reminder.js"></script>
+        <!-- Script replacing "no-js" with "js" class on body if js is enabled -->
+        <script src="public/src/util/javascript-detection.js"></script>
 
         <!-- 3rd party combined scripts, defined in gulpfile.js as "external_scripts"-->
         <script src="build/js/lib.min.js"></script>
@@ -52,6 +52,7 @@
         <script src="public/src/app.js"></script>
         <!-- Config -->
         <script src="public/src/config/app-routes-config.js"></script>
+        <script src="public/src/config/http-defaults-config.js"></script>
         <script src="public/src/config/http-interceptors-config.js"></script>
         <!-- Constants -->
         <script src="public/src/constants/user-constants.js"></script>

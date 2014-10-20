@@ -1,1 +1,1 @@
-insert into Movie (id, title) values (1, 'testMovie1');
+insert into Movie (id, title, filePath) values (1, 'testMovie1', 'testMovie1.avi');

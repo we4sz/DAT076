@@ -3,11 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.chalmers.dat076.moviefinder.utils;
+package edu.chalmers.dat076.moviefinder.service;
 
 
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
 import static org.junit.Assert.*;
+
+import edu.chalmers.dat076.moviefinder.service.TitleParser;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,11 +17,11 @@ import org.junit.Test;
  *
  * @author Carl Jansson
  */
-public class titleParserTest {
+public class TitleParserTest {
 
     TitleParser instance;
     
-    public titleParserTest() {
+    public TitleParserTest() {
     }
 
     @Before
@@ -38,19 +40,24 @@ public class titleParserTest {
         assertEquals("hej!", t.getName());
         assertTrue(t.IsMovie());
         t = instance.parseMedia("Min.Speciella.Film.2007.1080p.mkv");
-        assertEquals("Min Speciella Film 2007", t.getName());
+        assertEquals("Min Speciella Film", t.getName());
+        assertEquals(2007, t.getYear());
         assertTrue(t.IsMovie());
         t = instance.parseMedia("[av mig]Min Speciella Film 2006 720p.mkv");
-        assertEquals("Min Speciella Film 2006", t.getName());
+        assertEquals("Min Speciella Film", t.getName());
+        assertEquals(2006, t.getYear());
         assertTrue(t.IsMovie());
-        t = instance.parseMedia("Min.Speciella.Film.2005.mkv");
-        assertEquals("Min Speciella Film 2005", t.getName());
+        t = instance.parseMedia("Min.Speciella.Film.[2005].mkv");
+        assertEquals("Min Speciella Film", t.getName());
+        assertEquals(2005, t.getYear());
         assertTrue(t.IsMovie());
         t = instance.parseMedia("[av mig]Min.Speciella.Film-2004_[1080p].mkv");
-        assertEquals("Min Speciella Film 2004", t.getName());
+        assertEquals("Min Speciella Film", t.getName());
+        assertEquals(2004, t.getYear());
         assertTrue(t.IsMovie());
-        t = instance.parseMedia("Min.Speciella.Film-2003_(slutligen)1080p[aaa].mkv");
-        assertEquals("Min Speciella Film 2003", t.getName());
+        t = instance.parseMedia("1987.Min.Speciella.Film-2003_(slutligen)1080p[aaa].mkv");
+        assertEquals("1987 Min Speciella Film", t.getName());
+        assertEquals(2003, t.getYear());
         assertTrue(t.IsMovie());
         
         // Series tests
@@ -90,24 +97,27 @@ public class titleParserTest {
         assertTrue( !t.IsMovie());
         assertEquals( 11, t.getSeason());
         assertEquals( 12, t.getEpisode());
+        assertEquals(2012, t.getYear());
         
         t = instance.parseMedia("min.serie![2012]-1x2.1080p.mkv");
         assertEquals("min serie!", t.getName());
         assertTrue( !t.IsMovie());
         assertEquals( 1, t.getSeason());
         assertEquals( 2, t.getEpisode());
-        t = instance.parseMedia("min.serie![2012]-01x02.1080p.mkv");
+        assertEquals(2012, t.getYear());
+        t = instance.parseMedia("min.serie!.2012-01x02.1080p.mkv");
         assertEquals("min serie!", t.getName());
         assertTrue( !t.IsMovie());
         assertEquals( 1, t.getSeason());
         assertEquals( 2, t.getEpisode());
+        assertEquals(2012, t.getYear());
         t = instance.parseMedia("min.serie!(2012)-11x23.1080p.mkv");
         assertEquals("min serie!", t.getName());
         assertTrue( !t.IsMovie());
         assertEquals( 11, t.getSeason());
         assertEquals( 23, t.getEpisode());
         t = instance.parseMedia("min.serie![2012]-11x23.2012-1080p.mkv");
-        assertEquals("min serie!  2012", t.getName());
+        assertEquals("min serie!", t.getName());
         assertTrue( !t.IsMovie());
         assertEquals( 11, t.getSeason());
         assertEquals( 23, t.getEpisode());
