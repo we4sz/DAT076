@@ -38,7 +38,7 @@ public class OmdbHandler {
     public OmdbMediaResponse getOMDB(String title) throws NullPointerException{
         OmdbMediaResponse movie = restTemplate.getForObject("http://www.omdbapi.com/?t=" + title, OmdbMediaResponse.class);
         if ( movie.getTitle() == null ) {
-            throw new NullPointerException();
+            return null;
         }
         return movie;
     }
@@ -52,7 +52,7 @@ public class OmdbHandler {
     public OmdbMediaResponse getOMDB(String title, int year) throws NullPointerException{
         OmdbMediaResponse movie = restTemplate.getForObject("http://www.omdbapi.com/?t=" + title + "&y=" + year, OmdbMediaResponse.class);
         if ( movie.getTitle() == null ) {
-            throw new NullPointerException();
+            return null;
         }
         return movie;
     }
@@ -65,7 +65,7 @@ public class OmdbHandler {
     public OmdbMediaResponse getMoreOMDB(String imdbID) throws NullPointerException{
         OmdbMediaResponse movie = restTemplate.getForObject("http://www.omdbapi.com/?i=" + imdbID, OmdbMediaResponse.class);
         if ( movie.getTitle() == null ) {
-            throw new NullPointerException();
+            return null;
         }
         return movie;
     }
