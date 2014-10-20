@@ -40,7 +40,7 @@ public class Movie extends AbstractEntity implements Serializable {
     protected Movie() {
     }
 
-    public Movie(String filePath, String title) {
+    public Movie(String title,String filePath) {
         this.filePath = filePath;
         this.title = title;
     }
