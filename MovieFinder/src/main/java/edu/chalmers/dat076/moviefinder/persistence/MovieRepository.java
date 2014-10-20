@@ -7,7 +7,7 @@ package edu.chalmers.dat076.moviefinder.persistence;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * A movie repository. Note that this interface is automagically implemented
@@ -17,7 +17,7 @@ import org.springframework.data.repository.CrudRepository;
  * 
  * @author Peter
  */
-public interface MovieRepository extends CrudRepository<Movie, Long> {
+public interface MovieRepository extends PagingAndSortingRepository<Movie, Long> {
     public Page<Movie> findByTitleContaining(String name, Pageable pageable);
 
     public Movie findByFilePath(String filePath);
