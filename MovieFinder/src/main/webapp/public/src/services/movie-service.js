@@ -7,11 +7,17 @@
     'use strict';
 
     angular.module('movieFinder.services')
-        .factory('movie', function($http) {
+        .factory('movie', function($http, $q) {
 
             return {
                 'getMovies': function() {
-                    return $http.get('public/movieData.json');
+                    return $q(function(resolve, reject) {
+                        $http.get('api/files/').success(function(data){
+                            resolve(data.content);
+                        }).error(function(err) {
+                            reject(err);
+                        });
+                    });
                 },
                 /**
                  * Fetches movies from the server filtered by filter param
@@ -26,8 +32,14 @@
                         }
                     }
                     var queryString = '?' + qs.join('&');
-                                       
-                    return $http.get('public/movieData.json' + queryString);
+
+                    return $q(function(resolve, reject) {
+                        $http.get('api/files/' + queryString).success(function(data){
+                            resolve(data.content);
+                        }).error(function(err) {
+                            reject(err);
+                        });
+                    });
                 }
             };
         });
