@@ -14,10 +14,10 @@ import java.util.List;
  */
 public interface FileSystemListener {
     
-    public void initFile(String paths);
+    public void initFile(String path, String name);
     
-    public void newFile(String path);
+    public void newFile(String path, String name);
     
-    public void oldPath(String path);
+    public void oldPath(String path, String name);
     
 }
