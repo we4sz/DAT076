@@ -6,6 +6,7 @@
 package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.listener.FileSystemListener;
+import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
 import edu.chalmers.dat076.moviefinder.persistence.Movie;
 import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
@@ -27,15 +28,12 @@ import org.springframework.stereotype.Service;
  * @author John
  */
 @Service
-public class FileThreadService implements FileSystemListener{
+public class FileThreadService implements FileSystemListener {
 
     private final static Logger LOGGER = Logger.getLogger(FileThreadService.class.getName());
 
     @Autowired
-    private TitleParser titleParser;
-
-    @Autowired
-    private MovieRepository movieRepository;
+    private MovieFileDatabaseHelper databaseHelper;
 
     private List<File> checkFolders;
     private LinkedList<WatchThread> threads;
@@ -45,7 +43,7 @@ public class FileThreadService implements FileSystemListener{
         checkFolders = new LinkedList<>();
         checkFolders.add(new File("C:/film"));
         threads = new LinkedList<>();
-        for(File f : checkFolders){  
+        for (File f : checkFolders) {
             try {
                 threads.add(new WatchThread(f));
                 threads.getLast().setListener(this);
@@ -55,10 +53,10 @@ public class FileThreadService implements FileSystemListener{
             }
         }
     }
-    
+
     @PreDestroy
-    public void destory(){
-        for(WatchThread t : threads){
+    public void destory() {
+        for (WatchThread t : threads) {
             t.interrupt();
             try {
                 t.join();
@@ -68,40 +66,23 @@ public class FileThreadService implements FileSystemListener{
     }
 
     @Override
-    public void initFile(String path) {
-        LOGGER.info("initFile: " + path);
-
-        TemporaryMedia temporaryMedia = titleParser.parseMedia(path);
-        Movie movie = new Movie(temporaryMedia.getName(), path);
-        
-        try {
-            movieRepository.save(movie);
-        } catch (DataIntegrityViolationException e) {
-            // A Movie at this path already exist.
-        }
+    public void initFile(String path, String name) {
+        LOGGER.info("initFile: " + path + " " + name);
+        databaseHelper.saveFile(path, name);
     }
 
     @Override
-    public void newFile(String path) {
-        LOGGER.info("newFile: " + path);
+    public void newFile(String path, String name) {
+        LOGGER.info("newFile: " + path + " " + name);
 
-        TemporaryMedia temporaryMedia = titleParser.parseMedia(path);
-        Movie movie = new Movie(temporaryMedia.getName(), path);
-        try {
-            movieRepository.save(movie);
-        } catch (DataIntegrityViolationException e) {
-            // A Movie at this path already exist.
-        }
+        databaseHelper.saveFile(path, name);
     }
 
     @Override
-    public void oldPath(String path) {
-        LOGGER.info("oldPath: " + path);
+    public void oldPath(String path, String name) {
+        LOGGER.info("oldPath: " + path + " " + name);
 
-        Movie movie = movieRepository.findByFilePath(path);
-        if(movie != null) {
-            movieRepository.delete(movie);
-        }
+        databaseHelper.removeFile(path, name);
     }
 
 }
