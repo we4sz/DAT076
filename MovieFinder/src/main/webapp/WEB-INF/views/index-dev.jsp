@@ -62,10 +62,13 @@
         <script src="public/src/services/auth-helper-service.js"></script>
         <script src="public/src/services/history-service.js"></script>
         <script src="public/src/services/user-service.js"></script>
+        <script src="public/src/services/movie-service.js"></script>
+        <script src="public/src/services/home-ctrl-data-loader-service.js"></script>
         <!-- Controllers --> 
         <script src="public/src/controllers/app-controller.js"></script>
         <script src="public/src/controllers/nav-controller.js"></script>
         <script src="public/src/controllers/login-view-controller.js"></script>
+        <script src="public/src/controllers/home-controller.js"></script>
         <!-- Directives -->
         <script src="public/src/directives/error-directive.js"></script>
     </body>
