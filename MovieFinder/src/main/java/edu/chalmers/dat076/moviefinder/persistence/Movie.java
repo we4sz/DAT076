@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.OrderColumn;
 
 /**
  * A movie entity.
@@ -31,11 +32,20 @@ public class Movie extends AbstractEntity implements Serializable {
     private Integer runtime;
     private String plot;
     private String releaseYear;
+    
     @ElementCollection(fetch = FetchType.EAGER)
+    @OrderColumn
     private List<String> genres;
+ 
     @ElementCollection(fetch = FetchType.EAGER)
+    @OrderColumn
     private List<String> actors;
+    
     private String imdbId;
+    private String poster;
+    private String rated;
+    private String country;
+    private String director;
 
     protected Movie() {
     }
@@ -58,6 +68,10 @@ public class Movie extends AbstractEntity implements Serializable {
             }
             actors = Arrays.asList(omdb.getActors().split(", "));
             genres = Arrays.asList(omdb.getGenre().split(", "));
+            poster = omdb.getPoster();
+            rated = omdb.getRated();
+            country = omdb.getCountry();
+            director = omdb.getDirector();
         }
     }
 
@@ -95,6 +109,22 @@ public class Movie extends AbstractEntity implements Serializable {
 
     public Integer getRuntime() {
         return runtime;
+    }
+    
+    public String getPoster() {
+        return poster;
+    }
+
+    public String getRated() {
+        return rated;
+    }
+    
+    public String getCountry() {
+        return country;
+    }
+    
+    public String getDirector() {
+        return director;
     }
 
     @Override
