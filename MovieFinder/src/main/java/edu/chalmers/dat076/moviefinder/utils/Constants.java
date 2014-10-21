@@ -39,6 +39,14 @@ public class Constants {
             add("xvid");
             add("divx");
             add("x264");
+            add("DTS");
+            add("SCR");
+            add("SWE");
+            add("SWESUB");
+            add("UNRATED");
+            add("DC");
+            add("THEATRICAL");
+            add("EXTENDED");
         }
     });
 
