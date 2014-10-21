@@ -9,11 +9,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 /**
- *
+ * A service for saving and removing files from the database. New files are looked up via OMDB to
+ * try and get information about them.
  * @author Peter
  */
 @Service
-public class MovieFileDatabaseHelper {
+public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
 
     @Autowired
     private TitleParser titleParser;
@@ -24,9 +25,10 @@ public class MovieFileDatabaseHelper {
     @Autowired
     private MovieRepository movieRepository;
 
+    @Override
     public boolean saveFile(String path, String name) {
         TemporaryMedia temporaryMedia = titleParser.parseMedia(name);
-        OmdbMediaResponse omdbData = omdbHandler.getOMDB(temporaryMedia.getName());
+        OmdbMediaResponse omdbData = omdbHandler.getByTitle(temporaryMedia.getName());
 
         if (omdbData == null) {
             return false;
@@ -41,6 +43,7 @@ public class MovieFileDatabaseHelper {
         return true;
     }
 
+    @Override
     public boolean removeFile(String path, String name) {
         Movie movie = movieRepository.findByFilePath(path);
         if (movie != null) {

@@ -17,8 +17,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
- * Created by Peter on 2014-10-17.
+ * Base configuration class for the Spring application.
+ * Includes other needed configuration classes and defines
+ * project-specific beans.
  */
 @Configuration
 @Import({RepositoryConfig.class, WebConfig.class})

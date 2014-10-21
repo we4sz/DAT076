@@ -40,7 +40,7 @@ public class Movie extends AbstractEntity implements Serializable {
     protected Movie() {
     }
 
-    public Movie(String title,String filePath) {
+    public Movie(String title, String filePath) {
         this.filePath = filePath;
         this.title = title;
     }
@@ -53,7 +53,6 @@ public class Movie extends AbstractEntity implements Serializable {
             releaseYear = omdb.getYear();
             plot = omdb.getPlot();
             imdbId = omdb.getImdbID();
-            System.out.println(omdb.getRuntime());
             if(!omdb.getRuntime().equals("N/A")){
                 runtime = Integer.parseInt(omdb.getRuntime().substring(0, omdb.getRuntime().indexOf(" ")));
             }

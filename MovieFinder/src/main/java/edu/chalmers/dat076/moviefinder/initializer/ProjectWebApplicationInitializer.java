@@ -17,7 +17,7 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
 import org.springframework.web.servlet.DispatcherServlet;
 
 /**
- *
+ * Starts the web application, and sets the required configuration.
  * @author Peter
  */
 public class ProjectWebApplicationInitializer implements WebApplicationInitializer {

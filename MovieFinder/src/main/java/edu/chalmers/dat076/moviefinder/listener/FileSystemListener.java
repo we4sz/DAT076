@@ -9,15 +9,30 @@ import java.util.List;
 
 
 /**
- *
+ * A listener for file system change events.
  * @author John
  */
 public interface FileSystemListener {
-    
+
+    /**
+     * initFile is called the first time a file is seen.
+     * @param path The absolute path to the file. Includes the name of the file.
+     * @param name The name of the file.
+     */
     public void initFile(String path, String name);
-    
+
+    /**
+     * newFile is called when a new file is added to a directory that is being watched.
+     * @param path The absolute path to the file. Includes the name of the file.
+     * @param name The name of the file.
+     */
     public void newFile(String path, String name);
-    
+
+    /**
+     * oldPath is called when a file is removed/renamed in a directory that is being watched.
+     * @param path The absolute path to the file. Includes the name of the file.
+     * @param name The name of the file.
+     */
     public void oldPath(String path, String name);
     
 }

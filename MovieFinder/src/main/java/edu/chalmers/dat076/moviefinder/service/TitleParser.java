@@ -71,7 +71,7 @@ public class TitleParser {
         for (int i = 0; i < mySb.length(); i++) {
             if (mySb.charAt(i) == '.' || mySb.charAt(i) == ' ' || mySb.charAt(i) == '-' || mySb.charAt(i) == '_') {
 
-                if (Constants.finalWords.contains(wordSb.toString())) {
+                if (Constants.MOVIE_FILE_ENDING_WORDS.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
                     finalWord = false;
                     break;
@@ -102,7 +102,7 @@ public class TitleParser {
                 }
             } else if (mySb.charAt(i) == '[' || mySb.charAt(i) == '(') {
 
-                if (Constants.finalWords.contains(wordSb.toString())) {
+                if (Constants.MOVIE_FILE_ENDING_WORDS.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
                     finalWord = false;
                     break;
@@ -130,7 +130,7 @@ public class TitleParser {
             }
         }
         
-        if (finalWord && Constants.finalWords.contains(wordSb.toString())) {
+        if (finalWord && Constants.MOVIE_FILE_ENDING_WORDS.contains(wordSb.toString())) {
             mySb.delete(mySb.length() - wordSb.length(), mySb.length());
         } else {
             tmpYear = checkForYear(wordSb);

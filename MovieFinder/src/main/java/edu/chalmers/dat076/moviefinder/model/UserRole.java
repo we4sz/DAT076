@@ -6,7 +6,7 @@
 package edu.chalmers.dat076.moviefinder.model;
 
 /**
- *
+ * An enum for the different roles a user can have.
  * @author John
  */
 public enum UserRole {

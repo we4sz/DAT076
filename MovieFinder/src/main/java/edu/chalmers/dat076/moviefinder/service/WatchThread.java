@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * A Thread for listening to file system changes, such as adding and removing of files, in a specific directory.
  * @author John
  */
 public class WatchThread extends Thread {

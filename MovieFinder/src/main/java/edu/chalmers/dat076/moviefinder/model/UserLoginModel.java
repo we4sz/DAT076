@@ -8,7 +8,7 @@ package edu.chalmers.dat076.moviefinder.model;
 import java.io.Serializable;
 
 /**
- *
+ * A class for representing the JSON object expected from a login request.
  * @author John
  */
 public class UserLoginModel implements Serializable{

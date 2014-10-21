@@ -6,10 +6,6 @@
 package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.listener.FileSystemListener;
-import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
-import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
-import edu.chalmers.dat076.moviefinder.persistence.Movie;
-import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -20,11 +16,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PreDestroy;
-import org.springframework.dao.DataIntegrityViolationException;
+
 import org.springframework.stereotype.Service;
 
 /**
- *
+ * A service for monitoring the file system for changes.
  * @author John
  */
 @Service
@@ -33,7 +29,7 @@ public class FileThreadService implements FileSystemListener {
     private final static Logger LOGGER = Logger.getLogger(FileThreadService.class.getName());
 
     @Autowired
-    private MovieFileDatabaseHelper databaseHelper;
+    private MovieFileDatabaseHandler databaseHelper;
 
     private List<File> checkFolders;
     private LinkedList<WatchThread> threads;
