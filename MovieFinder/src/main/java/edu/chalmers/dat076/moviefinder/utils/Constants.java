@@ -18,11 +18,33 @@ public class Constants {
     
     public static final List<String> finalWords = Collections.unmodifiableList(new ArrayList<String>() {
         {
-            add("1080p");add("720p");add("1920x1080");add("1280x720");
-            add("mp4");add("avi");add("mkv");
-            add("Bluray");add("BrRip");add("WEBRip");add("HDTV");add("Blu-ray");add("FLAC");
-            add("AC3");add("h264");add("AAC");add("xvid");add("divx");add("x264");
-            //add("");add("");add("");add("");add("");add("");
+            add("1080p");
+            add("720p");
+            add("1920x1080");
+            add("1280x720");
+            add("mp4");
+            add("avi");
+            add("mkv");
+            add("Bluray");
+            add("BrRip");
+            add("WEBRip");
+            add("HDTV");
+            add("Blu-ray");
+            add("FLAC");
+            add("AC3");
+            add("h264");
+            add("AAC");
+            add("xvid");
+            add("divx");
+            add("x264");
+            add("DTS");
+            add("SCR");
+            add("SWE");
+            add("SWESUB");
+            add("UNRATED");
+            add("DC");
+            add("THEATRICAL");
+            add("EXTENDED");
         }
     });
     
