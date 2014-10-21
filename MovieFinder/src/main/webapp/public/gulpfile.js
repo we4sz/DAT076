@@ -50,8 +50,8 @@ var PATHS = {
     ],
     external_styles: [
         path.join(BOWER_PATH, 'angular/angular-csp.css'),
-        path.join(BOWER_PATH, 'bootstrap/dist/css/bootstrap.css'),
-        path.join(BOWER_PATH, 'angular-motion/dist/angular-motion.min.css')
+        path.join(BOWER_PATH, 'angular-motion/dist/angular-motion.min.css'),
+        'lib/bootswatch/superhero-bootstrap.css'
     ],
     images: [
         'img/**/*.png',

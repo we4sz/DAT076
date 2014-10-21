@@ -7,7 +7,7 @@
     'use strict';
 
     angular.module('movieFinder.services')
-        .factory('movie', function($http) {
+        .factory('movie', function($http, $q) {
 
             return {
                 'getMovies': function() {
@@ -28,7 +28,17 @@
                     var queryString = '?' + qs.join('&');
                                        
                     return $http.get('public/movieData.json' + queryString);
+                },
+                  'getMovieById': function(id) {
+                    return $q(function(resolve, reject) {
+                        $http.get('public/movieData.json').success(function(data) {
+                            resolve(data[id]);
+                        }).error(function(err){
+                            reject(err);
+                        });
+                    });
                 }
+                
             };
         });
 })();
