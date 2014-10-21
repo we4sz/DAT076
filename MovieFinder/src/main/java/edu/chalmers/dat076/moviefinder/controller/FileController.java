@@ -44,7 +44,7 @@ public class FileController {
         return movieRepository.findOne(id);
     }
 
-    @RequestMapping(value = "/files/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/stream/{id}", method = RequestMethod.GET)
     public void getMovieStream(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) {
         Movie m = movieRepository.findOne(id);
         try {
