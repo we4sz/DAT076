@@ -21,6 +21,19 @@
                                 }
                             }
                         })
+                        .when('/movie/:id', {
+                            templateUrl: 'partials/movie-details.html',
+                            controller: 'MovieDetailsCtrl as movieDetailsCtrl',
+                            resolve: {
+                                'movieDetailsCtrlData' : function(movieDetailsCtrlDataLoader) {
+                                    return movieDetailsCtrlDataLoader();
+                                },
+                                auth: function(authHelper) {
+                                    return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
+                                }
+                            }
+                            
+                        })
                         .when(AUTH_LOGIN_PATH, {
                             templateUrl: 'partials/login.html',
                             controller: 'LoginViewCtrl as loginViewCtrl'

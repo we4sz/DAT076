@@ -1,0 +1,49 @@
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h1>
+                    {{movieDetailsCtrl.movie.Title}} <small>({{movieDetailsCtrl.movie.Year}})</small>
+                </h1>
+            </div>
+            <div class="panel-body">
+                <ol class="breadcrumb">
+                    <li><a href="#/">Movies</a></li>
+                    <li class="active">{{movieDetailsCtrl.movie.Title}}</li>
+                </ol>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="moviePosterContainer">
+                            <img src="{{movieDetailsCtrl.movie.Poster}}" class="img-responsive"/>
+                            <div class="movieActionsContainer">
+                                <button class="btn btn-primary">Play Movie</button>
+                                <button class="btn btn-default">Add to list</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>
+                            [{{movieDetailsCtrl.movie.Rated}}] 
+                            {{movieDetailsCtrl.movie.Runtime}} - 
+                            {{movieDetailsCtrl.movie.Genre}} - 
+                            {{movieDetailsCtrl.movie.Released}} 
+                            ({{movieDetailsCtrl.movie.Country}})
+                        </p>
+                        <h3> {{movieDetailsCtrl.movie.imdbRating}} 
+                            <span class="glyphicon glyphicon-star"></span> 
+                        </h3>
+                        <p>
+                            {{movieDetailsCtrl.movie.Plot}}
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
