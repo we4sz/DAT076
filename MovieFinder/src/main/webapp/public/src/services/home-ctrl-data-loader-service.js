@@ -7,16 +7,12 @@
     'use strict';
 
     angular.module('movieFinder.services')
-        .factory('homeCtrlDataLoader', function($q, movie) {
+        .factory('homeCtrlDataLoader', function(movie) {
             return function() {
-                return $q(function(resolve, reject){
-                    movie.getMovies().then(function(data){
-                        resolve({
-                            movies: data
-                        });
-                    }, function(err){
-                        reject(err);
-                    });
+                return movie.getMovies().then(function(data) {
+                    return {
+                        movies: data
+                    };
                 });
             };
         });
