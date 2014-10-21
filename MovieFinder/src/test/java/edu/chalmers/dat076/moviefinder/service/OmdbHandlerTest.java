@@ -22,7 +22,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -66,7 +65,7 @@ public class OmdbHandlerTest {
                 "{\"Title\":\"TestTitle\", \"imdbID\":\"tt1403865\"}",
                 MediaType.APPLICATION_JSON));
 
-        OmdbMediaResponse response = instance.getOMDB("TestTitle");
+        OmdbMediaResponse response = instance.getByTitle("TestTitle");
 
         assertEquals(response.getTitle(), "TestTitle");
         assertEquals(response.getImdbID(), "tt1403865");
@@ -80,7 +79,7 @@ public class OmdbHandlerTest {
                 "{\"Title\":\"TestTitle\", \"imdbID\":\"tt1403865\"}",
                 MediaType.APPLICATION_JSON));
 
-        OmdbMediaResponse response = instance.getOMDB("TestTitle", 2014);
+        OmdbMediaResponse response = instance.getByTitleYear("TestTitle", 2014);
 
         assertEquals(response.getTitle(), "TestTitle");
         assertEquals(response.getImdbID(), "tt1403865");
@@ -94,7 +93,7 @@ public class OmdbHandlerTest {
                 "{\"Response\":\"False\",\"Error\":\"Movie not found!\"}",
                 MediaType.APPLICATION_JSON));
 
-        OmdbMediaResponse response = instance.getOMDB("TestTitle");
+        OmdbMediaResponse response = instance.getByTitle("TestTitle");
         assertNull(response);
     }
     
@@ -104,7 +103,7 @@ public class OmdbHandlerTest {
                 "{\"Title\":\"TestTitle\", \"imdbID\":\"tt1403865\"}",
                 MediaType.APPLICATION_JSON));
 
-        OmdbMediaResponse response = instance.getMoreOMDB("tt1403865");
+        OmdbMediaResponse response = instance.getByImdbId("tt1403865");
 
         assertEquals(response.getTitle(), "TestTitle");
         assertEquals(response.getImdbID(), "tt1403865");

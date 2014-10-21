@@ -30,4 +30,4 @@ bower_components
 MovieFinder/src/main/webapp/build
 
 # Application properties
-MovieFinder/src/main/resources/application.properties
+application.properties

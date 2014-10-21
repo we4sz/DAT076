@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- *
+ * Controller for the api/login endpoint. This endpoint is used to login and logout
+ * users.
  * @author John
  */
 @Controller

@@ -8,6 +8,9 @@ package edu.chalmers.dat076.moviefinder.initializer;
 import edu.chalmers.dat076.moviefinder.config.SecurityConfig;
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
+/**
+ * Enables the Spring Security framework with our configuration settings.
+ */
 public class SecurityWebApplicationInitializer extends
         AbstractSecurityWebApplicationInitializer {
 

@@ -8,7 +8,7 @@ package edu.chalmers.dat076.moviefinder.model;
 import java.io.Serializable;
 
 /**
- *
+ * A class for representing a logged in user.
  * @author John
  */
 public class User implements Serializable {

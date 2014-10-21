@@ -13,6 +13,9 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+/**
+ * Configuration class for the "web" portion of the application.
+ */
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = { "edu.chalmers.dat076.moviefinder.controller", "edu.chalmers.dat076.moviefinder.filter" })

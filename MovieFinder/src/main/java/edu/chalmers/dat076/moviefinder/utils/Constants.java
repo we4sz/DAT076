@@ -11,12 +11,14 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
  * @author Carl Jansson
  */
 public class Constants {
-    
-    public static final List<String> finalWords = Collections.unmodifiableList(new ArrayList<String>() {
+
+    /**
+     * A list of file endings that indicates that the file is a movie file.
+     */
+    public static final List<String> MOVIE_FILE_ENDING_WORDS = Collections.unmodifiableList(new ArrayList<String>() {
         {
             add("1080p");
             add("720p");
@@ -47,5 +49,5 @@ public class Constants {
             add("EXTENDED");
         }
     });
-    
+
 }

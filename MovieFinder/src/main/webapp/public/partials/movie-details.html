@@ -3,18 +3,18 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h1>
-                    {{movieDetailsCtrl.movie.Title}} <small>({{movieDetailsCtrl.movie.Year}})</small>
+                    {{movieDetailsCtrl.movie.title}} <small>({{movieDetailsCtrl.movie.releaseYear}})</small>
                 </h1>
             </div>
             <div class="panel-body">
                 <ol class="breadcrumb">
                     <li><a href="#/">Movies</a></li>
-                    <li class="active">{{movieDetailsCtrl.movie.Title}}</li>
+                    <li class="active">{{movieDetailsCtrl.movie.title}}</li>
                 </ol>
                 <div class="row">
                     <div class="col-sm-6">
                         <div class="moviePosterContainer">
-                            <img src="{{movieDetailsCtrl.movie.Poster}}" class="img-responsive"/>
+                            <img src="{{movieDetailsCtrl.movie.poster}}" class="img-responsive"/>
                             <div class="movieActionsContainer">
                                 <button class="btn btn-primary">Play Movie</button>
                                 <button class="btn btn-default">Add to list</button>
@@ -23,17 +23,21 @@
                     </div>
                     <div class="col-sm-6">
                         <p>
-                            [{{movieDetailsCtrl.movie.Rated}}] 
-                            {{movieDetailsCtrl.movie.Runtime}} - 
-                            {{movieDetailsCtrl.movie.Genre}} - 
-                            {{movieDetailsCtrl.movie.Released}} 
-                            ({{movieDetailsCtrl.movie.Country}})
+                            [{{movieDetailsCtrl.movie.rated}}] 
+                            {{movieDetailsCtrl.movie.runtime}} 
+                            -
+                            <span ng-repeat="genre in movieDetailsCtrl.movie.genres">
+                                {{genre}}<span ng-if="!$last">,</span>
+                            </span>
+                            -
+                            {{movieDetailsCtrl.movie.releaseYear}} 
+                            ({{movieDetailsCtrl.movie.country}})
                         </p>
                         <h3> {{movieDetailsCtrl.movie.imdbRating}} 
                             <span class="glyphicon glyphicon-star"></span> 
                         </h3>
                         <p>
-                            {{movieDetailsCtrl.movie.Plot}}
+                            {{movieDetailsCtrl.movie.plot}}
                         </p>
 
                     </div>

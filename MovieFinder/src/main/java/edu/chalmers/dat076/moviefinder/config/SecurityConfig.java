@@ -13,7 +13,7 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 /**
- *
+ * Configuration options for the Spring-Security framework.
  * @author Peter
  */
 @Configuration

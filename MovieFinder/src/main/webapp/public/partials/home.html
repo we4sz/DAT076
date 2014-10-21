@@ -23,13 +23,17 @@
             </thead>
             <tbody>
                 <tr ng-repeat="movie in homeCtrl.movies">
-                    <td>{{movie.Title}}</td>
-                    <td class="hidden-xs">{{movie.Director}}</td>
-                    <td class="hidden-xs">{{movie.Genre}}</td>
+                    <td>{{movie.title}}</td>
+                    <td class="hidden-xs">{{movie.director}}</td>
+                    <td class="hidden-xs">
+                        <span ng-repeat="genre in movie.genres">
+                            {{genre}}<span ng-if="!$last">,</span>
+                        </span>
+                    </td>
                     <td>{{movie.imdbRating}}</td>
-                    <td>{{movie.Runtime}}</td>
+                    <td>{{movie.runtime}}</td>
                     <td>
-                        <a href="#/movie/{{movie.Id}}">Details</a>
+                        <a href="#/movie/{{movie.id}}">Details</a>
                     </td>
                 </tr>
             </tbody>

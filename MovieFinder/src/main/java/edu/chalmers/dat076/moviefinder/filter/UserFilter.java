@@ -18,7 +18,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- *
+ * A filter for authentication.
+ * Limits access to /api/ if the user is not logged in.
+ * Limits access to .../admin if the user is not logged in as admin.
  * @author John
  */
 @WebFilter("/*")
