@@ -21,6 +21,25 @@
         <java-version>1.7</java-version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.3.5</version>
+            <type>jar</type>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpasyncclient</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -227,9 +246,21 @@
             <version>${org.springframework-version}</version>
             <scope>test</scope>
         </dependency>
+        
+        
+        <dependency>
+            <groupId>org.xmappr</groupId>
+            <artifactId>xmappr</artifactId>
+            <version>0.9.0</version>
+        </dependency>
     </dependencies>
     
     <repositories>
+        <repository>
+            <id>xmappr-repo-googlecode</id>
+            <name>Xmappr Repository</name>
+            <url>http://xmappr.googlecode.com/svn/repo/</url>
+        </repository>
         <repository>
             <id>io.spring.repo.maven.release</id>
             <url>http://repo.spring.io/release/</url>
