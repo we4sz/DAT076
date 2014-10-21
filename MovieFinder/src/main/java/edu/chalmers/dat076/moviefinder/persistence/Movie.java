@@ -81,7 +81,7 @@ public class Movie extends AbstractEntity implements Serializable {
         if (data != null) {
             title = data.getEpisode().getEpisodeName();
             imdbRating = data.getEpisode().getRating();
-            poster = data.getSerie().getPoster();
+            poster = "http://thetvdb.com/banners/"+data.getSerie().getPoster();
             releaseYear = Integer.parseInt(data.getEpisode().getFirstAired().substring(0, 4));
             plot = data.getEpisode().getOverview();
             runtime = data.getSerie().getRuntime();
