@@ -7,6 +7,7 @@ import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A service for saving and removing files from the database. New files are looked up via OMDB to
@@ -26,6 +27,7 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
     private MovieRepository movieRepository;
 
     @Override
+    @Transactional
     public boolean saveFile(String path, String name) {
         TemporaryMedia temporaryMedia = titleParser.parseMedia(name);
         OmdbMediaResponse omdbData = omdbHandler.getByTitle(temporaryMedia.getName());
@@ -34,16 +36,13 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
             return false;
         } else {
             Movie movie = new Movie(path, omdbData);
-            try {
-                movieRepository.save(movie);
-            } catch (DataIntegrityViolationException e) {
-                return false;
-            }
+            movieRepository.save(movie);
         }
         return true;
     }
 
     @Override
+    @Transactional
     public boolean removeFile(String path, String name) {
         Movie movie = movieRepository.findByFilePath(path);
         if (movie != null) {

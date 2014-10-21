@@ -64,14 +64,22 @@ public class FileThreadService implements FileSystemListener {
     @Override
     public void initFile(String path, String name) {
         LOGGER.info("initFile: " + path + " " + name);
-        databaseHelper.saveFile(path, name);
+        try{
+            databaseHelper.saveFile(path, name);
+        } catch (RuntimeException e) {
+            LOGGER.info(e.getMessage());
+        }
     }
 
     @Override
     public void newFile(String path, String name) {
         LOGGER.info("newFile: " + path + " " + name);
 
-        databaseHelper.saveFile(path, name);
+        try{
+            databaseHelper.saveFile(path, name);
+        } catch (RuntimeException e) {
+            LOGGER.info(e.getMessage());
+        }
     }
 
     @Override
