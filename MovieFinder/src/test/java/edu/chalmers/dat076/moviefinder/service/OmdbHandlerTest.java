@@ -88,7 +88,6 @@ public class OmdbHandlerTest {
         mockServer.verify();
     }
 
-    @Test(expected = NullPointerException.class)
     public void testGetNonExistingMovie() {
         // This test simulates a request for a movie that doesn't exist on OMDB
         mockServer.expect(requestTo("http://www.omdbapi.com/?t=TestTitle")).andRespond(withSuccess(
@@ -96,6 +95,7 @@ public class OmdbHandlerTest {
                 MediaType.APPLICATION_JSON));
 
         OmdbMediaResponse response = instance.getOMDB("TestTitle");
+        assertNull(response);
     }
     
     @Test
