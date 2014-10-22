@@ -1,15 +1,24 @@
 describe('Service: movieFinder.services.user', function () {
     'use strict';
 
-    var httpBackend, userService;
+    var httpBackend, userService, rootScope;
 
     beforeEach(function () {
         // Set up the module that hold our service
         module('movieFinder.services', function ($provide) {
             // Set up all dependencies the service requires
             $provide.value('$window', {});
-            $provide.value('AUTH_EVENTS', {});
+            $provide.value('AUTH_EVENTS', {
+                'logoutSuccessful': 'logoutSuccessful',
+                'loginSuccessful': 'loginSuccessful'
+            });
             $provide.value('USER_ROLES', {role: 'role'});
+        });
+
+        // Create a spy on the root scope
+        inject(function ($injector) {
+            rootScope = $injector.get('$rootScope');
+            spyOn(rootScope, '$broadcast');
         });
 
         // Get an instance of the service itself
@@ -129,6 +138,34 @@ describe('Service: movieFinder.services.user', function () {
         expect(userService.getUsername()).toBe('name');
         expect(userService.getRole()).toBe('role');
         expect(promiseResolved).toBe(false);
+    });
+
+    it('should send a loginSuccessful event on successful login', function() {
+        // Set up user as logged in
+        var loginResponse = {
+            username: 'name',
+            role: 'role'
+        };
+        httpBackend.expectPOST('api/login/login').respond(loginResponse);
+        userService.login('a', 'b');
+        httpBackend.flush();
+
+        expect(rootScope.$broadcast).toHaveBeenCalled();
+        expect(rootScope.$broadcast.mostRecentCall.args[0]).toBe('loginSuccessful');
+    });
+
+    it('should send a logoutSuccessful event on successful logout', function() {
+        httpBackend.expectPOST('api/login/logout').respond(200);
+        userService.logout();
+        httpBackend.flush();
+
+        expect(rootScope.$broadcast).toHaveBeenCalled();
+        expect(rootScope.$broadcast.mostRecentCall.args[0]).toBe('logoutSuccessful');
+    });
+    
+    it('should not send a logoutSuccessful event when unset is called', function () {
+        userService.unset();
+        expect(rootScope.$broadcast).not.toHaveBeenCalled();
     });
 
 });
