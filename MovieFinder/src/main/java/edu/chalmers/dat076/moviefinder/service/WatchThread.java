@@ -7,6 +7,8 @@ package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.listener.FileSystemListener;
 import java.io.File;
+import java.io.FilePermission;
+import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.ClosedWatchServiceException;
 import java.nio.file.FileSystems;
@@ -23,11 +25,17 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.List;
 import static java.nio.file.LinkOption.*;
+import java.security.AccessControlException;
+import java.security.AccessController;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * A Thread for listening to file system changes, such as adding and removing of files, in a specific directory.
+ * A Thread for listening to file system changes, such as adding and removing of
+ * files, in a specific directory.
+ *
  * @author John
  */
 public class WatchThread extends Thread {
@@ -37,6 +45,7 @@ public class WatchThread extends Thread {
     private static final List<String> videoTypes = Arrays.asList(new String[]{"avi", "mkv", "mp4"});
     private Map<WatchKey, Path> keys;
     private FileSystemListener listener;
+    private final static Logger LOGGER = Logger.getLogger(FileThreadService.class.getName());
 
     public WatchThread(File dir) throws IOException {
         watchPath = Paths.get(dir.getAbsolutePath());
@@ -59,12 +68,27 @@ public class WatchThread extends Thread {
     private void registerAll(final Path start) throws IOException {
         // register directory and sub-directories
         Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+
             @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-                    throws IOException {
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                String ending = file.toString().substring(file.toString().lastIndexOf(".") + 1, file.toString().length());
+                if (videoTypes.contains(ending)) {
+                    listener.initFile(file.toString(), file.getFileName().toString());
+                }
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                 register(dir);
                 return FileVisitResult.CONTINUE;
             }
+
+            @Override
+            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                return FileVisitResult.SKIP_SUBTREE;
+            }
+
         });
     }
 
@@ -96,9 +120,9 @@ public class WatchThread extends Thread {
         try {
             watcher = FileSystems.getDefault().newWatchService();
             registerAll(watchPath);
-
-            findAllPrograms(watchPath.toFile());
         } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage(), ex);
+            System.out.println("mamma");
             System.out.println(ex.getMessage());
         }
 
@@ -159,20 +183,6 @@ public class WatchThread extends Thread {
                 }
             }
 
-        }
-    }
-
-    private void findAllPrograms(File dir) {
-        for (String fileName : dir.list()) {
-            File t = new File(dir.getAbsolutePath() + "/" + fileName);
-            if (t.isDirectory()) {
-                findAllPrograms(t);
-            } else {
-                String ending = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-                if (videoTypes.contains(ending)) {
-                    listener.initFile(t.getAbsolutePath(), fileName);
-                }
-            }
         }
     }
 

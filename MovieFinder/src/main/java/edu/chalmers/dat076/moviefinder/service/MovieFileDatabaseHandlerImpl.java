@@ -32,7 +32,6 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
     private MovieRepository movieRepository;
 
     @Override
-    @Transactional
     public void saveFile(final String path, final String name) {
 
         Runnable r = new Runnable() {
