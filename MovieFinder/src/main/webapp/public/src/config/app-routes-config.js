@@ -22,7 +22,7 @@
                                     return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
                                 }
                             }
-                        }).when('/browse/movie/:id', {
+                        }).when('/movie/:id', {
                             templateUrl: 'partials/movie-details.html',
                             controller: 'MovieDetailsCtrl as movieDetailsCtrl',
                             resolve: {
