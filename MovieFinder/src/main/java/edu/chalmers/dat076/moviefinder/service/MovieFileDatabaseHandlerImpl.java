@@ -35,31 +35,30 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
     @Transactional
     public boolean saveFile(String path, String name) {
         TemporaryMedia temporaryMedia = titleParser.parseMedia(name);
+        Movie movie = null;
+        
         if (temporaryMedia.IsMovie()) {
-            OmdbMediaResponse omdbData = omdbHandler.getByTitleYear(temporaryMedia.getName(), temporaryMedia.getYear());
-            if (omdbData == null) {
-                return false;
-            } else {
-                Movie movie = new Movie(path, omdbData);
-                try {
-                    movieRepository.save(movie);
-                } catch (DataIntegrityViolationException e) {
-                    return false;
-                }
+            OmdbMediaResponse omdbData = omdbHandler.getByTmpMedia(temporaryMedia);
+            if (omdbData != null) {
+                movie = new Movie(path, omdbData);
             }
         } else {
             try {
-                Movie movie = new Movie(path, tvdbHandler.getEpisodeAndSerie(temporaryMedia));
-                try {
-                    movieRepository.save(movie);
-                } catch (DataIntegrityViolationException e) {
-                    return false;
-                }
+                movie = new Movie(path, tvdbHandler.getEpisodeAndSerie(temporaryMedia));
             } catch (IOException | NullPointerException e) {
                 return false;
             }
         }
-
+        
+        if (movie != null) {
+            try {
+                movieRepository.save(movie);
+            } catch (DataIntegrityViolationException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
         return true;
     }
 
