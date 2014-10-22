@@ -6,7 +6,7 @@
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lacinia mauris nec nibh imperdiet porttitor. Donec sapien odio, euismod quis nibh a, luctus interdum ante. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
     </p>
     <p>
-        <a class="btn btn-primary btn-lg" role="button">Start Browsing >></a>
+        <a class="btn btn-primary btn-lg" href="#/browse/" role="button">Start Browsing >></a>
     </p>
 </div>
 <div class="row">
@@ -85,45 +85,3 @@
 </div>
 
 <hr class="featurette-divider">
-
-<div class="row">
-    <div class="col-md-10 col-md-offset-1">
-        <h4>Sort by:</h4>
-        <div>
-            <form>
-                Minimum IMDB score:
-                <input type="number" name="points" min="0" max="10" step="0.1" value="0" ng-model="models.imdbScore" placeholder="IMDB score">
-                <button ng-click="homeCtrl.filterMovies(models.imdbScore)"> hej </button>
-            </form>
-        </div>
-
-        <table class="table table-hover table-striped ">
-            <thead>
-                <tr>
-                    <td>Title</td>
-                    <td class="hidden-xs">Director</td>
-                    <td class="hidden-xs">Genre</td>
-                    <td>Rating</td> 
-                    <td>Runtime</td>
-            </thead>
-            <tbody>
-                <tr ng-repeat="movie in homeCtrl.movies">
-                    <td>{{movie.title}}</td>
-                    <td class="hidden-xs">{{movie.director}}</td>
-                    <td class="hidden-xs">
-                        <span ng-repeat="genre in movie.genres">
-                            {{genre}}<span ng-if="!$last">,</span>
-                        </span>
-                    </td>
-                    <td>{{movie.imdbRating}}</td>
-                    <td>{{movie.runtime}}</td>
-                    <td>
-                        <a href="#/movie/{{movie.id}}">Details</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-

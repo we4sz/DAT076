@@ -10,18 +10,19 @@
             .config(function ($routeProvider, USER_ROLES, AUTH_LOGIN_PATH) {
                 $routeProvider
                         .when('/', {
-                            templateUrl: 'partials/home.html',
-                            controller: 'HomeCtrl as homeCtrl',
+                            templateUrl: 'partials/welcome.html',
+                        }).when('/browse', {
+                            templateUrl: 'partials/browse.html',
+                            controller: 'BrowseCtrl as browseCtrl',
                             resolve: {
-                                'homeCtrlData' : function(homeCtrlDataLoader) {
-                                    return homeCtrlDataLoader();
+                                'browseCtrlData' : function(browseCtrlDataLoader) {
+                                    return browseCtrlDataLoader();
                                 },
                                 auth: function(authHelper) {
                                     return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
                                 }
                             }
-                        })
-                        .when('/movie/:id', {
+                        }).when('/browse/movie/:id', {
                             templateUrl: 'partials/movie-details.html',
                             controller: 'MovieDetailsCtrl as movieDetailsCtrl',
                             resolve: {
