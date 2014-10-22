@@ -12,6 +12,9 @@
                     <li class="active">{{movieDetailsCtrl.movie.title}}</li>
                 </ol>
                 <div class="row">
+                    <video height="240" style="height: 240px;" ng-src="{{movieDetailsCtrl.video()}}" controls></video>
+                </div>
+                <div class="row">
                     <div class="col-sm-6">
                         <div class="moviePosterContainer">
                             <img ng-src="{{movieDetailsCtrl.movie.poster}}" class="img-responsive"/>
