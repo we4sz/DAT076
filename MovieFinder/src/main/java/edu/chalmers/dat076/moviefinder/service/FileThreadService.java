@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * A service for monitoring the file system for changes.
+ *
  * @author John
  */
 @Service
@@ -62,31 +64,30 @@ public class FileThreadService implements FileSystemListener {
     }
 
     @Override
-    public void initFile(String path, String name) {
-        LOGGER.info("initFile: " + path + " " + name);
-        try{
-            databaseHelper.saveFile(path, name);
+    public void initFiles(List<Path> paths, Path basePath) {
+        LOGGER.info("initFiles: " + paths.size());
+        try {
+            databaseHelper.updateFiles(paths, basePath);
+        } catch (RuntimeException e) {
+            LOGGER.info(e.getMessage());
+        }
+
+    }
+
+    @Override
+    public void newFile(Path path) {
+        LOGGER.info("newFile: " + path);
+        try {
+            databaseHelper.saveFile(path);
         } catch (RuntimeException e) {
             LOGGER.info(e.getMessage());
         }
     }
 
     @Override
-    public void newFile(String path, String name) {
-        LOGGER.info("newFile: " + path + " " + name);
-
-        try{
-            databaseHelper.saveFile(path, name);
-        } catch (RuntimeException e) {
-            LOGGER.info(e.getMessage());
-        }
-    }
-
-    @Override
-    public void oldPath(String path, String name) {
-        LOGGER.info("oldPath: " + path + " " + name);
-
-        databaseHelper.removeFile(path, name);
+    public void oldPath(Path path) {
+        LOGGER.info("oldPath: " + path);
+        databaseHelper.removeFile(path);
     }
 
 }
