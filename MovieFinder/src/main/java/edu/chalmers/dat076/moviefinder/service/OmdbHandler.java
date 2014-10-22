@@ -6,6 +6,7 @@
 package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
+import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,21 @@ public class OmdbHandler {
     @Qualifier("JacksonHtmlRestTemplate")
     RestTemplate restTemplate;
 
+    /**
+     * Looks up omdb data by Title and if possible year. Best used with movies
+     *
+     * @param tmp TemporaryMedia with a title and maybe a year
+     * @return data found by omdb or null
+     */
+    public OmdbMediaResponse getByTmpMedia(TemporaryMedia tmp) {
+        if (tmp.getName() != null && tmp.getYear() > 1900) {
+            return getByTitleYear(tmp.getName(), tmp.getYear());
+        } else if (tmp.getName() != null) {
+            return getByTitle(tmp.getName());
+        }
+        return null;
+    }
+    
     /**
      * Looks up a movie by its title.
      * @param title The title of the movie.

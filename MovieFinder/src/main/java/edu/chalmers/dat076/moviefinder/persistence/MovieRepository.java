@@ -7,6 +7,7 @@ package edu.chalmers.dat076.moviefinder.persistence;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -17,9 +18,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * 
  * @author Peter
  */
-public interface MovieRepository extends PagingAndSortingRepository<Movie, Long> {
+public interface MovieRepository extends PagingAndSortingRepository<Movie, Long>, JpaSpecificationExecutor<Movie> {
     public Page<Movie> findByTitleContaining(String name, Pageable pageable);
 
     public Movie findByFilePath(String filePath);
-    
+        
 }

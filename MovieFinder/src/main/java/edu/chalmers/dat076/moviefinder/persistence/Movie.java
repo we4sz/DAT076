@@ -6,6 +6,7 @@
 package edu.chalmers.dat076.moviefinder.persistence;
 
 import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
+import edu.chalmers.dat076.moviefinder.model.TVDBData;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
@@ -23,24 +24,24 @@ import javax.persistence.OrderColumn;
 @Entity
 public class Movie extends AbstractEntity implements Serializable {
 
-    
     @Column(nullable = false)
     private String title;
     @Column(nullable = false, unique = true)
     private String filePath;
     private Double imdbRating;
     private Integer runtime;
+    @Column(length = 8000)
     private String plot;
-    private String releaseYear;
-    
+    private Integer releaseYear;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @OrderColumn
     private List<String> genres;
- 
+
     @ElementCollection(fetch = FetchType.EAGER)
     @OrderColumn
     private List<String> actors;
-    
+
     private String imdbId;
     private String poster;
     private String rated;
@@ -60,10 +61,10 @@ public class Movie extends AbstractEntity implements Serializable {
         if (omdb != null) {
             title = omdb.getTitle();
             imdbRating = omdb.getImdbRating();
-            releaseYear = omdb.getYear();
+            releaseYear = Integer.parseInt(omdb.getYear().substring(0, 4));
             plot = omdb.getPlot();
             imdbId = omdb.getImdbID();
-            if(!omdb.getRuntime().equals("N/A")){
+            if (!omdb.getRuntime().equals("N/A")) {
                 runtime = Integer.parseInt(omdb.getRuntime().substring(0, omdb.getRuntime().indexOf(" ")));
             }
             actors = Arrays.asList(omdb.getActors().split(", "));
@@ -72,6 +73,20 @@ public class Movie extends AbstractEntity implements Serializable {
             rated = omdb.getRated();
             country = omdb.getCountry();
             director = omdb.getDirector();
+        }
+    }
+
+    public Movie(String filePath, TVDBData data) {
+        this.filePath = filePath;
+        if (data != null) {
+            title = data.getEpisode().getEpisodeName();
+            imdbRating = data.getEpisode().getRating();
+            poster = "http://thetvdb.com/banners/"+data.getSerie().getPoster();
+            releaseYear = Integer.parseInt(data.getEpisode().getFirstAired().substring(0, 4));
+            plot = data.getEpisode().getOverview();
+            runtime = data.getSerie().getRuntime();
+            actors = Arrays.asList(data.getSerie().getActors().split("|"));
+            genres = Arrays.asList(data.getSerie().getGenre().split("|"));
         }
     }
 
@@ -91,7 +106,7 @@ public class Movie extends AbstractEntity implements Serializable {
         return plot;
     }
 
-    public String getReleaseYear() {
+    public Integer getReleaseYear() {
         return releaseYear;
     }
 
@@ -110,7 +125,7 @@ public class Movie extends AbstractEntity implements Serializable {
     public Integer getRuntime() {
         return runtime;
     }
-    
+
     public String getPoster() {
         return poster;
     }
@@ -118,11 +133,11 @@ public class Movie extends AbstractEntity implements Serializable {
     public String getRated() {
         return rated;
     }
-    
+
     public String getCountry() {
         return country;
     }
-    
+
     public String getDirector() {
         return director;
     }

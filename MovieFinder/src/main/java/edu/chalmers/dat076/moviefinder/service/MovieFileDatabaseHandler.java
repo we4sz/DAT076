@@ -13,7 +13,7 @@ public interface MovieFileDatabaseHandler {
      * @param name The file name.
      * @return True if the file was stored, false if not.
      */
-    boolean saveFile(String path, String name);
+    void saveFile(String path, String name);
 
     /**
      * Takes a file path and a file name of a removed file and attempts to remove any references to this file

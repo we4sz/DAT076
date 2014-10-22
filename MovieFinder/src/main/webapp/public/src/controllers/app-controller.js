@@ -13,13 +13,8 @@
             .controller('AppCtrl', function ($rootScope, $route, $timeout, AUTH_EVENTS, user, authHelper) {
                 var _this = this;
 
-                var onLoginStateChange = function () {
-                    $route.reload();
-                };
-
                 // Flag used to delay showing of loading animation a few
                 // ms to make sure the route actually has something to load
-
                 var stillLoading = false;
 
                 this.loading = {
@@ -58,11 +53,25 @@
                     _this.loading.isLoading = false;
                 });
 
-                $rootScope.$on(AUTH_EVENTS.loginSuccessful, onLoginStateChange);
-                $rootScope.$on(AUTH_EVENTS.logoutSuccessful, onLoginStateChange);
+                // Events for when the user is logged in or logged out. Simply
+                // reload the route to make sure user is authenticated still
+                $rootScope.$on(AUTH_EVENTS.loginSuccessful, $route.reload);
+                $rootScope.$on(AUTH_EVENTS.logoutSuccessful, $route.reload);
 
+                // Events indicating that the user model is out of sync with the server,
+                // force a re-login
+                $rootScope.$on(AUTH_EVENTS.loginRequired, function() {
+                    user.unset();
+                    authHelper.redirectToLoginPage(AUTH_EVENTS.loginRequired);
+                });
+                $rootScope.$on(AUTH_EVENTS.forbidden, function () {
+                    user.unset();
+                    authHelper.redirectToLoginPage(AUTH_EVENTS.forbidden);
+                });
+
+                // Route change errors indicate an error loading a route due to some promise not
+                // being resolved.
                 $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
-
                     _this.loading.isLoading = false;
 
                     if (rejection === AUTH_EVENTS.loginRequired) {
@@ -74,7 +83,6 @@
                     } else {
                         // Unknown error, show the rejection message
                         _this.error.isError = true;
-
                         if (angular.isString(rejection.message)) {
                             _this.error.errorMessage = rejection.message;
                         } else if (angular.isString(rejection)) {

@@ -8,7 +8,7 @@
 
     angular.module('movieFinder').config(function($httpProvider) {
 
-        // Get the CSRF token name and value. These are writen by the
+        // Get the CSRF token name and value. These are written by the
         // server when the index file is requested
         var csrfHeader = angular.element(document.querySelector('meta[name="_csrf_header"]')).attr('content');
         var csrfValue = angular.element(document.querySelector('meta[name="_csrf"]')).attr('content');
