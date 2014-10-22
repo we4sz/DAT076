@@ -58,8 +58,8 @@
                 $rootScope.$on(AUTH_EVENTS.loginSuccessful, $route.reload);
                 $rootScope.$on(AUTH_EVENTS.logoutSuccessful, $route.reload);
 
-                // Events indicating that the user model is out of sync with the server
-                // and force a re-logging (some api call got a 401/403, which should "never" happen)
+                // Events indicating that the user model is out of sync with the server,
+                // force a re-login
                 $rootScope.$on(AUTH_EVENTS.loginRequired, function() {
                     user.unset();
                     authHelper.redirectToLoginPage(AUTH_EVENTS.loginRequired);
