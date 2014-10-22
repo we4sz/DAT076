@@ -10,7 +10,7 @@
                 this.movies = homeCtrlData.movies;
                 
                 this.filterMovies = function(rating) {
-                    movie.getMoviesByFilter({rating: rating}).then(function (data) {
+                    movie.getMoviesByFilter({imdbRating: rating}).then(function (data) {
                         _this.movies = data;
                     });
                     
