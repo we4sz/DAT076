@@ -1,7 +1,10 @@
 package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
+import edu.chalmers.dat076.moviefinder.model.TVDBData;
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
+import edu.chalmers.dat076.moviefinder.persistence.Episode;
+import edu.chalmers.dat076.moviefinder.persistence.EpisodeRepository;
 import edu.chalmers.dat076.moviefinder.persistence.Movie;
 import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
 import java.io.IOException;
@@ -30,6 +33,9 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
 
     @Autowired
     private MovieRepository movieRepository;
+    
+    @Autowired
+    private EpisodeRepository episodeRepository;
 
     @Override
     @Transactional
@@ -47,20 +53,28 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                     if (omdbData != null) {
                         movie = new Movie(path, omdbData);
                     }
+                    if (movie != null) {
+                        try {
+                            movieRepository.save(movie);
+                        } catch (DataIntegrityViolationException e) {
+                        }
+                    }
                 } else {
                     try {
-                        movie = new Movie(path, tvdbHandler.getEpisodeAndSerie(temporaryMedia));
-                    } catch (IOException | NullPointerException e) {
-                    }
-                }
+                        TVDBData tvdbRes = tvdbHandler.getEpisodeAndSerie(temporaryMedia);
 
-                if (movie != null) {
-                    try {
-                        movieRepository.save(movie);
+                        //tvdbRes.getSerie().getId()
+                        //tvdbRes.getEpisode().getSeriesid()
+                        //TODO SAVE SERIES!!!!!
+                        Episode episode = new Episode(path, tvdbRes);
+                        episodeRepository.save(episode);
+                        //movie = new Movie(path, tvdbRes);
+                    } catch (IOException | NullPointerException e) {
                     } catch (DataIntegrityViolationException e) {
                     }
                 }
             }
+
         };
 
         new Thread(r).start();
