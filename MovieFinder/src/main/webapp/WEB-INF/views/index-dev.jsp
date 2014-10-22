@@ -36,6 +36,8 @@
         <link href="public/css/loading.css" rel="stylesheet">
         <!-- Movie Details -->
         <link href="public/css/movie-details.css" rel="stylesheet">
+        <!-- Home -->
+        <link href="public/css/home.css" rel="stylesheet">
 
     </head>
     <body class="no-js">
@@ -65,13 +67,13 @@
         <script src="public/src/services/history-service.js"></script>
         <script src="public/src/services/user-service.js"></script>
         <script src="public/src/services/movie-service.js"></script>
-        <script src="public/src/services/home-ctrl-data-loader-service.js"></script>
+        <script src="public/src/services/browse-ctrl-data-loader-service.js"></script>
         <script src="public/src/services/movie-details-ctrl-data-loader-service.js"></script>
         <!-- Controllers --> 
         <script src="public/src/controllers/app-controller.js"></script>
         <script src="public/src/controllers/nav-controller.js"></script>
         <script src="public/src/controllers/login-view-controller.js"></script>
-        <script src="public/src/controllers/home-controller.js"></script>
+        <script src="public/src/controllers/browse-controller.js"></script>
         <script src="public/src/controllers/movie-details-controller.js"></script>
         <!-- Directives -->
         <script src="public/src/directives/error-directive.js"></script>
