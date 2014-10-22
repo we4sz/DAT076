@@ -33,33 +33,37 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
 
     @Override
     @Transactional
-    public boolean saveFile(String path, String name) {
-        TemporaryMedia temporaryMedia = titleParser.parseMedia(name);
-        Movie movie = null;
-        
-        if (temporaryMedia.IsMovie()) {
-            OmdbMediaResponse omdbData = omdbHandler.getByTmpMedia(temporaryMedia);
-            if (omdbData != null) {
-                movie = new Movie(path, omdbData);
+    public void saveFile(final String path, final String name) {
+
+        Runnable r = new Runnable() {
+            @Override
+            @Transactional
+            public void run() {
+                TemporaryMedia temporaryMedia = titleParser.parseMedia(name);
+                Movie movie = null;
+
+                if (temporaryMedia.IsMovie()) {
+                    OmdbMediaResponse omdbData = omdbHandler.getByTmpMedia(temporaryMedia);
+                    if (omdbData != null) {
+                        movie = new Movie(path, omdbData);
+                    }
+                } else {
+                    try {
+                        movie = new Movie(path, tvdbHandler.getEpisodeAndSerie(temporaryMedia));
+                    } catch (IOException | NullPointerException e) {
+                    }
+                }
+
+                if (movie != null) {
+                    try {
+                        movieRepository.save(movie);
+                    } catch (DataIntegrityViolationException e) {
+                    }
+                }
             }
-        } else {
-            try {
-                movie = new Movie(path, tvdbHandler.getEpisodeAndSerie(temporaryMedia));
-            } catch (IOException | NullPointerException e) {
-                return false;
-            }
-        }
-        
-        if (movie != null) {
-            try {
-                movieRepository.save(movie);
-            } catch (DataIntegrityViolationException e) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-        return true;
+        };
+
+        new Thread(r).start();
     }
 
     @Override
