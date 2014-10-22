@@ -1,14 +1,14 @@
 package edu.chalmers.dat076.moviefinder.controller;
 
+import edu.chalmers.dat076.moviefinder.model.Range;
 import edu.chalmers.dat076.moviefinder.persistence.Movie;
 import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
-import java.io.Closeable;
+import edu.chalmers.dat076.moviefinder.utils.FileControllerUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.zip.GZIPOutputStream;
 import javax.servlet.ServletOutputStream;
@@ -47,34 +47,28 @@ public class FileController {
         return movieRepository.findOne(id);
     }
 
-        private static final int DEFAULT_BUFFER_SIZE = 10240; // ..bytes = 10KB.
-    private static final long DEFAULT_EXPIRE_TIME = 604800000L; // ..ms = 1 week.
-    private static final String MULTIPART_BOUNDARY = "MULTIPART_BYTERANGES";
-    
     @RequestMapping(value = "/stream/{id}", method = RequestMethod.GET)
     public void getMovieStream(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Movie m = movieRepository.findOne(id);
-        if(m == null){
+        if (m == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        
         processRequest(request, response, true, m.getFilePath());
     }
-    
-       /**
+
+    /**
      * Process the actual request.
+     *
      * @param request The request to be processed.
      * @param response The response to be created.
-     * @param content Whether the request body should be written (GET) or not (HEAD).
+     * @param content Whether the request body should be written (GET) or not
+     * (HEAD).
      * @throws IOException If something fails at I/O level.
      */
-    private void processRequest
-        (HttpServletRequest request, HttpServletResponse response, boolean content, String path)
-            throws IOException
-    {
+    private void processRequest(HttpServletRequest request, HttpServletResponse response, boolean content, String path)
+            throws IOException {
         // Validate the requested file ------------------------------------------------------------
-
 
         // URL-decode the file name (might contain spaces and on) and prepare file object.
         File file = new File(path);
@@ -92,14 +86,12 @@ public class FileController {
         long length = file.length();
         long lastModified = file.lastModified();
         String eTag = fileName + "_" + length + "_" + lastModified;
-        long expires = System.currentTimeMillis() + DEFAULT_EXPIRE_TIME;
-
+        long expires = System.currentTimeMillis() + FileControllerUtils.DEFAULT_EXPIRE_TIME;
 
         // Validate request headers for caching ---------------------------------------------------
-
         // If-None-Match header should contain "*" or ETag. If so, then return 304.
         String ifNoneMatch = request.getHeader("If-None-Match");
-        if (ifNoneMatch != null && matches(ifNoneMatch, eTag)) {
+        if (ifNoneMatch != null && FileControllerUtils.matches(ifNoneMatch, eTag)) {
             response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             response.setHeader("ETag", eTag); // Required in 304.
             response.setDateHeader("Expires", expires); // Postpone cache with 1 week.
@@ -116,12 +108,10 @@ public class FileController {
             return;
         }
 
-
         // Validate request headers for resume ----------------------------------------------------
-
         // If-Match header should contain "*" or ETag. If not, then return 412.
         String ifMatch = request.getHeader("If-Match");
-        if (ifMatch != null && !matches(ifMatch, eTag)) {
+        if (ifMatch != null && !FileControllerUtils.matches(ifMatch, eTag)) {
             response.sendError(HttpServletResponse.SC_PRECONDITION_FAILED);
             return;
         }
@@ -133,9 +123,7 @@ public class FileController {
             return;
         }
 
-
         // Validate and process range -------------------------------------------------------------
-
         // Prepare some variables. The full Range represents the complete file.
         Range full = new Range(0, length - 1, length);
         List<Range> ranges = new ArrayList<>();
@@ -170,8 +158,8 @@ public class FileController {
                 for (String part : range.substring(6).split(",")) {
                     // Assuming a file with length of 100, the following examples returns bytes at:
                     // 50-80 (50 to 80), 40- (40 to length=100), -20 (length-20=80 to length=100).
-                    long start = sublong(part, 0, part.indexOf("-"));
-                    long end = sublong(part, part.indexOf("-") + 1, part.length());
+                    long start = FileControllerUtils.sublong(part, 0, part.indexOf("-"));
+                    long end = FileControllerUtils.sublong(part, part.indexOf("-") + 1, part.length());
 
                     if (start == -1) {
                         start = length - end;
@@ -193,9 +181,7 @@ public class FileController {
             }
         }
 
-
         // Prepare and initialize response --------------------------------------------------------
-
         // Get content type by file name and set default GZIP support and content disposition.
         String contentType = request.getServletContext().getMimeType(fileName);
         boolean acceptsGzip = false;
@@ -212,29 +198,25 @@ public class FileController {
         // the browser and expand content type with the one and right character encoding.
         if (contentType.startsWith("text")) {
             String acceptEncoding = request.getHeader("Accept-Encoding");
-            acceptsGzip = acceptEncoding != null && accepts(acceptEncoding, "gzip");
+            acceptsGzip = acceptEncoding != null && FileControllerUtils.accepts(acceptEncoding, "gzip");
             contentType += ";charset=UTF-8";
-        } 
-
-        // Else, expect for images, determine content disposition. If content type is supported by
+        } // Else, expect for images, determine content disposition. If content type is supported by
         // the browser, then set to inline, else attachment which will pop a 'save as' dialogue.
         else if (!contentType.startsWith("image")) {
             String accept = request.getHeader("Accept");
-            disposition = accept != null && accepts(accept, contentType) ? "inline" : "attachment";
+            disposition = accept != null && FileControllerUtils.accepts(accept, contentType) ? "inline" : "attachment";
         }
 
         // Initialize response.
         response.reset();
-        response.setBufferSize(DEFAULT_BUFFER_SIZE);
+        response.setBufferSize(FileControllerUtils.DEFAULT_BUFFER_SIZE);
         response.setHeader("Content-Disposition", disposition + ";filename=\"" + fileName + "\"");
         response.setHeader("Accept-Ranges", "bytes");
         response.setHeader("ETag", eTag);
         response.setDateHeader("Last-Modified", lastModified);
         response.setDateHeader("Expires", expires);
 
-
         // Send requested file (part(s)) to client ------------------------------------------------
-
         // Prepare streams.
         RandomAccessFile input = null;
         OutputStream output = null;
@@ -255,7 +237,7 @@ public class FileController {
                     if (acceptsGzip) {
                         // The browser accepts GZIP, so GZIP the content.
                         response.setHeader("Content-Encoding", "gzip");
-                        output = new GZIPOutputStream(output, DEFAULT_BUFFER_SIZE);
+                        output = new GZIPOutputStream(output, FileControllerUtils.DEFAULT_BUFFER_SIZE);
                     } else {
                         // Content length is not directly predictable in case of GZIP.
                         // So only add it if there is no means of GZIP, else browser will hang.
@@ -263,7 +245,7 @@ public class FileController {
                     }
 
                     // Copy full range.
-                    copy(input, output, r.start, r.length);
+                    FileControllerUtils.copy(input, output, r.start, r.length);
                 }
 
             } else if (ranges.size() == 1) {
@@ -277,13 +259,13 @@ public class FileController {
 
                 if (content) {
                     // Copy single part range.
-                    copy(input, output, r.start, r.length);
+                    FileControllerUtils.copy(input, output, r.start, r.length);
                 }
 
             } else {
 
                 // Return multiple parts of file.
-                response.setContentType("multipart/byteranges; boundary=" + MULTIPART_BOUNDARY);
+                response.setContentType("multipart/byteranges; boundary=" + FileControllerUtils.MULTIPART_BOUNDARY);
                 response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT); // 206.
 
                 if (content) {
@@ -294,137 +276,24 @@ public class FileController {
                     for (Range r : ranges) {
                         // Add multipart boundary and header fields for every range.
                         sos.println();
-                        sos.println("--" + MULTIPART_BOUNDARY);
+                        sos.println("--" + FileControllerUtils.MULTIPART_BOUNDARY);
                         sos.println("Content-Type: " + contentType);
                         sos.println("Content-Range: bytes " + r.start + "-" + r.end + "/" + r.total);
 
                         // Copy single part range of multi part range.
-                        copy(input, output, r.start, r.length);
+                        FileControllerUtils.copy(input, output, r.start, r.length);
                     }
 
                     // End with multipart boundary.
                     sos.println();
-                    sos.println("--" + MULTIPART_BOUNDARY + "--");
+                    sos.println("--" + FileControllerUtils.MULTIPART_BOUNDARY + "--");
                 }
             }
         } finally {
             // Gently close streams.
-            close(output);
-            close(input);
+            FileControllerUtils.close(output);
+            FileControllerUtils.close(input);
         }
     }
 
-        /**
-     * Returns true if the given accept header accepts the given value.
-     * @param acceptHeader The accept header.
-     * @param toAccept The value to be accepted.
-     * @return True if the given accept header accepts the given value.
-     */
-    private static boolean accepts(String acceptHeader, String toAccept) {
-        String[] acceptValues = acceptHeader.split("\\s*(,|;)\\s*");
-        Arrays.sort(acceptValues);
-        return Arrays.binarySearch(acceptValues, toAccept) > -1
-            || Arrays.binarySearch(acceptValues, toAccept.replaceAll("/.*$", "/*")) > -1
-            || Arrays.binarySearch(acceptValues, "*/*") > -1;
-    }
-
-    /**
-     * Returns true if the given match header matches the given value.
-     * @param matchHeader The match header.
-     * @param toMatch The value to be matched.
-     * @return True if the given match header matches the given value.
-     */
-    private static boolean matches(String matchHeader, String toMatch) {
-        String[] matchValues = matchHeader.split("\\s*,\\s*");
-        Arrays.sort(matchValues);
-        return Arrays.binarySearch(matchValues, toMatch) > -1
-            || Arrays.binarySearch(matchValues, "*") > -1;
-    }
-
-    /**
-     * Returns a substring of the given string value from the given begin index to the given end
-     * index as a long. If the substring is empty, then -1 will be returned
-     * @param value The string value to return a substring as long for.
-     * @param beginIndex The begin index of the substring to be returned as long.
-     * @param endIndex The end index of the substring to be returned as long.
-     * @return A substring of the given string value as long or -1 if substring is empty.
-     */
-    private static long sublong(String value, int beginIndex, int endIndex) {
-        String substring = value.substring(beginIndex, endIndex);
-        return (substring.length() > 0) ? Long.parseLong(substring) : -1;
-    }
-
-    /**
-     * Copy the given byte range of the given input to the given output.
-     * @param input The input to copy the given range to the given output for.
-     * @param output The output to copy the given range from the given input for.
-     * @param start Start of the byte range.
-     * @param length Length of the byte range.
-     * @throws IOException If something fails at I/O level.
-     */
-    private static void copy(RandomAccessFile input, OutputStream output, long start, long length)
-        throws IOException
-    {
-        byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
-        int read;
-
-        if (input.length() == length) {
-            // Write full range.
-            while ((read = input.read(buffer)) > 0) {
-                output.write(buffer, 0, read);
-            }
-        } else {
-            // Write partial range.
-            input.seek(start);
-            long toRead = length;
-
-            while ((read = input.read(buffer)) > 0) {
-                if ((toRead -= read) > 0) {
-                    output.write(buffer, 0, read);
-                } else {
-                    output.write(buffer, 0, (int) toRead + read);
-                    break;
-                }
-            }
-        }
-    }
-
-    /**
-     * Close the given resource.
-     * @param resource The resource to be closed.
-     */
-    private static void close(Closeable resource) {
-        if (resource != null) {
-            try {
-                resource.close();
-            } catch (IOException ignore) {
-                // Ignore IOException. If you want to handle this anyway, it might be useful to know
-                // that this will generally only be thrown when the client aborted the request.
-            }
-        }
-    }
-    
-        /**
-     * This class represents a byte range.
-     */
-    protected class Range {
-        long start;
-        long end;
-        long length;
-        long total;
-
-        /**
-         * Construct a byte range.
-         * @param start Start of the byte range.
-         * @param end End of the byte range.
-         * @param total Total length of the byte source.
-         */
-        public Range(long start, long end, long total) {
-            this.start = start;
-            this.end = end;
-            this.length = end - start + 1;
-            this.total = total;
-        }
-
-    }
 }
