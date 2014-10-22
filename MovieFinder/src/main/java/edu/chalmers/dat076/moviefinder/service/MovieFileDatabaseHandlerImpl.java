@@ -33,34 +33,34 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
 
     @Override
     @Transactional
-    public boolean saveFile(String path, String name) {
-        TemporaryMedia temporaryMedia = titleParser.parseMedia(name);
-        if (temporaryMedia.IsMovie()) {
-            OmdbMediaResponse omdbData = omdbHandler.getByTitleYear(temporaryMedia.getName(), temporaryMedia.getYear());
-            if (omdbData == null) {
-                return false;
-            } else {
-                Movie movie = new Movie(path, omdbData);
-                try {
-                    movieRepository.save(movie);
-                } catch (DataIntegrityViolationException e) {
-                    return false;
+    public void saveFile(final String path, final String name) {
+        Runnable r = new Runnable() {
+            @Override
+            @Transactional
+            public void run() {
+                TemporaryMedia temporaryMedia = titleParser.parseMedia(name);
+                if (temporaryMedia.IsMovie()) {
+                    OmdbMediaResponse omdbData = omdbHandler.getByTitleYear(temporaryMedia.getName(), temporaryMedia.getYear());
+                    if (omdbData != null) {
+                        Movie movie = new Movie(path, omdbData);
+                        try {
+                            movieRepository.save(movie);
+                        } catch (DataIntegrityViolationException e) {
+                        }
+                    }
+                } else {
+                    try {
+                        Movie movie = new Movie(path, tvdbHandler.getEpisodeAndSerie(temporaryMedia));
+                        try {
+                            movieRepository.save(movie);
+                        } catch (DataIntegrityViolationException e) {
+                        }
+                    } catch (IOException | NullPointerException e) {
+                    }
                 }
             }
-        } else {
-            try {
-                Movie movie = new Movie(path, tvdbHandler.getEpisodeAndSerie(temporaryMedia));
-                try {
-                    movieRepository.save(movie);
-                } catch (DataIntegrityViolationException e) {
-                    return false;
-                }
-            } catch (IOException | NullPointerException e) {
-                return false;
-            }
-        }
-
-        return true;
+        };
+        new Thread(r).start();
     }
 
     @Override
