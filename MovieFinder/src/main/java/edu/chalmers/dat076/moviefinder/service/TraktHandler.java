@@ -12,6 +12,7 @@ import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
 import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktResponse;
+import edu.chalmers.dat076.moviefinder.model.TraktShowReponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,11 +20,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * A class for getting information about a movie from OMDB.
@@ -32,10 +29,6 @@ import org.springframework.web.client.RestTemplate;
  */
 @Service
 public class TraktHandler {
-
-    @Autowired
-    @Qualifier("JacksonHtmlRestTemplate")
-    RestTemplate restTemplate;
 
     /**
      * Looks up omdb data by Title and if possible year. Best used with movies
@@ -74,6 +67,20 @@ public class TraktHandler {
         } catch (IOException ex) {
             return null;
         }
+    }
+
+    public TraktShowReponse getByShowName(String title) {
+        String url = "http://api.trakt.tv/show/summary.json/a93c5b3dee40604933b1b8069883a844/" + title.replace(" ", "-");
+        try {
+            TraktShowReponse showData = new Gson().fromJson(readJsonFromUrl(url), TraktShowReponse.class);
+            if (showData.getTitle() == null) {
+                return null;
+            }
+            return showData;
+        } catch (IOException ex) {
+            return null;
+        }
+
     }
 
     public TraktEpisodeResponse getBySeasonEpisode(String title, int season, int episode) {
