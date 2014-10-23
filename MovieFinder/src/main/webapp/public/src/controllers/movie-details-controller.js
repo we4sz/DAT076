@@ -9,8 +9,8 @@
                 this.movie = movieDetailsCtrlData;
 
                 this.video = function () {
-                    return $sce.trustAsResourceUrl("api/files/stream/" + movieDetailsCtrlData.id);
+                    return $sce.trustAsResourceUrl('api/files/stream/' + movieDetailsCtrlData.id);
                 };
-                
+
             });
 })();
