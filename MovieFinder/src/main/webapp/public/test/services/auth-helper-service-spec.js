@@ -62,6 +62,16 @@ describe('Service: movieFinder.services.authHelper', function () {
             authHelperService.redirectToAttemptRoute();
             expect(location.path()).toBe('/someRoute');
         });
+
+        it('should not overwrite the saved path if multiple calls on same route', function() {
+            location.path('/someRoute');
+            authHelperService.redirectToLoginPage();
+            authHelperService.redirectToLoginPage();
+            expect(location.path()).toBe(AUTH_LOGIN_PATH);
+
+            authHelperService.redirectToAttemptRoute();
+            expect(location.path()).toBe('/someRoute');
+        });
     });
 
 
