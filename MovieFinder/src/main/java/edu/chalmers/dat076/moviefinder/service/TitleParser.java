@@ -79,7 +79,7 @@ public class TitleParser {
                 mySb.replace(i, i + 1, " ");
                 
                 tmpYear = checkForYear(wordSb);
-                if (tmpYear > 1900 && tmpYear < thisYear) {
+                if (tmpYear > 1900 && tmpYear <= thisYear) {
                     year = tmpYear;
                     deleteYear = true;
                 }
@@ -108,7 +108,7 @@ public class TitleParser {
                     break;
                 }
                 tmpYear = checkForYear(wordSb);
-                if (tmpYear > 1900 && tmpYear < thisYear) {
+                if (tmpYear > 1900 && tmpYear <= thisYear) {
                     year = tmpYear;
                     deleteYear = true;
                 }
@@ -119,7 +119,7 @@ public class TitleParser {
                 } else if (mySb.charAt(i) == '(') {
                     tmpYear = removeUntil(mySb, i, ')');
                 }
-                if (tmpYear > 1900 && tmpYear < thisYear) {
+                if (tmpYear > 1900 && tmpYear <= thisYear) {
                     year = tmpYear;
                     deleteYear = false;
                 }
@@ -134,7 +134,7 @@ public class TitleParser {
             mySb.delete(mySb.length() - wordSb.length(), mySb.length());
         } else {
             tmpYear = checkForYear(wordSb);
-            if (tmpYear > 1900 && tmpYear < thisYear) {
+            if (tmpYear > 1900 && tmpYear <= thisYear) {
                 year = tmpYear;
                 deleteYear = true;
             }
