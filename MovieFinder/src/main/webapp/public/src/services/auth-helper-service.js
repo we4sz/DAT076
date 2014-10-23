@@ -35,14 +35,18 @@
                 },
                 /**
                  * Saves the current path, then redirect to the login page.
-                 * Also sets the reason for login to the reason provided.
+                 * Also sets the reason for login to the reason provided. Has no
+                 * effect if called more than one time for the same route.
                  * @param  {String} [reason] The reason why the login is requried.
                  *                           Default to undefined, a user-initiated login.
                  */
                 'redirectToLoginPage': function(reason) {
-                    this.saveAttemptRoute();
-                    _reason = reason;
-                    $location.path(AUTH_LOGIN_PATH);
+                    // Don't do anything if we have already started a redirect.
+                    if($location.path() !== AUTH_LOGIN_PATH) {
+                        this.saveAttemptRoute();
+                        _reason = reason;
+                        $location.path(AUTH_LOGIN_PATH);
+                    }
                 },
                 /**
                  * Returns the reason for why the user must login.

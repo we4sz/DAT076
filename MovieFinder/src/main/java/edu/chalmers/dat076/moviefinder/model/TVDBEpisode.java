@@ -21,7 +21,7 @@ public class TVDBEpisode {
     private String id;
     @Element
     private String seasonid;
-    @Element
+    @Element(defaultValue = "-1")
     private int EpisodeNumber;
     @Element
     private String EpisodeName;
@@ -35,21 +35,21 @@ public class TVDBEpisode {
     private String Writer;
     @Element
     private String Overview;
-    @Element
+    @Element(defaultValue = "-1")
     private int absolute_number;
     @Element
     private String filename;
     @Element
     private String seriesid;
-    @Element
+    @Element(defaultValue = "-1")
     private int thumb_width;
-    @Element
+    @Element(defaultValue = "-1")
     private int thumb_height;
     @Element
     private String IMDB_ID;
-    @Element
+    @Element(defaultValue = "-1")
     private double Rating;
-    @Element
+    @Element(defaultValue = "-1")
     private int SeasonNumber;
     @Element
     private String Language;
