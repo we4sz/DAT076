@@ -5,6 +5,7 @@
  */
 package edu.chalmers.dat076.moviefinder.listener;
 
+import java.nio.file.Path;
 import java.util.List;
 
 
@@ -19,20 +20,20 @@ public interface FileSystemListener {
      * @param path The absolute path to the file. Includes the name of the file.
      * @param name The name of the file.
      */
-    public void initFile(String path, String name);
+    public void initFiles(List<Path> paths, Path basePath);
 
     /**
      * newFile is called when a new file is added to a directory that is being watched.
      * @param path The absolute path to the file. Includes the name of the file.
      * @param name The name of the file.
      */
-    public void newFile(String path, String name);
+    public void newFile(Path path);
 
     /**
      * oldPath is called when a file is removed/renamed in a directory that is being watched.
      * @param path The absolute path to the file. Includes the name of the file.
      * @param name The name of the file.
      */
-    public void oldPath(String path, String name);
+    public void oldPath(Path path);
     
 }
