@@ -68,11 +68,13 @@
         <script src="public/src/services/auth-helper-service.js"></script>
         <script src="public/src/services/history-service.js"></script>
         <script src="public/src/services/user-service.js"></script>
+        <script src="public/src/services/admin-service.js"></script>
         <script src="public/src/services/movie-service.js"></script>
         <script src="public/src/services/browse-ctrl-data-loader-service.js"></script>
         <script src="public/src/services/movie-details-ctrl-data-loader-service.js"></script>
         <!-- Controllers --> 
         <script src="public/src/controllers/app-controller.js"></script>
+        <script src="public/src/controllers/admin-controller.js"></script>
         <script src="public/src/controllers/nav-controller.js"></script>
         <script src="public/src/controllers/login-view-controller.js"></script>
         <script src="public/src/controllers/browse-controller.js"></script>
