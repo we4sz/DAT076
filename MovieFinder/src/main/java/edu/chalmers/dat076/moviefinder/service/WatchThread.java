@@ -42,7 +42,7 @@ public class WatchThread extends Thread {
     private static final List<String> videoTypes = Arrays.asList(new String[]{"avi", "mkv", "mp4","mov"});
     private Map<WatchKey, Path> keys;
     private FileSystemListener listener;
-    private final static Logger LOGGER = Logger.getLogger(FileThreadService.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(FileThreadServiceImpl.class.getName());
 
     public WatchThread(File dir) throws IOException {
         watchPath = Paths.get(dir.getAbsolutePath());
