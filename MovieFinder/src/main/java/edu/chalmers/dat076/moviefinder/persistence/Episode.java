@@ -74,15 +74,8 @@ public class Episode extends Media implements Serializable {
         this.episode = episode;
     }
 
-    /*public String getsID() {
-        return sID;
+    @Override
+    public String toString() {
+        return "Episode{" + super.toString() + "season=" + season + ", episode=" + episode + '}';
     }
-
-    public void setsID(String sID) {
-        this.sID = sID;
-    }*/
-    
-    
-    
-    
 }

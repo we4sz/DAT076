@@ -118,4 +118,14 @@ public class Series extends AbstractEntity implements Serializable {
     public void addEpisodes(Episode e) {
         this.episodes.add(e);
     }
+
+    @Override
+    public String toString() {
+        return "Series{" + "episodes=" + episodes + ", sID=" + sID
+                + ", seriesName=" + seriesName + ", status=" + status
+                + ", poster=" + poster + ", IMDB_ID=" + IMDB_ID + ", rating="
+                + rating + '}';
+    }
+    
+    
 }

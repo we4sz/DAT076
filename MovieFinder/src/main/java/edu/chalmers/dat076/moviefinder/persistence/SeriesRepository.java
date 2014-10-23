@@ -12,8 +12,12 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
- *
- * @author Carl Jansson
+ * A Series repository. Note that this interface is automagically implemented
+ * by spring-data. The method names are used by spring to generate the queries,
+ * see http://docs.spring.io/spring-data/jpa/docs/1.7.0.RELEASE/reference/html/#jpa.query-methods
+ * for all available query methods.
+ * 
+ * @author Peter, Carl Jansson
  */
 public interface SeriesRepository extends PagingAndSortingRepository<Series, Long>, JpaSpecificationExecutor<Series> {
     public Page<Series> findBySeriesNameContaining(String SeriesName, Pageable pageable);

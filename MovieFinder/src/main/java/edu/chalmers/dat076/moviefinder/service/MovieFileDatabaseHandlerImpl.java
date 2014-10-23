@@ -46,10 +46,11 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
     @Transactional
     public void saveFile(final String path, final String name) {
 
-        Runnable r = new Runnable() {
-            @Override
-            @Transactional
-            public void run() {
+        //All methods not thread safe as they are
+        //Runnable r = new Runnable() {
+          //  @Override
+            //@Transactional
+            //public void run() {
                 TemporaryMedia temporaryMedia = titleParser.parseMedia(name);
                 Movie movie = null;
 
@@ -71,6 +72,7 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                     } catch (IOException | NullPointerException e ) {
                     }
                     if (tvdbRes != null){
+                        
                         Series serie = seriesRepository.findBySID(tvdbRes.getSerie().getId());
                         if (serie == null){
                             serie = new Series(tvdbRes.getSerie());
@@ -82,24 +84,10 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                         } catch (DataIntegrityViolationException e) {
                         }
                     }
-                    /*if (tvdbRes != null){
-                        Series serie = seriesRepository.findBySID(tvdbRes.getSerie().getId());
-                        if (serie == null){
-                            serie = new Series(tvdbRes.getSerie());
-                        }
-                        try {
-                            episodeRepository.save(new Episode(path, tvdbRes));
-                            serie.addEpisodes(episodeRepository.findByFilePath(path));
-
-                            seriesRepository.save(serie);
-                        } catch (DataIntegrityViolationException e) {
-                        }
-                    }*/
                 }
-            }
-        };
-
-        new Thread(r).start();
+          //  }
+        //};
+        //new Thread(r).start();
     }
 
     @Override

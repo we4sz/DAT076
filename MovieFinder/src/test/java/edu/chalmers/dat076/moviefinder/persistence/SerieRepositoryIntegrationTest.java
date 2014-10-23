@@ -26,13 +26,17 @@ import org.springframework.test.context.ContextConfiguration;
 
 /**
  *
- * @author Peter, Carl Jansson
+ * @author Carl Jansson
  */
 @ContextConfiguration(classes = TestApplicationConfig.class)
 public class SerieRepositoryIntegrationTest extends AbstractIntegrationTest {
 
     @Autowired
     SeriesRepository repository;
+    
+    // Used to check that episodes are realy saved when added into series.
+    @Autowired
+    EpisodeRepository eRepository;
 
     @Test
     public void createSeries() {
@@ -103,6 +107,11 @@ public class SerieRepositoryIntegrationTest extends AbstractIntegrationTest {
         serieRe = repository.findBySID("estID");
         reEp = serieRe.getEpisodes();
         assertThat(reEp, hasSize(3));
-
+        
+        Episode e = eRepository.findByFilePath("path1");
+        assertEquals("title", e.getTitle());
+        
+        e = eRepository.findByFilePath("path2");
+        assertEquals("title", e.getTitle());
     }
 }
