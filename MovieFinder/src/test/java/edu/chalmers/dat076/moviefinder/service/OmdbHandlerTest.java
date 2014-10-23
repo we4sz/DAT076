@@ -71,7 +71,7 @@ public class OmdbHandlerTest {
         assertEquals(response.getImdbID(), "tt1403865");
 
         mockServer.verify();
-    }*/
+    }
 
     @Test
     public void testGetOMDBInfoByTitleYear() {
@@ -86,7 +86,7 @@ public class OmdbHandlerTest {
 
         mockServer.verify();
     }
- /*
+ 
     public void testGetNonExistingMovie() {
         // This test simulates a request for a movie that doesn't exist on OMDB
         mockServer.expect(requestTo("http://www.omdbapi.com/?t=TestTitle")).andRespond(withSuccess(
