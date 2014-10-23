@@ -1,0 +1,12 @@
+<div class="container">
+
+    <h1>Adminview</h1>
+
+    <div ng-if="adminCtrl.error">{{adminCtrl.error}}</div>
+    <div ng-if="adminCtrl.added">{{adminCtrl.added}}</div>
+    <form  ng-submit="adminCtrl.addPath()">
+    <input ng-model="adminCtrl.path" type="text" required="true"/>
+    <button  type="submit">Add path</button>
+    </form>
+
+</div>

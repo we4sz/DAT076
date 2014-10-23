@@ -49,25 +49,6 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                         } catch (DataIntegrityViolationException e) {
                         }
                     }
-                    /*} else {
-                    TVDBData tvdbRes = null;
-                    try {
-                        tvdbRes = tvdbHandler.getEpisodeAndSerie(temporaryMedia);
-                    } catch (IOException | NullPointerException e ) {
-                    }
-                    if (tvdbRes != null){
-                        
-                        Series serie = seriesRepository.findBySID(tvdbRes.getSerie().getId());
-                        if (serie == null){
-                            serie = new Series(tvdbRes.getSerie());
-                        }
-                        serie.addEpisodes(new Episode(path, tvdbRes));
-                        
-                        try {
-                            seriesRepository.save(serie);
-                    } catch (DataIntegrityViolationException e) {
-                        }*/
-                    
                 }
             }
         };

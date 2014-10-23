@@ -40,10 +40,11 @@
                             controller: 'LoginViewCtrl as loginViewCtrl'
                         })
                         .when('/admin', {
-                            template: '<h1>admin</h1>',
+                            templateUrl: 'partials/admin.html',
+                            controller: 'AdminCtrl as adminCtrl',
                             resolve: {
                                 auth: function(authHelper) {
-                                    return authHelper.restrictRoute([USER_ROLES.ADMIN]);
+                                    return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
                                 }
                             }
                         })
