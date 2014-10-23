@@ -21,7 +21,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -43,7 +42,10 @@ public class AdminController {
     private ListeningPathRepository listeningPathRepository;
 
     @Autowired
-    private MovieFileDatabaseHandler moveiDatabaseHelper;
+    private MovieFileDatabaseHandler movieDatabaseHelper;
+
+    @Autowired
+    private FileThreadService fileThreadService;
 
     @RequestMapping(value = "/addPath", method = RequestMethod.POST)
     public ResponseEntity<String> addPath(@RequestBody ListeningPath path) {
@@ -51,7 +53,7 @@ public class AdminController {
         if (f.exists() && f.isDirectory()) {
             try {
                 databaseHelper.addPath(f.toPath());
-                FileThreadService.getInstance().addListningPath(f.toPath());
+                fileThreadService.addListeningPath(f.toPath());
                 return new ResponseEntity<>(HttpStatus.OK);
             } catch (DataIntegrityViolationException e) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -66,8 +68,8 @@ public class AdminController {
         File f = new File(path.getListeningPath());
         try {
             databaseHelper.removePath(f.toPath());
-            FileThreadService.getInstance().removeListeningPath(f.toPath());
-            moveiDatabaseHelper.removeFile(f.toPath());
+            fileThreadService.removeListeningPath(f.toPath());
+            movieDatabaseHelper.removeFile(f.toPath());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NullPointerException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
