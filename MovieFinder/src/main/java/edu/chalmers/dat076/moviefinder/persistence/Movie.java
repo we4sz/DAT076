@@ -5,23 +5,6 @@
  */
 package edu.chalmers.dat076.moviefinder.persistence;
 
-import edu.chalmers.dat076.moviefinder.model.TraktActor;
-import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
-import edu.chalmers.dat076.moviefinder.model.TraktImages;
-import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
-import edu.chalmers.dat076.moviefinder.model.TraktResponse;
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktResponse;
 import java.io.Serializable;
