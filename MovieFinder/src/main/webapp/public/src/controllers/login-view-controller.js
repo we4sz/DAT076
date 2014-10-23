@@ -7,7 +7,7 @@
     'use strict';
 
     angular.module('movieFinder.controllers')
-            .controller('LoginViewCtrl', function ($scope, authHelper, user) {
+            .controller('LoginViewCtrl', function ($location, $scope, authHelper, user) {
                 var _this = this;
 
                 // If we get here without a reason and the user is
@@ -24,15 +24,15 @@
                     _this.loginReason = newReason;
                 });
 
+                // Reset the form
+                delete $scope.signInUsername;
+                delete $scope.signInPassword;
                 this.error = {
                     signIn: ''
                 };
 
                 this.login = function(username, password) {
                     user.login(username, password).success(function(){
-                        delete $scope.signInUsername;
-                        delete $scope.signInPassword;
-                        $scope.signInForm.$setPristine();
                         authHelper.redirectToAttemptRoute();
                     }).error(function(data, status){
                         if(status === 401) {
@@ -41,6 +41,10 @@
                             _this.error.signIn = 'An unexpected error occurred.';
                         }
                     });
+                };
+
+                this.cancelLogin = function() {
+                    $location.path('/');
                 };
             });
 })();

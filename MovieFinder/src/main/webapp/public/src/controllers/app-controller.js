@@ -13,17 +13,16 @@
             .controller('AppCtrl', function ($rootScope, $route, $timeout, AUTH_EVENTS, user, authHelper) {
                 var _this = this;
 
-                // Flag used to delay showing of loading animation a few
-                // ms to make sure the route actually has something to load
-                var stillLoading = false;
+                // Promise set for the loading animation. Used so that the promise
+                // can be canceled when route change finishes.
+                var showLoadingAnimationPromise;
 
                 this.loading = {
                     isLoading: false
                 };
 
-                // An object for holding global error state. Used so 
-                // we can show something if a global error occures, like
-                // a route faling to load.
+                // An object for holding global error state. Used so we can show
+                // something if a global error occurs, like a route failed to load.
                 this.error = {
                     isError: false,
                     errorMessage: null
@@ -36,50 +35,30 @@
                     // Only show loading anim if route has something to load
                     if (next && next.resolve) {
                         // Even with something to load, make sure loading takes
-                        // atleast 100 ms before showing loading anim, or we
+                        // at least 100 ms before showing loading anim, or we
                         // are just wasting our users time
-                        stillLoading = true;
-                        $timeout(function () {
-                            if (stillLoading) {
-                                _this.loading.isLoading = true;
-                            }
+                        showLoadingAnimationPromise = $timeout(function () {
+                            _this.loading.isLoading = true;
                         }, 100);
                     }
                     _this.error.isError = false;
                 });
 
                 $rootScope.$on('$routeChangeSuccess', function () {
-                    stillLoading = false;
+                    $timeout.cancel(showLoadingAnimationPromise);
                     _this.loading.isLoading = false;
-                });
-
-                // Events for when the user is logged in or logged out. Simply
-                // reload the route to make sure user is authenticated still
-                $rootScope.$on(AUTH_EVENTS.loginSuccessful, $route.reload);
-                $rootScope.$on(AUTH_EVENTS.logoutSuccessful, $route.reload);
-
-                // Events indicating that the user model is out of sync with the server,
-                // force a re-login
-                $rootScope.$on(AUTH_EVENTS.loginRequired, function() {
-                    user.unset();
-                    authHelper.redirectToLoginPage(AUTH_EVENTS.loginRequired);
-                });
-                $rootScope.$on(AUTH_EVENTS.forbidden, function () {
-                    user.unset();
-                    authHelper.redirectToLoginPage(AUTH_EVENTS.forbidden);
                 });
 
                 // Route change errors indicate an error loading a route due to some promise not
                 // being resolved.
                 $rootScope.$on('$routeChangeError', function (event, current, previous, rejection) {
+                    $timeout.cancel(showLoadingAnimationPromise);
                     _this.loading.isLoading = false;
 
                     if (rejection === AUTH_EVENTS.loginRequired) {
-                        // Login is required for this view
-                        authHelper.redirectToLoginPage(AUTH_EVENTS.loginRequired);
+                        $rootScope.$broadcast(AUTH_EVENTS.loginRequired);
                     } else if (rejection === AUTH_EVENTS.forbidden) {
-                        // The user's role is not allowed on this view
-                        authHelper.redirectToLoginPage(AUTH_EVENTS.forbidden);
+                        $rootScope.$broadcast(AUTH_EVENTS.forbidden);
                     } else {
                         // Unknown error, show the rejection message
                         _this.error.isError = true;
@@ -91,6 +70,26 @@
                             _this.error.errorMessage = 'An unexpected error occurred while loading the page.';
                         }
                     }
+                });
+
+                // Event triggered when a login is required.
+                // Unset the local user model and redirect to the login page.
+                $rootScope.$on(AUTH_EVENTS.loginRequired, function() {
+                    user.unset();
+                    authHelper.redirectToLoginPage(AUTH_EVENTS.loginRequired);
+                });
+
+                // Event triggered when a user's role is not authorized.
+                // Redirect to the login page, but do not unset the user reference
+                // as the forbidden means user is logged in, just not the right role.
+                $rootScope.$on(AUTH_EVENTS.forbidden, function () {
+                    authHelper.redirectToLoginPage(AUTH_EVENTS.forbidden);
+                });
+
+                // Event triggered when the user is logged out.
+                // Reload current route to make sure user is still authenticated.
+                $rootScope.$on(AUTH_EVENTS.logoutSuccessful, function(){
+                    $route.reload();
                 });
             });
 })();
