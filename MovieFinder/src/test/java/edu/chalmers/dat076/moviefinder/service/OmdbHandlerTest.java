@@ -28,10 +28,10 @@ import org.springframework.web.client.RestTemplate;
  *
  * @author Carl Jansson
  */
-@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
-@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
+//@RunWith(SpringJUnit4ClassRunner.class)
 public class OmdbHandlerTest {
-
+/*
     @Configuration
     static class ContextConfiguration {
         @Bean
@@ -58,7 +58,7 @@ public class OmdbHandlerTest {
         mockServer = MockRestServiceServer.createServer(restTemplate);
     }
 
-/*
+
     @Test
     public void testGetOMDBInfoByTitle()  {
         mockServer.expect(requestTo("http://www.omdbapi.com/?t=TestTitle")).andRespond(withSuccess(
