@@ -1,11 +1,10 @@
 package edu.chalmers.dat076.moviefinder.service;
 
-import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
+import edu.chalmers.dat076.moviefinder.model.TraktResponse;
 import edu.chalmers.dat076.moviefinder.persistence.Movie;
 import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,49 +20,42 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
-    
+
     @Autowired
-    private OmdbHandler omdbHandler;
-    
+    private TraktHandler traktHandler;
+
     @Autowired
     private MovieRepository movieRepository;
-    
+
     @Override
     public void saveFile(final Path path) {
         Runnable r = new Runnable() {
             @Override
             @Transactional
             public void run() {
-                
+
                 TemporaryMedia temporaryMedia = new TitleParser().parseMedia(path.getFileName().toString());
                 Movie movie = null;
-                
-                if (temporaryMedia.IsMovie()) {
-                    OmdbMediaResponse omdbData = omdbHandler.getByTmpMedia(temporaryMedia);
-                    if (omdbData != null) {
-                        movie = new Movie(path.toString(), omdbData);
-                    }
-                } else {
-                    try {
-                        movie = new Movie(path.toString(), new TVDBHandler().getEpisodeAndSerie(temporaryMedia));
-                    } catch (IOException | NullPointerException e) {
-                    }
-                }
-                
-                if (movie != null) {
-                    try {
-                        synchronized (movieRepository) {
-                            movieRepository.save(movie);
+
+                TraktResponse traktData = traktHandler.getByTmpMedia(temporaryMedia);
+                if (traktData != null) {
+                    movie = new Movie(path.toString(), traktData);
+
+                    if (movie != null) {
+                        try {
+                            synchronized (movieRepository) {
+                                movieRepository.save(movie);
+                            }
+                        } catch (DataIntegrityViolationException e) {
                         }
-                    } catch (DataIntegrityViolationException e) {
                     }
                 }
             }
         };
-        
+
         new Thread(r).start();
     }
-    
+
     @Override
     public void setPaths(List<Path> paths) {
         Iterable<Movie> movies = movieRepository.findAll();
@@ -80,7 +72,7 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
             }
         }
     }
-    
+
     @Override
     @Transactional
     public void updateFiles(List<Path> paths, Path basePath) {
@@ -96,7 +88,7 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                 }
             }
         }
-        
+
         for (Path p : paths) {
             saveFile(p);
             for (int i = 0; i < movies.size(); i++) {
@@ -106,12 +98,12 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                 }
             }
         }
-        
+
         for (Movie m : movies) {
             removeFile(new File(m.getFilePath()).toPath());
         }
     }
-    
+
     @Override
     @Transactional
     public void removeFile(Path path) {

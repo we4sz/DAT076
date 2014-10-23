@@ -5,15 +5,22 @@
  */
 package edu.chalmers.dat076.moviefinder.persistence;
 
-import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
-import edu.chalmers.dat076.moviefinder.model.TVDBData;
+import edu.chalmers.dat076.moviefinder.model.TraktActor;
+import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
+import edu.chalmers.dat076.moviefinder.model.TraktImages;
+import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
+import edu.chalmers.dat076.moviefinder.model.TraktResponse;
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 
 /**
@@ -38,9 +45,10 @@ public class Movie extends AbstractEntity implements Serializable {
     @OrderColumn
     private List<String> genres;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @OrderColumn
-    private List<String> actors;
+    //@ElementCollection(fetch = FetchType.EAGER)
+    //@CollectionTable(name = "Actors", joinColumns = @JoinColumn(name = "movie_id"))
+     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Actor> actors;
 
     private String imdbId;
     private String poster;
@@ -56,41 +64,71 @@ public class Movie extends AbstractEntity implements Serializable {
         this.title = title;
     }
 
-    public Movie(String filePath, OmdbMediaResponse omdb) {
-        this.filePath = filePath;
-        if (omdb != null) {
-            title = omdb.getTitle();
-            imdbRating = omdb.getImdbRating();
-            releaseYear = Integer.parseInt(omdb.getYear().substring(0, 4));
-            plot = omdb.getPlot();
-            imdbId = omdb.getImdbID();
-            if (!omdb.getRuntime().equals("N/A")) {
-                runtime = Integer.parseInt(omdb.getRuntime().substring(0, omdb.getRuntime().indexOf(" ")));
-            }
-            actors = Arrays.asList(omdb.getActors().split(", "));
-            genres = Arrays.asList(omdb.getGenre().split(", "));
-            poster = omdb.getPoster();
-            rated = omdb.getRated();
-            country = omdb.getCountry();
-            director = omdb.getDirector();
-        }
-    }
-
-    public Movie(String filePath, TVDBData data) {
+    public Movie(String filePath, TraktResponse data) {
         this.filePath = filePath;
         if (data != null) {
-            title = data.getEpisode().getEpisodeName();
-            imdbRating = data.getEpisode().getRating();
-            poster = "http://thetvdb.com/banners/"+data.getSerie().getPoster();
-            releaseYear = Integer.parseInt(data.getEpisode().getFirstAired().substring(0, 4));
-            plot = data.getEpisode().getOverview();
-            runtime = data.getSerie().getRuntime();
-            actors = Arrays.asList(data.getSerie().getActors().split("\\|"));
-            genres = Arrays.asList(data.getSerie().getGenre().split("\\|"));
+            if (data instanceof TraktMovieResponse) {
+                setMovie((TraktMovieResponse) data);
+            } else {
+                setSerie((TraktEpisodeResponse) data);
+            }
         }
     }
 
-    public List<String> getActors() {
+    private void setSerie(TraktEpisodeResponse data) {
+        title = data.getEpisode().getTitle();
+        imdbRating = data.getEpisode().getRatings().getPercentage() / 10.0;
+        Calendar c = new GregorianCalendar();
+        c.setTimeInMillis(data.getEpisode().getFirst_aired());
+        releaseYear = c.get(Calendar.YEAR);
+        plot = data.getEpisode().getOverview();
+        imdbId = data.getEpisode().getImdb_id();
+        runtime = data.getShow().getRuntime();
+        actors = new LinkedList<>();
+        genres = data.getShow().getGenres();
+        poster = getImage(data.getShow().getImages());
+        rated = data.getShow().getCertification();
+        director = null;
+    }
+
+    private void setMovie(TraktMovieResponse data) {
+        title = data.getTitle();
+        imdbRating = data.getRatings().getPercentage() / 10.0;
+        releaseYear = data.getYear();
+        plot = data.getOverview();
+        imdbId = data.getImdb_id();
+        runtime = data.getRuntime();
+        actors = toActors(data.getPeople().getActors());
+        genres = data.getGenres();
+        poster = getImage(data.getImages());
+        rated = data.getCertification();
+        director = data.getPeople().getDirectors().size() > 0 ? data.getPeople().getDirectors().get(0).getName() : null;
+    }
+
+    private List<Actor> toActors(List<TraktActor> actors) {
+        List<Actor> _a = new LinkedList<>();
+        for (TraktActor a : actors) {
+            _a.add(new Actor(a));
+        }
+        return _a;
+    }
+
+    private String getImage(TraktImages i) {
+        if (i.getPoster() != null) {
+            return i.getPoster();
+        } else if (i.getFanart() != null) {
+            return i.getFanart();
+        } else if (i.getBanner() != null) {
+            return i.getBanner();
+        } else if (i.getScreen() != null) {
+            return i.getScreen();
+        } else if (i.getHeadshot() != null) {
+            return i.getHeadshot();
+        }
+        return null;
+    }
+
+    public List<Actor> getActors() {
         return actors;
     }
 
