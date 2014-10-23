@@ -19,5 +19,5 @@ public interface SeriesRepository extends PagingAndSortingRepository<Series, Lon
     public Page<Series> findBySeriesNameContaining(String SeriesName, Pageable pageable);
 
     public Series findBySID(String sID);
-        
+
 }

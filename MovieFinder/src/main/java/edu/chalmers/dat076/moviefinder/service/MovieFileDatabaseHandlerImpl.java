@@ -7,6 +7,8 @@ import edu.chalmers.dat076.moviefinder.persistence.Episode;
 import edu.chalmers.dat076.moviefinder.persistence.EpisodeRepository;
 import edu.chalmers.dat076.moviefinder.persistence.Movie;
 import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
+import edu.chalmers.dat076.moviefinder.persistence.Series;
+import edu.chalmers.dat076.moviefinder.persistence.SeriesRepository;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -36,6 +38,9 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
     
     @Autowired
     private EpisodeRepository episodeRepository;
+    
+    @Autowired
+    private SeriesRepository seriesRepository;
 
     @Override
     @Transactional
@@ -60,20 +65,38 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                         }
                     }
                 } else {
+                    TVDBData tvdbRes = null;
                     try {
-                        TVDBData tvdbRes = tvdbHandler.getEpisodeAndSerie(temporaryMedia);
-
-                        //tvdbRes.getSerie().getId()
-                        //tvdbRes.getEpisode().getSeriesid()
-                        //TODO SAVE SERIES!!!!!
-                        Episode episode = new Episode(path, tvdbRes);
-                        episodeRepository.save(episode);
-                        //movie = new Movie(path, tvdbRes);
-                    } catch (IOException | NullPointerException | DataIntegrityViolationException e) {
+                        tvdbRes = tvdbHandler.getEpisodeAndSerie(temporaryMedia);
+                    } catch (IOException | NullPointerException e ) {
                     }
+                    if (tvdbRes != null){
+                        Series serie = seriesRepository.findBySID(tvdbRes.getSerie().getId());
+                        if (serie == null){
+                            serie = new Series(tvdbRes.getSerie());
+                        }
+                        serie.addEpisodes(new Episode(path, tvdbRes));
+                        
+                        try {
+                            seriesRepository.save(serie);
+                        } catch (DataIntegrityViolationException e) {
+                        }
+                    }
+                    /*if (tvdbRes != null){
+                        Series serie = seriesRepository.findBySID(tvdbRes.getSerie().getId());
+                        if (serie == null){
+                            serie = new Series(tvdbRes.getSerie());
+                        }
+                        try {
+                            episodeRepository.save(new Episode(path, tvdbRes));
+                            serie.addEpisodes(episodeRepository.findByFilePath(path));
+
+                            seriesRepository.save(serie);
+                        } catch (DataIntegrityViolationException e) {
+                        }
+                    }*/
                 }
             }
-
         };
 
         new Thread(r).start();

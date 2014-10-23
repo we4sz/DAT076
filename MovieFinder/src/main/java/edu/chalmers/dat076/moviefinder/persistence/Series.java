@@ -7,8 +7,8 @@ package edu.chalmers.dat076.moviefinder.persistence;
 
 import edu.chalmers.dat076.moviefinder.model.TVDBSerie;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,12 +42,14 @@ public class Series extends AbstractEntity implements Serializable {
     }
 
     public Series(String seriesName, String sID) {
+        this.episodes = new ArrayList<>();
         this.seriesName = seriesName;
         this.sID = sID;
     }
 
     public Series(TVDBSerie data) {
         if (data != null) {
+            this.episodes = new ArrayList<>();
             this.sID = data.getId();
             this.seriesName = data.getSeriesName();
             this.status = data.getStatus();
