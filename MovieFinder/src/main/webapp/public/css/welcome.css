@@ -1,8 +1,8 @@
 .featurette-divider {
-    margin: 80px 0; /* Space out the Bootstrap <hr> more */
+    margin: 80px 0;
 }
 
-.featureImage {
+.feature-image {
     display:block;
     text-align:center;
     margin-bottom: auto;
@@ -10,7 +10,6 @@
     font-size: 300px;
 }
 
-/* Thin out the marketing headings */
 .featurette-heading {
     font-weight: 300;
     line-height: 1;

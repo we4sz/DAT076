@@ -5,7 +5,12 @@
 (function () {
     'use strict';
     angular.module('movieFinder.controllers')
-            .controller('MovieDetailsCtrl', function (movieDetailsCtrlData) {
+            .controller('MovieDetailsCtrl', function (movieDetailsCtrlData, $sce) {
                 this.movie = movieDetailsCtrlData;
+
+                this.video = function () {
+                    return $sce.trustAsResourceUrl('api/files/stream/' + movieDetailsCtrlData.id);
+                };
+
             });
 })();

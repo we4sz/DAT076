@@ -36,8 +36,10 @@
         <link href="public/css/loading.css" rel="stylesheet">
         <!-- Movie Details -->
         <link href="public/css/movie-details.css" rel="stylesheet">
-        <!-- Home -->
-        <link href="public/css/home.css" rel="stylesheet">
+        <!-- Welcome -->
+        <link href="public/css/welcome.css" rel="stylesheet">
+        <!-- Browse -->
+        <link href="public/css/browse.css" rel="stylesheet">
 
     </head>
     <body class="no-js">
