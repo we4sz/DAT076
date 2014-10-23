@@ -69,8 +69,7 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                         Episode episode = new Episode(path, tvdbRes);
                         episodeRepository.save(episode);
                         //movie = new Movie(path, tvdbRes);
-                    } catch (IOException | NullPointerException e) {
-                    } catch (DataIntegrityViolationException e) {
+                    } catch (IOException | NullPointerException | DataIntegrityViolationException e) {
                     }
                 }
             }

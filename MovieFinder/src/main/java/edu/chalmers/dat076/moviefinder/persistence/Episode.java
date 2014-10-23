@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 
 /**
@@ -27,7 +26,7 @@ public class Episode extends Media implements Serializable {
     @Column(nullable = false)
     private Integer episode;
     
-    
+    //private String sID;
     
     protected Episode() {
     }
@@ -44,6 +43,7 @@ public class Episode extends Media implements Serializable {
             setTitle(data.getEpisode().getEpisodeName());
             this.season = data.getEpisode().getSeasonNumber();
             this.episode = data.getEpisode().getEpisodeNumber();
+            //this.sID = data.getSerie().getId();
             setImdbRating(data.getEpisode().getRating());
             setPoster("http://thetvdb.com/banners/"+data.getSerie().getPoster());
             setReleaseYear(Integer.parseInt(data.getEpisode().getFirstAired().substring(0, 4)));
@@ -73,6 +73,16 @@ public class Episode extends Media implements Serializable {
     public void setEpisode(Integer episode) {
         this.episode = episode;
     }
+
+    /*public String getsID() {
+        return sID;
+    }
+
+    public void setsID(String sID) {
+        this.sID = sID;
+    }*/
+    
+    
     
     
 }
