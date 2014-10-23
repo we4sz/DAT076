@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package edu.chalmers.dat076.moviefinder.persistence;
 
 import edu.chalmers.dat076.moviefinder.test.AbstractIntegrationTest;
@@ -11,6 +12,7 @@ import org.hamcrest.Matchers;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +24,25 @@ import org.springframework.test.context.ContextConfiguration;
 
 /**
  *
- * @author Peter
+ * @author Peter, Carl Jansson
  */
 @ContextConfiguration(classes = TestApplicationConfig.class)
-public class MovieRepositoryIntegrationTest extends AbstractIntegrationTest {
-
-    @Autowired
-    MovieRepository repository;
+public class EpisodeRepositoryIntegrationTest extends AbstractIntegrationTest {
     
+    @Autowired
+    EpisodeRepository repository;
+
     @Test
-    public void createMovie() {
-        Movie movie = new Movie("MovieTest2", "movieTest2.avi");
-        repository.save(movie);
+    public void createEpisode() {
+        Episode episode = new Episode("EpisodeTest2", "EpisodeTest2.avi", 1, 1);
+        repository.save(episode);
     }
 
     @Test(expected = DataIntegrityViolationException.class)
-    public void createMultipleMoviesWithSameFilePath() {
+    public void createMultipleEpisodesWithSameFilePath() {
         // File path is unique, this should not be possible.
-        Movie m1 = new Movie("MovieTest2", "movieTest2.avi");
-        Movie m2 = new Movie("MovieTest3", "movieTest2.avi");
+        Episode m1 = new Episode("EpisodeTest2", "EpisodeTest2.avi", 1, 1);
+        Episode m2 = new Episode("EpisodeTest3", "EpisodeTest2.avi", 1, 2);
         repository.save(m1);
         repository.save(m2);
     }
@@ -49,15 +51,16 @@ public class MovieRepositoryIntegrationTest extends AbstractIntegrationTest {
     @SuppressWarnings("unchecked")
     public void findByTitleContaining() {
         Pageable pageable = new PageRequest(0, 1);
-        Page<Movie> page = repository.findByTitleContaining("testMovie", pageable);
-        
+        Page<Episode> page = repository.findByTitleContaining("testEpisode", pageable);
+        assertEquals("testEpisode1", page.getContent().get(0).getTitle());
         assertThat(page.getContent(), hasSize(1));
-        assertThat(page, Matchers.<Movie> hasItems(hasProperty("title", is("testMovie1"))));
+        assertThat(page, Matchers.<Episode> hasItems(hasProperty("title", is("testEpisode1"))));
     }
 
     @Test
-    public void findByFileName() {
-        Movie m = repository.findByFilePath("testMovie1.avi");
-        assertThat(m.getTitle(), is("testMovie1"));
+    public void findByFilePath() {
+        Episode e = repository.findByFilePath("testEpisode1.avi");
+        assertThat(e.getTitle(), is("testEpisode1"));
     }
+    
 }
