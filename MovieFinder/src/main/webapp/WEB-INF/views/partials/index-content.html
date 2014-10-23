@@ -15,6 +15,11 @@
             <a class="navbar-brand" href="#/">Movie Finder</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li data-match-route="^/browse">
+                    <a href="#/browse/">Browse</a>
+                </li>
+            </ul>
             <form class="navbar-form navbar-right hide-no-js"
                 ng-hide="appCtrl.user.isLoggedIn() || navCtrl.isLoginPage">
                 <button type="submit"

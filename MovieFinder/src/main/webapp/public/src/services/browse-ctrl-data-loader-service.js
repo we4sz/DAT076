@@ -7,7 +7,7 @@
     'use strict';
 
     angular.module('movieFinder.services')
-        .factory('homeCtrlDataLoader', function(movie) {
+        .factory('browseCtrlDataLoader', function(movie) {
             return function() {
                 return movie.getMovies().then(function(data) {
                     return {

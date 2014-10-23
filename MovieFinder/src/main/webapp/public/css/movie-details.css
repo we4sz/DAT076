@@ -1,22 +1,30 @@
-ul
-{
-   
-}
-
-#poster img
-{
-    
-}
-
 .moviePosterContainer {
     position: relative;
 }
 
-.movieActionsContainer {
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;    
+video {  
+   width:100%; 
+   height:100%; 
+}
+
+.breadcrumb {
+    background: none;
+}
+
+.img-responsive {
+    width: 100%;
+}
+
+.details-divider {
+    margin: 5px;
+    opacity: 0.1; 
+    border-color: white;
+}
+
+.panel-default {
+    margin-top: 10px;
+}
+
+.progress {
+    background-color: rgba(223, 105, 26, 0.27);
 }

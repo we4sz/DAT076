@@ -1,15 +1,12 @@
 package edu.chalmers.dat076.moviefinder.service;
 
-import edu.chalmers.dat076.moviefinder.model.OmdbMediaResponse;
-import edu.chalmers.dat076.moviefinder.model.TVDBData;
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
-import edu.chalmers.dat076.moviefinder.persistence.Episode;
-import edu.chalmers.dat076.moviefinder.persistence.EpisodeRepository;
+import edu.chalmers.dat076.moviefinder.model.TraktResponse;
 import edu.chalmers.dat076.moviefinder.persistence.Movie;
 import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
-import edu.chalmers.dat076.moviefinder.persistence.Series;
-import edu.chalmers.dat076.moviefinder.persistence.SeriesRepository;
-import java.io.IOException;
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -25,47 +22,34 @@ import org.springframework.transaction.annotation.Transactional;
 public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
 
     @Autowired
-    private TitleParser titleParser;
-
-    @Autowired
-    private TVDBHandler tvdbHandler;
-
-    @Autowired
-    private OmdbHandler omdbHandler;
+    private TraktHandler traktHandler;
 
     @Autowired
     private MovieRepository movieRepository;
-    
-    @Autowired
-    private EpisodeRepository episodeRepository;
-    
-    @Autowired
-    private SeriesRepository seriesRepository;
 
     @Override
-    @Transactional
-    public void saveFile(final String path, final String name) {
+    public void saveFile(final Path path) {
+        Runnable r = new Runnable() {
+            @Override
+            @Transactional
+            public void run() {
 
-        //All methods not thread safe as they are
-        //Runnable r = new Runnable() {
-          //  @Override
-            //@Transactional
-            //public void run() {
-                TemporaryMedia temporaryMedia = titleParser.parseMedia(name);
+                TemporaryMedia temporaryMedia = new TitleParser().parseMedia(path.getFileName().toString());
                 Movie movie = null;
 
-                if (temporaryMedia.IsMovie()) {
-                    OmdbMediaResponse omdbData = omdbHandler.getByTmpMedia(temporaryMedia);
-                    if (omdbData != null) {
-                        movie = new Movie(path, omdbData);
-                    }
+                TraktResponse traktData = traktHandler.getByTmpMedia(temporaryMedia);
+                if (traktData != null) {
+                    movie = new Movie(path.toString(), traktData);
+
                     if (movie != null) {
                         try {
-                            movieRepository.save(movie);
+                            synchronized (movieRepository) {
+                                movieRepository.save(movie);
+                            }
                         } catch (DataIntegrityViolationException e) {
                         }
                     }
-                } else {
+                    /*} else {
                     TVDBData tvdbRes = null;
                     try {
                         tvdbRes = tvdbHandler.getEpisodeAndSerie(temporaryMedia);
@@ -81,24 +65,72 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                         
                         try {
                             seriesRepository.save(serie);
-                        } catch (DataIntegrityViolationException e) {
-                        }
-                    }
+                    } catch (DataIntegrityViolationException e) {
+                        }*/
+                    
                 }
-          //  }
-        //};
-        //new Thread(r).start();
+            }
+        };
+
+        new Thread(r).start();
+    }
+
+    @Override
+    public void setPaths(List<Path> paths) {
+        Iterable<Movie> movies = movieRepository.findAll();
+        for (Movie m : movies) {
+            boolean foundParent = false;
+            for (Path p : paths) {
+                if (m.getFilePath().startsWith(p.toString())) {
+                    foundParent = true;
+                    break;
+                }
+            }
+            if (!foundParent) {
+                removeFile(new File(m.getFilePath()).toPath());
+            }
+        }
     }
 
     @Override
     @Transactional
-    public boolean removeFile(String path, String name) {
-        Movie movie = movieRepository.findByFilePath(path);
-        if (movie != null) {
-            movieRepository.delete(movie);
-            return true;
-        } else {
-            return false;
+    public void updateFiles(List<Path> paths, Path basePath) {
+        List<Movie> movies;
+        synchronized (movieRepository) {
+            movies = movieRepository.findAllByFilePathStartingWith(basePath.toString());
+        }
+        for (Movie m : movies) {
+            for (int i = 0; i < paths.size(); i++) {
+                if (paths.toString().equals(m.getFilePath())) {
+                    paths.remove(i);
+                    break;
+                }
+            }
+        }
+
+        for (Path p : paths) {
+            saveFile(p);
+            for (int i = 0; i < movies.size(); i++) {
+                if (movies.get(i).getFilePath().equals(p.toString())) {
+                    movies.remove(i);
+                    break;
+                }
+            }
+        }
+
+        for (Movie m : movies) {
+            removeFile(new File(m.getFilePath()).toPath());
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeFile(Path path) {
+        synchronized (movieRepository) {
+            List<Movie> movies = movieRepository.findAllByFilePathStartingWith(path.toString());
+            for (Movie m : movies) {
+                movieRepository.delete(m);
+            }
         }
     }
 }

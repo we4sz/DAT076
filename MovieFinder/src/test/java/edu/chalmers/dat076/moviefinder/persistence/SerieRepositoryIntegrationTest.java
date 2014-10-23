@@ -58,18 +58,18 @@ public class SerieRepositoryIntegrationTest extends AbstractIntegrationTest {
     @SuppressWarnings("unchecked")
     public void findBySeriesNameContaining() {
         Pageable pageable = new PageRequest(0, 1);
-        Page<Series> page = repository.findBySeriesNameContaining("testSeries", pageable);
-        assertEquals("testSeries1", page.getContent().get(0).getSeriesName());
+        Page<Series> page = repository.findByTitleContaining("testSeries", pageable);
+        assertEquals("testSeries1", page.getContent().get(0).getTitle());
         assertThat(page.getContent(), hasSize(1));
-        assertThat(page, Matchers.<Series>hasItems(hasProperty("seriesName", is("testSeries1"))));
+        assertThat(page, Matchers.<Series>hasItems(hasProperty("title", is("testSeries1"))));
     }
 
     @Test
     public void findBySID() {
-        Series s = repository.findBySID("testSeriesID");
-        assertThat(s.getSeriesName(), is("testSeries1"));
+        Series s = repository.findByImdbId("testSeriesID");
+        assertThat(s.getTitle(), is("testSeries1"));
 
-        s = repository.findBySID("NonExistingSID");
+        s = repository.findByImdbId("NonExistingSID");
         assertTrue(s == null);
     }
 
@@ -82,7 +82,7 @@ public class SerieRepositoryIntegrationTest extends AbstractIntegrationTest {
         serie.setEpisodes(eList);
         repository.save(serie);
 
-        Series serieRe = repository.findBySID("estID");
+        Series serieRe = repository.findByImdbId("estID");
         List<Episode> reEp = serieRe.getEpisodes();
         assertThat(reEp, hasSize(2));
         assertEquals("title", reEp.get(0).getTitle());
@@ -97,14 +97,14 @@ public class SerieRepositoryIntegrationTest extends AbstractIntegrationTest {
         serie.setEpisodes(eList);
         repository.save(serie);
 
-        Series serieRe = repository.findBySID("estID");
+        Series serieRe = repository.findByImdbId("estID");
         List<Episode> reEp = serieRe.getEpisodes();
         assertThat(reEp, hasSize(2));
 
         serieRe.addEpisodes(new Episode("title", "path3", 1, 3));
         repository.save(serieRe);
 
-        serieRe = repository.findBySID("estID");
+        serieRe = repository.findByImdbId("estID");
         reEp = serieRe.getEpisodes();
         assertThat(reEp, hasSize(3));
         

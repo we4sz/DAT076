@@ -20,8 +20,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @author Peter, Carl Jansson
  */
 public interface SeriesRepository extends PagingAndSortingRepository<Series, Long>, JpaSpecificationExecutor<Series> {
-    public Page<Series> findBySeriesNameContaining(String SeriesName, Pageable pageable);
+    public Page<Series> findByTitleContaining(String SeriesName, Pageable pageable);
 
-    public Series findBySID(String sID);
+    public Series findByImdbId(String imdb_id);
 
 }

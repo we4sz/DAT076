@@ -1,30 +1,25 @@
 <div class="row">
     <div class="col-md-8 col-md-offset-2">
+        <ol class="breadcrumb">
+            <li><a href="#/browse">Browse</a></li>
+            <li class="active">{{movieDetailsCtrl.movie.title}}</li>
+        </ol>
+        <video ng-src="{{movieDetailsCtrl.video()}}" controls></video>                     
         <div class="panel panel-default">
-            <div class="panel-heading">
-                <h1>
-                    {{movieDetailsCtrl.movie.title}} <small>({{movieDetailsCtrl.movie.releaseYear}})</small>
-                </h1>
-            </div>
             <div class="panel-body">
-                <ol class="breadcrumb">
-                    <li><a href="#/">Movies</a></li>
-                    <li class="active">{{movieDetailsCtrl.movie.title}}</li>
-                </ol>
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-5 hidden-xs">
                         <div class="moviePosterContainer">
                             <img ng-src="{{movieDetailsCtrl.movie.poster}}" class="img-responsive"/>
-                            <div class="movieActionsContainer">
-                                <button class="btn btn-primary">Play Movie</button>
-                                <button class="btn btn-default">Add to list</button>
-                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-7">
+                        <h2>
+                            {{movieDetailsCtrl.movie.title}} <small>({{movieDetailsCtrl.movie.releaseYear}})</small>
+                        </h2>
                         <p>
                             [{{movieDetailsCtrl.movie.rated}}] 
-                            {{movieDetailsCtrl.movie.runtime}} 
+                            {{movieDetailsCtrl.movie.runtime}} min 
                             -
                             <span ng-repeat="genre in movieDetailsCtrl.movie.genres">
                                 {{genre}}<span ng-if="!$last">,</span>
@@ -33,19 +28,28 @@
                             {{movieDetailsCtrl.movie.releaseYear}} 
                             ({{movieDetailsCtrl.movie.country}})
                         </p>
-                        <h3> {{movieDetailsCtrl.movie.imdbRating}} 
-                            <span class="glyphicon glyphicon-star"></span> 
-                        </h3>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: calc({{movieDetailsCtrl.movie.imdbRating}}%*10);">
+                                {{movieDetailsCtrl.movie.imdbRating}} 
+                                <span class="glyphicon glyphicon-star"></span> 
+                            </div>
+                        </div>
                         <p>
                             {{movieDetailsCtrl.movie.plot}}
                         </p>
-
+                        <p>
+                            <b>Director: </b> {{movieDetailsCtrl.movie.director}}
+                        </p>
+                        <p>
+                            <b>Stars:  </b> <span ng-repeat="actor in movieDetailsCtrl.movie.actors">
+                                {{actor}}<span ng-if="!$last">,</span>
+                            </span>
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 
 
