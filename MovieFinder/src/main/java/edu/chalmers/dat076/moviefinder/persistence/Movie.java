@@ -85,8 +85,8 @@ public class Movie extends AbstractEntity implements Serializable {
             releaseYear = Integer.parseInt(data.getEpisode().getFirstAired().substring(0, 4));
             plot = data.getEpisode().getOverview();
             runtime = data.getSerie().getRuntime();
-            actors = Arrays.asList(data.getSerie().getActors().split("|"));
-            genres = Arrays.asList(data.getSerie().getGenre().split("|"));
+            actors = Arrays.asList(data.getSerie().getActors().split("\\|"));
+            genres = Arrays.asList(data.getSerie().getGenre().split("\\|"));
         }
     }
 

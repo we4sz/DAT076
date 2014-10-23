@@ -24,25 +24,37 @@ import java.util.Arrays;
 import java.util.List;
 import static java.nio.file.LinkOption.*;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- * A Thread for listening to file system changes, such as adding and removing of files, in a specific directory.
+ * A Thread for listening to file system changes, such as adding and removing of
+ * files, in a specific directory.
+ *
  * @author John
  */
 public class WatchThread extends Thread {
 
     private WatchService watcher;
     private final Path watchPath;
-    private static final List<String> videoTypes = Arrays.asList(new String[]{"avi", "mkv", "mp4"});
+    private static final List<String> videoTypes = Arrays.asList(new String[]{"avi", "mkv", "mp4","mov"});
     private Map<WatchKey, Path> keys;
     private FileSystemListener listener;
+    private final static Logger LOGGER = Logger.getLogger(FileThreadService.class.getName());
 
     public WatchThread(File dir) throws IOException {
         watchPath = Paths.get(dir.getAbsolutePath());
         keys = new HashMap<>();
     }
 
+    public Path getWatchPath() {
+        return watchPath;
+    }
+
+    
+    
     /**
      * Register the given directory with the WatchService
      */
@@ -56,16 +68,40 @@ public class WatchThread extends Thread {
      * Register the given directory, and all its sub-directories, with the
      * WatchService.
      */
-    private void registerAll(final Path start) throws IOException {
+    private void registerAll(final Path start, boolean init) throws IOException {
         // register directory and sub-directories
+        final List<Path> paths = new LinkedList<>();
+        
         Files.walkFileTree(start, new SimpleFileVisitor<Path>() {
+
             @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-                    throws IOException {
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                String ending = file.toString().substring(file.toString().lastIndexOf(".") + 1, file.toString().length());
+                if (videoTypes.contains(ending.toLowerCase())) {
+                    paths.add(file);
+                }
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
                 register(dir);
                 return FileVisitResult.CONTINUE;
             }
+
+            @Override
+            public FileVisitResult visitFileFailed(Path file, IOException exc) throws IOException {
+                return FileVisitResult.SKIP_SUBTREE;
+            }
+
         });
+        if(init){
+            listener.initFiles(paths, watchPath);
+        }else{
+            for(Path p : paths){
+                listener.newFile(p);
+            }
+        }
     }
 
     public void setListener(FileSystemListener listener) {
@@ -95,10 +131,10 @@ public class WatchThread extends Thread {
 
         try {
             watcher = FileSystems.getDefault().newWatchService();
-            registerAll(watchPath);
-
-            findAllPrograms(watchPath.toFile());
+            registerAll(watchPath,true);
         } catch (IOException ex) {
+            LOGGER.log(Level.WARNING, ex.getMessage(), ex);
+            System.out.println("mamma");
             System.out.println(ex.getMessage());
         }
 
@@ -131,20 +167,20 @@ public class WatchThread extends Thread {
                 if (kind == ENTRY_CREATE) {
                     try {
                         if (Files.isDirectory(child, NOFOLLOW_LINKS)) {
-                            registerAll(child);
+                            registerAll(child,false);
                         } else {
                             String ending = child.toString();
                             ending = ending.substring(ending.lastIndexOf(".") + 1, ending.length());
 
-                            if (videoTypes.contains(ending)) {
-                                listener.newFile(child.toString(), child.getFileName().toString());
+                            if (videoTypes.contains(ending.toLowerCase())) {
+                                listener.newFile(child);
                             }
                         }
                     } catch (IOException x) {
                         // ignore to keep sample readbale
                     }
                 } else if (kind == ENTRY_DELETE) {
-                    listener.oldPath(child.toString(), child.getFileName().toString());
+                    listener.oldPath(child);
                 }
             }
 
@@ -159,20 +195,6 @@ public class WatchThread extends Thread {
                 }
             }
 
-        }
-    }
-
-    private void findAllPrograms(File dir) {
-        for (String fileName : dir.list()) {
-            File t = new File(dir.getAbsolutePath() + "/" + fileName);
-            if (t.isDirectory()) {
-                findAllPrograms(t);
-            } else {
-                String ending = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-                if (videoTypes.contains(ending)) {
-                    listener.initFile(t.getAbsolutePath(), fileName);
-                }
-            }
         }
     }
 

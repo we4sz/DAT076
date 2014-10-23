@@ -34,9 +34,9 @@ public class TVDBSerie implements Serializable {
     private String Language;
     @Element
     private String Overview;
-    @Element
+    @Element(defaultValue = "-1")
     private double rating;
-    @Element
+    @Element(defaultValue = "-1")
     private int Runtime;
     @Element
     private String SeriesID;
@@ -48,7 +48,7 @@ public class TVDBSerie implements Serializable {
     private String banner;
     @Element
     private String fanart;
-    @Element
+    @Element(defaultValue = "-1")
     private long lastupdated;
     @Element
     private String poster;
