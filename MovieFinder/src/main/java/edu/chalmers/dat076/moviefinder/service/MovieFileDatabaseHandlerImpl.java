@@ -21,23 +21,23 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
-
+    
     @Autowired
     private OmdbHandler omdbHandler;
-
+    
     @Autowired
     private MovieRepository movieRepository;
-
+    
     @Override
     public void saveFile(final Path path) {
         Runnable r = new Runnable() {
             @Override
             @Transactional
             public void run() {
-
+                
                 TemporaryMedia temporaryMedia = new TitleParser().parseMedia(path.getFileName().toString());
                 Movie movie = null;
-
+                
                 if (temporaryMedia.IsMovie()) {
                     OmdbMediaResponse omdbData = omdbHandler.getByTmpMedia(temporaryMedia);
                     if (omdbData != null) {
@@ -49,7 +49,7 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                     } catch (IOException | NullPointerException e) {
                     }
                 }
-
+                
                 if (movie != null) {
                     try {
                         synchronized (movieRepository) {
@@ -60,10 +60,27 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                 }
             }
         };
-
+        
         new Thread(r).start();
     }
-
+    
+    @Override
+    public void setPaths(List<Path> paths) {
+        Iterable<Movie> movies = movieRepository.findAll();
+        for (Movie m : movies) {
+            boolean foundParent = false;
+            for (Path p : paths) {
+                if (m.getFilePath().startsWith(p.toString())) {
+                    foundParent = true;
+                    break;
+                }
+            }
+            if (!foundParent) {
+                removeFile(new File(m.getFilePath()).toPath());
+            }
+        }
+    }
+    
     @Override
     @Transactional
     public void updateFiles(List<Path> paths, Path basePath) {
@@ -79,7 +96,7 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                 }
             }
         }
-
+        
         for (Path p : paths) {
             saveFile(p);
             for (int i = 0; i < movies.size(); i++) {
@@ -89,12 +106,12 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                 }
             }
         }
-
+        
         for (Movie m : movies) {
             removeFile(new File(m.getFilePath()).toPath());
         }
     }
-
+    
     @Override
     @Transactional
     public void removeFile(Path path) {

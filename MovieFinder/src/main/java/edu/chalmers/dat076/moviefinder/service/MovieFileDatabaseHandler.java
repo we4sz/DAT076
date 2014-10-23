@@ -9,6 +9,7 @@ import java.util.List;
  */
 public interface MovieFileDatabaseHandler {
     
+    void setPaths(List<Path> paths);
 
     void updateFiles(List<Path> paths, Path basePath);
     

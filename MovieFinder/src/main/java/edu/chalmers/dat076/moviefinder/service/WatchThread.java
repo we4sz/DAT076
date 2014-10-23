@@ -49,6 +49,12 @@ public class WatchThread extends Thread {
         keys = new HashMap<>();
     }
 
+    public Path getWatchPath() {
+        return watchPath;
+    }
+
+    
+    
     /**
      * Register the given directory with the WatchService
      */
