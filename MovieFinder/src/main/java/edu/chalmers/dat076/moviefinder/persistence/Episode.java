@@ -32,8 +32,10 @@ public class Episode extends Media implements Serializable {
     protected Episode() {
     }
 
-    public Episode(String title, String filePath) {
+    public Episode(String title, String filePath, int season, int episode) {
         super(title, filePath);
+        this.season = season;
+        this.episode = episode;
     }
     
     public Episode(String filePath, TVDBData data) {
