@@ -1,0 +1,19 @@
+.featurette-divider {
+    margin: 80px 0;
+}
+
+.feature-image {
+    display:block;
+    text-align:center;
+    margin-bottom: auto;
+    margin-top: auto;
+    font-size: 300px;
+}
+
+.featurette-heading {
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -1px;
+    margin-top: 25px;
+    font-size: 50px;
+}
