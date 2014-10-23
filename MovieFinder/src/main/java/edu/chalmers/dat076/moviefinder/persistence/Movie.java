@@ -22,6 +22,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * A movie entity.
@@ -47,7 +49,8 @@ public class Movie extends AbstractEntity implements Serializable {
 
     //@ElementCollection(fetch = FetchType.EAGER)
     //@CollectionTable(name = "Actors", joinColumns = @JoinColumn(name = "movie_id"))
-     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SELECT)
     private List<Actor> actors;
 
     private String imdbId;
