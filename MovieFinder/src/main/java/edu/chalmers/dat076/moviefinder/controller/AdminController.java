@@ -35,24 +35,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("api/admin")
 public class AdminController {
-    
+
     @Autowired
     private ListeningPathDatabaseHandler databaseHelper;
-    
+
     @Autowired
-    ListeningPathRepository listeningPathRepository;
-    
+    private ListeningPathRepository listeningPathRepository;
+
     @Autowired
     private MovieFileDatabaseHandler moveiDatabaseHelper;
-    
+
     @RequestMapping(value = "/addPath", method = RequestMethod.POST)
     public ResponseEntity<String> addPath(@RequestBody ListeningPath path) {
         File f = new File(path.getListeningPath());
         if (f.exists() && f.isDirectory()) {
             try {
                 databaseHelper.addPath(f.toPath());
-                FileThreadService t = FileThreadService.getInstance();
-                t.addListningPath(f.toPath());
+                FileThreadService.getInstance().addListningPath(f.toPath());
                 return new ResponseEntity<>(HttpStatus.OK);
             } catch (DataIntegrityViolationException e) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -61,25 +60,24 @@ public class AdminController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    
+
     @RequestMapping(value = "/removePath", method = RequestMethod.DELETE)
     public ResponseEntity<String> removePath(@RequestBody ListeningPath path) {
         File f = new File(path.getListeningPath());
         try {
             databaseHelper.removePath(f.toPath());
-            FileThreadService t = FileThreadService.getInstance();
-            t.removeListeningPath(f.toPath());
+            FileThreadService.getInstance().removeListeningPath(f.toPath());
             moveiDatabaseHelper.removeFile(f.toPath());
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NullPointerException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    
+
     @RequestMapping(value = "/getPaths", method = RequestMethod.GET)
     public @ResponseBody
     Page<ListeningPath> getPaths() {
         return listeningPathRepository.findAll(new PageRequest(0, 25));
     }
-    
+
 }

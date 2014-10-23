@@ -34,25 +34,17 @@ public class FileThreadService implements FileSystemListener {
 
     private final static Logger LOGGER = Logger.getLogger(FileThreadService.class.getName());
     private static FileThreadService instance = null;
+    
     @Autowired
     private MovieFileDatabaseHandler movieDatabaseHelper;
 
     @Autowired
-    ListeningPathRepository listeningPathRepository;
+    private ListeningPathRepository listeningPathRepository;
 
     @Autowired
     private ListeningPathDatabaseHandler databaseHelper;
 
-    @Autowired
-    MovieRepository movieRepository;
-
     private LinkedList<WatchThread> threads;
-
-    public FileThreadService() {
-        System.out.println("asdadfhsduoghasogh");
-    }
-    
-    
 
     @PostConstruct
     @Transactional
