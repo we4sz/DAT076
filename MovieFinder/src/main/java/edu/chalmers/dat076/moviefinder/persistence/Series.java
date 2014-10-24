@@ -9,7 +9,6 @@ import edu.chalmers.dat076.moviefinder.model.TraktShowReponse;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -94,7 +93,7 @@ public class Series extends Media implements Serializable {
 
     @Override
     public String toString() {
-        return "Series{" + "airDay=" + airDay + ", airTime=" + airTime + ", firstAired=" + firstAired + ", episodes=" + episodes + '}';
+        return "Series{" + super.toString() + "airDay=" + airDay + ", airTime=" + airTime + ", firstAired=" + firstAired + ", episodes=" + episodes + '}';
     }
 
 }

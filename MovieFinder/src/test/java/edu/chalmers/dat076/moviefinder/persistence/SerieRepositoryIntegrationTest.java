@@ -73,6 +73,13 @@ public class SerieRepositoryIntegrationTest extends AbstractIntegrationTest {
         assertTrue(s == null);
     }
     
+    
+    
+    
+     /**
+      * Tests for series - episode relations
+      */
+    
      @Test
      public void saveAndGetSeriesWithEpisodes() {
      Series serie = new Series("EpisodeSeriesTest", "estID");
