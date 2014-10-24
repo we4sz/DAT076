@@ -5,16 +5,26 @@ import edu.chalmers.dat076.moviefinder.persistence.Movie;
 import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
 import edu.chalmers.dat076.moviefinder.persistence.MovieSpecs;
 import edu.chalmers.dat076.moviefinder.utils.FileControllerUtils;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPOutputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -46,13 +56,13 @@ public class FileController {
             @RequestParam(value = "runtime", required = false) Integer runtime
     ) {
         PageRequest pageRequest = new PageRequest(0, 25);
-        
+
         Specifications<Movie> filter = where(null);
-                
-        if (imdbRating != null){
+
+        if (imdbRating != null) {
             filter = filter.and(MovieSpecs.hasImdbRatingAbove(imdbRating));
         }
-        if (runtime != null){
+        if (runtime != null) {
             filter = filter.and(MovieSpecs.hasRuntimeAbove(runtime));
         }
         return movieRepository.findAll(filter, pageRequest);
@@ -64,6 +74,63 @@ public class FileController {
         return movieRepository.findOne(id);
     }
 
+    @RequestMapping(value = "/sub/{id}", method = RequestMethod.GET)
+    public void getSubtitle(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Movie m = movieRepository.findOne(id);
+        if (m != null) {
+            try {
+                File file = new File(m.getFilePath());
+                byte[] bytes = new byte[64 * 1024];
+                byte[] bytes2 = new byte[64 * 1024];
+                long size = file.length();
+                try (FileInputStream f = new FileInputStream(file)) {
+                    f.read(bytes);
+                    f.skip(size - 64 * 1024 * 2);
+                    f.read(bytes2);
+                    String hash = bytesToHex(MessageDigest.getInstance("MD5").digest(concat(bytes, bytes2)));
+                    String url = "http://api.thesubdb.com/?action=download&hash=" + hash + "&language=en";
+                    HttpClient client = HttpClientBuilder.create().build();
+                    HttpGet getRequest = new HttpGet(url);
+                    getRequest.addHeader("User-Agent", "SubDB/1.0 (MovieFinder/0.1; http://johanssonjohn.se)");
+                    HttpResponse res = client.execute(getRequest);
+
+                    if (res.getStatusLine().getStatusCode() == 200) {
+                        String responseString = EntityUtils.toString(res.getEntity(), "UTF-8");
+                        File temp = File.createTempFile("tempfile" + System.currentTimeMillis() + m.getId(), ".srt");
+                        //write it
+                        BufferedWriter bw = new BufferedWriter(new FileWriter(temp));
+                        bw.write(responseString);
+                        bw.close();
+
+                        processRequest(request, response, true, temp.toPath().toString(), "text/plain");
+                    }
+                }
+            } catch (NoSuchAlgorithmException e) {
+            }
+        }
+    }
+
+    final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for (int j = 0; j < bytes.length; j++) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
+
+    public static byte[] concat(byte[] A, byte[] B) {
+        int aLen = A.length;
+        int bLen = B.length;
+        byte[] C = new byte[aLen + bLen];
+        System.arraycopy(A, 0, C, 0, aLen);
+        System.arraycopy(B, 0, C, aLen, bLen);
+        return C;
+    }
+
     @RequestMapping(value = "/stream/{id}", method = RequestMethod.GET)
     public void getMovieStream(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Movie m = movieRepository.findOne(id);
@@ -71,7 +138,8 @@ public class FileController {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        processRequest(request, response, true, m.getFilePath());
+
+        processRequest(request, response, true, m.getFilePath(), "video/mp4");
     }
 
     /**
@@ -83,7 +151,7 @@ public class FileController {
      * (HEAD).
      * @throws IOException If something fails at I/O level.
      */
-    private void processRequest(HttpServletRequest request, HttpServletResponse response, boolean content, String path)
+    private void processRequest(HttpServletRequest request, HttpServletResponse response, boolean content, String path, String defaultContentType)
             throws IOException {
         // Validate the requested file ------------------------------------------------------------
 
@@ -207,9 +275,9 @@ public class FileController {
         // If content type is unknown, then set the default value.
         // For all content types, see: http://www.w3schools.com/media/media_mimeref.asp
         // To add new content types, add new mime-mapping entry in web.xml.
-        if (contentType == null) {
-            contentType = "video/mp4";
-        }
+        //if (contentType == null) {
+            contentType = defaultContentType;
+        //}
 
         // If content type is text, then determine whether GZIP content encoding is supported by
         // the browser and expand content type with the one and right character encoding.
@@ -227,7 +295,7 @@ public class FileController {
         // Initialize response.
         response.reset();
         response.setBufferSize(FileControllerUtils.DEFAULT_BUFFER_SIZE);
-        response.setHeader("Content-Disposition", disposition + ";filename=\"" + fileName + "\"");
+        //response.setHeader("Content-Disposition", disposition + ";filename=\"" + fileName + "\"");
         response.setHeader("Accept-Ranges", "bytes");
         response.setHeader("ETag", eTag);
         response.setDateHeader("Last-Modified", lastModified);
