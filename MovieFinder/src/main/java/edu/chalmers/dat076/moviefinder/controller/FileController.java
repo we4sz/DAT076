@@ -1,6 +1,9 @@
 package edu.chalmers.dat076.moviefinder.controller;
 
 import edu.chalmers.dat076.moviefinder.model.Range;
+import edu.chalmers.dat076.moviefinder.persistence.Episode;
+import edu.chalmers.dat076.moviefinder.persistence.EpisodeRepository;
+import edu.chalmers.dat076.moviefinder.persistence.EpisodeSpecs;
 import edu.chalmers.dat076.moviefinder.persistence.Movie;
 import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
 import edu.chalmers.dat076.moviefinder.persistence.MovieSpecs;
@@ -54,6 +57,9 @@ public class FileController {
     
     @Autowired
     SeriesRepository seriesRepository;
+    
+    @Autowired
+    EpisodeRepository episodeRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public @ResponseBody
@@ -92,11 +98,39 @@ public class FileController {
         }
         return seriesRepository.findAll(filter, pageRequest);
     }
+    
+    @RequestMapping(value = "/episodes/", method = RequestMethod.GET)
+    public @ResponseBody
+    Page<Episode> listEpisodes(
+            @RequestParam(value = "imdbRating", required = false) Double imdbRating//,
+            //@RequestParam(value = "runtime", required = false) Integer runtime
+    ) {
+        PageRequest pageRequest = new PageRequest(0, 25);
+
+        Specifications<Episode> filter = where(null);
+
+        if (imdbRating != null) {
+            filter = filter.and(EpisodeSpecs.hasImdbRatingAbove(imdbRating));
+        }
+        return episodeRepository.findAll(filter, pageRequest);
+    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public @ResponseBody
     Movie getMovieById(@PathVariable long id) {
         return movieRepository.findOne(id);
+    }
+    
+    @RequestMapping(value = "/series/{id}", method = RequestMethod.GET)
+    public @ResponseBody
+    Series getSeriesById(@PathVariable long id) {
+        return seriesRepository.findOne(id);
+    }
+    
+    @RequestMapping(value = "/episdes/{id}", method = RequestMethod.GET)
+    public @ResponseBody
+    Episode getEpisodeById(@PathVariable long id) {
+        return episodeRepository.findOne(id);
     }
 
     @RequestMapping(value = "/sub/{id}", method = RequestMethod.GET)

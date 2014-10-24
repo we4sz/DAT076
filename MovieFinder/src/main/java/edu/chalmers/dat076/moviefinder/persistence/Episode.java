@@ -5,6 +5,7 @@
  */
 package edu.chalmers.dat076.moviefinder.persistence;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktResponse;
 import java.io.Serializable;
@@ -28,6 +29,7 @@ public class Episode extends Media implements Serializable {
     private Integer episode;
 
     @ManyToOne
+    @JsonBackReference
     private Series series;
 
     protected Episode() {
