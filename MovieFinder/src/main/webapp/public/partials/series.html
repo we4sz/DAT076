@@ -5,6 +5,47 @@
     </ul>
 
     <hr class="browse-divider">
-    
-    SERIES
+
+    <div class="row">
+        <div class="col-sm-3">
+            <form>
+                <div class="form-group">
+                    <label for="filterRaiting" class="text-muted"><span class="glyphicon glyphicon-star"></span> RATING</label>
+                    <input class="form-control" 
+                           type="number"
+                           placeholder="Raiting (0-10)"
+                           id="filterRaiting"
+                           min="0" 
+                           max="10" 
+                           step="0.1"
+                           ng-model="models.filterRaiting">
+                </div>
+                <hr class="browse-divider">
+
+                <button class="btn btn-block btn-primary" ng-click="seriesCtrl.filterSeries(models.filterRaiting)">Filter</button>
+            </form>
+        </div>
+
+        <div class="col-sm-9">
+            <table class="list table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <td>Title</td>
+                        <td>Rating</td> 
+                    </tr>
+                </thead>
+                <tbody ng-show="seriesCtrl.series.length">
+                    <tr ng-repeat="series in seriesCtrl.series" ng-click="seriesCtrl.goTo('/series/' + series.id)">
+                        <td>{{series.title}}</td>
+                        <td>{{series.imdbRating}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-hide="seriesCtrl.series.length">
+                No results
+            </div>
+        </div>
+    </div>
+
+
 </div>

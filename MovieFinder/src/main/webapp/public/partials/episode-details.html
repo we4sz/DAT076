@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <ol class="breadcrumb">
+            <li><a ng-href="#/series/">Series</a></li>
+            <li><a ng-href="#/series/{{episodeDetailsCtrl.series.id}}">{{episodeDetailsCtrl.series.title}}</a></li>
+            <li class="active">{{episodeDetailsCtrl.episode.title}}</li>
+        </ol>
+        <video ng-src="{{episodeDetailsCtrl.video()}}" controls></video>                     
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-5 hidden-xs">
+                        <div class="moviePosterContainer">
+                            <img ng-src="{{episodeDetailsCtrl.episode.poster}}" class="img-responsive"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <h2>
+                            {{episodeDetailsCtrl.episode.title}} <small>({{episodeDetailsCtrl.episode.releaseYear}})</small>
+                        </h2>
+                        <p>
+                            [{{episodeDetailsCtrl.episode.rated}}] 
+                            {{episodeDetailsCtrl.episode.runtime}} min 
+                            -
+                            <span ng-repeat="genre in episodeDetailsCtrl.episode.genres">
+                                {{genre}}<span ng-if="!$last">,</span>
+                            </span>
+                            -
+                            {{episodeDetailsCtrl.episode.releaseYear}} 
+                            ({{episodeDetailsCtrl.episode.country}})
+                        </p>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: calc({{episodeDetailsCtrl.episode.imdbRating}}%*10);">
+                                {{episodeDetailsCtrl.episode.imdbRating}} 
+                                <span class="glyphicon glyphicon-star"></span> 
+                            </div>
+                        </div>
+                        <p>
+                            {{episodeDetailsCtrl.episode.plot}}
+                        </p>
+                        <p>
+                            <b>Director: </b> {{episodeDetailsCtrl.episode.director}}
+                        </p>
+                        <p>
+                            <b>Stars:  </b> <span ng-repeat="actor in episodeDetailsCtrl.episode.actors | limitTo: 5">
+                                <a href="#/actors/{{actor.id}}">{{actor.name}}</a> as {{actor.character}}<span ng-if="!$last">,</span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+

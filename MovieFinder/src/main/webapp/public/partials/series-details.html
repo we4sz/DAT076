@@ -1,0 +1,32 @@
+<div>    
+    <ol class="breadcrumb">
+        <li><a href="#/series">Series</a></li>
+        <li class="active">{{seriesDetailsCtrl.series.title}}</li>
+    </ol>
+
+    <hr class="browse-divider">
+
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="list table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <td>Title</td>
+                        <td>Episode</td>
+                        <td>Season</td>
+                    </tr>
+                </thead>
+                <tbody ng-show="seriesDetailsCtrl.series.episodes.length">
+                    <tr ng-repeat="episode in seriesDetailsCtrl.series.episodes" 
+                        ng-click="seriesDetailsCtrl.goTo('series/' + seriesDetailsCtrl.series.id + '/episode/' + episode.id)">
+                        <td>{{episode.title}}</td>
+                        <td>{{episode.episode}}</td>
+                        <td>{{episode.season}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
