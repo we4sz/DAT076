@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.chalmers.dat076.moviefinder.persistence;
 
 import edu.chalmers.dat076.moviefinder.model.TraktActor;
 import edu.chalmers.dat076.moviefinder.model.TraktImages;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -20,47 +21,49 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+
 /**
  *
  * @author Carl Jansson
  */
 @MappedSuperclass
 public abstract class Media extends AbstractEntity implements Serializable {
-    
-    
+
     @Column(nullable = false)
-    private String title;
+    protected String title;
     @Column(nullable = false, unique = true)
-    private String filePath;
-    private Double imdbRating;
-    private Integer runtime;
+    protected String filePath;
+    protected Double imdbRating;
+    protected Integer runtime;
     @Column(length = 8000)
-    private String plot;
-    private Integer releaseYear;
+    protected String plot;
+    protected Integer releaseYear;
+    protected Integer releaseMonth;
+    protected Integer releaseDay;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @OrderColumn
-    private List<String> genres;
+    protected List<String> genres;
 
     //@ElementCollection(fetch = FetchType.EAGER)
     //@CollectionTable(name = "Actors", joinColumns = @JoinColumn(name = "movie_id"))
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
-    private List<Actor> actors;
+    protected List<Actor> actors;
 
-    private String imdbId;
-    private String poster;
-    private String rated;
-    private String country;
-    private String director;
-        
-    protected Media(){
+    protected String imdbId;
+    protected String poster;
+    protected String rated;
+    protected String country;
+    protected String director;
+
+    protected Media() {
     }
-    
+
     public Media(String filePath) {
         this.filePath = filePath;
     }
-    
+
     public Media(String title, String filePath) {
         this.filePath = filePath;
         this.title = title;
@@ -159,6 +162,30 @@ public abstract class Media extends AbstractEntity implements Serializable {
 
     public void setPlot(String plot) {
         this.plot = plot;
+    }
+
+    public void setReleaseTime(long seconds) {
+        Calendar c = new GregorianCalendar();
+        c.setTimeInMillis(seconds * 1000);
+        setReleaseDay(c.get(Calendar.DAY_OF_MONTH));
+        setReleaseMonth(c.get(Calendar.MONTH));
+        setReleaseYear(c.get(Calendar.YEAR));
+    }
+
+    public Integer getReleaseDay() {
+        return releaseDay;
+    }
+
+    public Integer getReleaseMonth() {
+        return releaseMonth;
+    }
+
+    public void setReleaseDay(Integer releaseDay) {
+        this.releaseDay = releaseDay;
+    }
+
+    public void setReleaseMonth(Integer releaseMonth) {
+        this.releaseMonth = releaseMonth;
     }
 
     public void setReleaseYear(Integer releaseYear) {

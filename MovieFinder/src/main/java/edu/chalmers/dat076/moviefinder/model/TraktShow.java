@@ -16,9 +16,9 @@ public class TraktShow {
     private String title;
     private int year;
     private String url;
-    private int first_aired;
-    private String first_aired_iso;
-    private int first_aired_utc;
+    private long firstAired;
+    private String firstAiredIso;
+    private long firstAiredUtc;
     private String country;
     private String overview;
     private int runtime;
@@ -26,9 +26,9 @@ public class TraktShow {
     private String air_day;
     private String air_time;
     private String certification;
-    private String imdb_id;
-    private int tvdb_id;
-    private int tvrage_id;
+    private String imdbId;
+    private int tvdbId;
+    private int tvrageId;
     private TraktImages images;
     private TraktRatings ratings;
     private List<String> genres;
@@ -55,30 +55,6 @@ public class TraktShow {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public int getFirst_aired() {
-        return first_aired;
-    }
-
-    public void setFirst_aired(int first_aired) {
-        this.first_aired = first_aired;
-    }
-
-    public String getFirst_aired_iso() {
-        return first_aired_iso;
-    }
-
-    public void setFirst_aired_iso(String first_aired_iso) {
-        this.first_aired_iso = first_aired_iso;
-    }
-
-    public int getFirst_aired_utc() {
-        return first_aired_utc;
-    }
-
-    public void setFirst_aired_utc(int first_aired_utc) {
-        this.first_aired_utc = first_aired_utc;
     }
 
     public String getCountry() {
@@ -137,30 +113,6 @@ public class TraktShow {
         this.certification = certification;
     }
 
-    public String getImdb_id() {
-        return imdb_id;
-    }
-
-    public void setImdb_id(String imdb_id) {
-        this.imdb_id = imdb_id;
-    }
-
-    public int getTvdb_id() {
-        return tvdb_id;
-    }
-
-    public void setTvdb_id(int tvdb_id) {
-        this.tvdb_id = tvdb_id;
-    }
-
-    public int getTvrage_id() {
-        return tvrage_id;
-    }
-
-    public void setTvrage_id(int tvrage_id) {
-        this.tvrage_id = tvrage_id;
-    }
-
     public TraktImages getImages() {
         return images;
     }
@@ -183,6 +135,59 @@ public class TraktShow {
 
     public void setGenres(List<String> genres) {
         this.genres = genres;
+    }
+
+    public long getFirstAired() {
+        return firstAired;
+    }
+
+    public void setFirstAired(long firstAired) {
+        this.firstAired = firstAired;
+    }
+
+    public String getFirstAiredIso() {
+        return firstAiredIso;
+    }
+
+    public void setFirstAiredIso(String firstAiredIso) {
+        this.firstAiredIso = firstAiredIso;
+    }
+
+    public long getFirstAiredUtc() {
+        return firstAiredUtc;
+    }
+
+    public void setFirstAiredUtc(long firstAiredUtc) {
+        this.firstAiredUtc = firstAiredUtc;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public int getTvdbId() {
+        return tvdbId;
+    }
+
+    public void setTvdbId(int tvdbId) {
+        this.tvdbId = tvdbId;
+    }
+
+    public int getTvrageId() {
+        return tvrageId;
+    }
+
+    public void setTvrageId(int tvrageId) {
+        this.tvrageId = tvrageId;
+    }
+
+    @Override
+    public String toString() {
+        return "TraktShow{" + "title=" + title + ", year=" + year + ", url=" + url + ", firstAired=" + firstAired + ", firstAiredIso=" + firstAiredIso + ", firstAiredUtc=" + firstAiredUtc + ", country=" + country + ", overview=" + overview + ", runtime=" + runtime + ", network=" + network + ", air_day=" + air_day + ", air_time=" + air_time + ", certification=" + certification + ", imdbId=" + imdbId + ", tvdbId=" + tvdbId + ", tvrageId=" + tvrageId + ", images=" + images + ", ratings=" + ratings + ", genres=" + genres + '}';
     }
 
 }

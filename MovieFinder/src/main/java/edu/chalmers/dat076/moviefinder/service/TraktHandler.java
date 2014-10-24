@@ -5,21 +5,22 @@
  */
 package edu.chalmers.dat076.moviefinder.service;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.JsonParser;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
 import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktShowReponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -59,8 +60,8 @@ public class TraktHandler {
         String url = "http://api.trakt.tv/movie/summary.json/a93c5b3dee40604933b1b8069883a844/" + title.replace(" ", "-") + "-" + year;
 
         try {
-            TraktMovieResponse movie = new Gson().fromJson(readJsonFromUrl(url), TraktMovieResponse.class);
-            if (movie.getTitle() == null) {
+            TraktMovieResponse movie = getGson().fromJson(readJsonFromUrl(url), TraktMovieResponse.class);
+            if (movie == null || movie.getTitle() == null) {
                 return null;
             }
             return movie;
@@ -69,11 +70,17 @@ public class TraktHandler {
         }
     }
 
+    private Gson getGson() {
+        return new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
+    }
+
     public TraktShowReponse getByShowName(String title) {
         String url = "http://api.trakt.tv/show/summary.json/a93c5b3dee40604933b1b8069883a844/" + title.replace(" ", "-");
         try {
-            TraktShowReponse showData = new Gson().fromJson(readJsonFromUrl(url), TraktShowReponse.class);
-            if (showData.getTitle() == null) {
+            TraktShowReponse showData = getGson().fromJson(readJsonFromUrl(url), TraktShowReponse.class);
+            if (showData == null || showData.getTitle() == null) {
                 return null;
             }
             return showData;
@@ -86,8 +93,9 @@ public class TraktHandler {
     public TraktEpisodeResponse getBySeasonEpisode(String title, int season, int episode) {
         String url = "http://api.trakt.tv/show/episode/summary.json/a93c5b3dee40604933b1b8069883a844/" + title.replace(" ", "-") + "/" + season + "/" + episode;
         try {
-            TraktEpisodeResponse episodeData = new Gson().fromJson(readJsonFromUrl(url), TraktEpisodeResponse.class);
-            if (episodeData.getEpisode().getTitle() == null) {
+            TraktEpisodeResponse episodeData = getGson().fromJson(readJsonFromUrl(url), TraktEpisodeResponse.class);
+            if (episodeData == null || episodeData.getEpisode() == null || episodeData.getEpisode().getTitle() == null) {
+                System.out.println(url);                
                 return null;
             }
             return episodeData;
@@ -104,7 +112,6 @@ public class TraktHandler {
         request.addHeader("Accept-Language", "sv-SE");
         request.addHeader("Accept", "application/json");
         HttpResponse response = client.execute(request);
-        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
-        return (JsonObject) new JsonParser().parse(rd);
+        return (JsonObject) new JsonParser().parse(EntityUtils.toString(response.getEntity(), "UTF-8"));
     }
 }

@@ -45,9 +45,9 @@ public class Movie extends Media implements Serializable {
             setFilePath(filePath);
             setTitle(data.getTitle());
             setImdbRating(data.getRatings().getPercentage() / 10.0);
-            setReleaseYear(data.getYear());
+            setReleaseTime(data.getReleased());
             setPlot(data.getOverview());
-            setImdbId(data.getImdb_id());
+            setImdbId(data.getImdbId());
             setRuntime(data.getRuntime());
             setActors(toActors(data.getPeople().getActors()));
             setGenres(data.getGenres());

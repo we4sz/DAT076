@@ -1,9 +1,16 @@
 package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
+import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
+import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktResponse;
+import edu.chalmers.dat076.moviefinder.model.TraktShowReponse;
+import edu.chalmers.dat076.moviefinder.persistence.Episode;
+import edu.chalmers.dat076.moviefinder.persistence.EpisodeRepository;
 import edu.chalmers.dat076.moviefinder.persistence.Movie;
 import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
+import edu.chalmers.dat076.moviefinder.persistence.Series;
+import edu.chalmers.dat076.moviefinder.persistence.SeriesRepository;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.List;
@@ -21,11 +28,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
 
-    @Autowired
-    private TraktHandler traktHandler;
-
+    //  @Autowired
+    // private TraktHandler traktHandler;
     @Autowired
     private MovieRepository movieRepository;
+
+    @Autowired
+    private SeriesRepository seriesRepository;
+
+    @Autowired
+    private EpisodeRepository episodeRepository;
 
     @Override
     public void saveFile(final Path path) {
@@ -35,22 +47,42 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
             public void run() {
 
                 TemporaryMedia temporaryMedia = new TitleParser().parseMedia(path.getFileName().toString());
-                Movie movie = null;
-
-                TraktResponse traktData = traktHandler.getByTmpMedia(temporaryMedia);
+                TraktResponse traktData = new TraktHandler().getByTmpMedia(temporaryMedia);
                 if (traktData != null) {
-                    movie = new Movie(path.toString(), traktData);
-
-                    if (movie != null) {
+                    if (traktData instanceof TraktMovieResponse) {
+                        Movie movie = new Movie(path.toString(), traktData);
                         try {
                             synchronized (movieRepository) {
                                 movieRepository.save(movie);
                             }
                         } catch (DataIntegrityViolationException e) {
                         }
+                    } else {
+                        TraktEpisodeResponse epr = (TraktEpisodeResponse) traktData;
+                        Series s;
+                        synchronized (seriesRepository) {
+                            s = seriesRepository.findByImdbId(epr.getShow().getImdbId());
+                        }
+                        if (s == null) {
+                            TraktShowReponse sr = new TraktHandler().getByShowName(temporaryMedia.getName());
+                            if (sr != null) {
+                                synchronized (seriesRepository) {
+                                    s = new Series(sr);
+                                    seriesRepository.save(s);
+                                }
+                            }
+                        }
+                        if (s != null) {
+                            Episode ep = new Episode(path.toString(), traktData, s);
+                            synchronized (episodeRepository) {
+                                episodeRepository.save(ep);
+                            }
+                        }
                     }
                 }
+
             }
+
         };
 
         new Thread(r).start();

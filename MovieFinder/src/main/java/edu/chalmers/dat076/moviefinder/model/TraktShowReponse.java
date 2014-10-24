@@ -11,28 +11,28 @@ import java.util.List;
  *
  * @author John
  */
-public class TraktShowReponse implements TraktResponse{
+public class TraktShowReponse implements TraktResponse {
 
     private String title;
     private int year;
     private String url;
-    private int first_aired;
-    private String first_aired_iso;
-    private int first_aired_utc;
+    private long firstAired;
+    private String firstAiredIso;
+    private long firstAiredUtc;
     private String country;
     private String overview;
     private int runtime;
     private String status;
     private String network;
-    private String air_day;
-    private String air_day_utc;
-    private String air_time;
-    private String air_time_utc;
+    private String airDay;
+    private String airDayUtc;
+    private String airTime;
+    private String airTimeUtc;
     private String certification;
-    private String imdb_id;
-    private int tvdb_id;
-    private int tvrage_id;
-    private int last_updated;
+    private String imdbId;
+    private int tvdbId;
+    private int tvrageId;
+    private long lastUpdated;
     private String poster;
     private TraktImages images;
     private TraktRatings ratings;
@@ -61,30 +61,6 @@ public class TraktShowReponse implements TraktResponse{
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public int getFirst_aired() {
-        return first_aired;
-    }
-
-    public void setFirst_aired(int first_aired) {
-        this.first_aired = first_aired;
-    }
-
-    public String getFirst_aired_iso() {
-        return first_aired_iso;
-    }
-
-    public void setFirst_aired_iso(String first_aired_iso) {
-        this.first_aired_iso = first_aired_iso;
-    }
-
-    public int getFirst_aired_utc() {
-        return first_aired_utc;
-    }
-
-    public void setFirst_aired_utc(int first_aired_utc) {
-        this.first_aired_utc = first_aired_utc;
     }
 
     public String getCountry() {
@@ -127,76 +103,12 @@ public class TraktShowReponse implements TraktResponse{
         this.network = network;
     }
 
-    public String getAir_day() {
-        return air_day;
-    }
-
-    public void setAir_day(String air_day) {
-        this.air_day = air_day;
-    }
-
-    public String getAir_day_utc() {
-        return air_day_utc;
-    }
-
-    public void setAir_day_utc(String air_day_utc) {
-        this.air_day_utc = air_day_utc;
-    }
-
-    public String getAir_time() {
-        return air_time;
-    }
-
-    public void setAir_time(String air_time) {
-        this.air_time = air_time;
-    }
-
-    public String getAir_time_utc() {
-        return air_time_utc;
-    }
-
-    public void setAir_time_utc(String air_time_utc) {
-        this.air_time_utc = air_time_utc;
-    }
-
     public String getCertification() {
         return certification;
     }
 
     public void setCertification(String certification) {
         this.certification = certification;
-    }
-
-    public String getImdb_id() {
-        return imdb_id;
-    }
-
-    public void setImdb_id(String imdb_id) {
-        this.imdb_id = imdb_id;
-    }
-
-    public int getTvdb_id() {
-        return tvdb_id;
-    }
-
-    public void setTvdb_id(int tvdb_id) {
-        this.tvdb_id = tvdb_id;
-    }
-
-    public int getTvrage_id() {
-        return tvrage_id;
-    }
-
-    public void setTvrage_id(int tvrage_id) {
-        this.tvrage_id = tvrage_id;
-    }
-
-    public int getLast_updated() {
-        return last_updated;
-    }
-
-    public void setLast_updated(int last_updated) {
-        this.last_updated = last_updated;
     }
 
     public String getPoster() {
@@ -238,7 +150,98 @@ public class TraktShowReponse implements TraktResponse{
     public void setGenres(List<String> genres) {
         this.genres = genres;
     }
-    
-    
+
+    public long getFirstAired() {
+        return firstAired;
+    }
+
+    public void setFirstAired(long firstAired) {
+        this.firstAired = firstAired;
+    }
+
+    public String getFirstAiredIso() {
+        return firstAiredIso;
+    }
+
+    public void setFirstAiredIso(String firstAiredIso) {
+        this.firstAiredIso = firstAiredIso;
+    }
+
+    public long getFirstAiredUtc() {
+        return firstAiredUtc;
+    }
+
+    public void setFirstAiredUtc(long firstAiredUtc) {
+        this.firstAiredUtc = firstAiredUtc;
+    }
+
+    public String getAirDay() {
+        return airDay;
+    }
+
+    public void setAirDay(String airDay) {
+        this.airDay = airDay;
+    }
+
+    public String getAirDayUtc() {
+        return airDayUtc;
+    }
+
+    public void setAirDayUtc(String airDayUtc) {
+        this.airDayUtc = airDayUtc;
+    }
+
+    public String getAirTime() {
+        return airTime;
+    }
+
+    public void setAirTime(String airTime) {
+        this.airTime = airTime;
+    }
+
+    public String getAirTimeUtc() {
+        return airTimeUtc;
+    }
+
+    public void setAirTimeUtc(String airTimeUtc) {
+        this.airTimeUtc = airTimeUtc;
+    }
+
+    public String getImdbId() {
+        return imdbId;
+    }
+
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
+    }
+
+    public int getTvdbId() {
+        return tvdbId;
+    }
+
+    public void setTvdbId(int tvdbId) {
+        this.tvdbId = tvdbId;
+    }
+
+    public int getTvrageId() {
+        return tvrageId;
+    }
+
+    public void setTvrageId(int tvrageId) {
+        this.tvrageId = tvrageId;
+    }
+
+    public long getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(long lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    @Override
+    public String toString() {
+        return "TraktShowReponse{" + "title=" + title + ", year=" + year + ", url=" + url + ", firstAired=" + firstAired + ", firstAiredIso=" + firstAiredIso + ", firstAiredUtc=" + firstAiredUtc + ", country=" + country + ", overview=" + overview + ", runtime=" + runtime + ", status=" + status + ", network=" + network + ", airDay=" + airDay + ", airDayUtc=" + airDayUtc + ", airTime=" + airTime + ", airTimeUtc=" + airTimeUtc + ", certification=" + certification + ", imdbId=" + imdbId + ", tvdbId=" + tvdbId + ", tvrageId=" + tvrageId + ", lastUpdated=" + lastUpdated + ", poster=" + poster + ", images=" + images + ", ratings=" + ratings + ", people=" + people + ", genres=" + genres + '}';
+    }
 
 }

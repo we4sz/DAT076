@@ -39,4 +39,9 @@ public class TraktWriter {
         this.images = images;
     }
 
+    @Override
+    public String toString() {
+        return "TraktWriter{" + "name=" + name + ", job=" + job + ", images=" + images + '}';
+    }
+
 }

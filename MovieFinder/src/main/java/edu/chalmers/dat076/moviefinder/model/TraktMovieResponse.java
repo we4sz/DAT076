@@ -11,21 +11,21 @@ import java.util.List;
  *
  * @author John
  */
-public class TraktMovieResponse implements TraktResponse{
+public class TraktMovieResponse implements TraktResponse {
 
     private String title;
     private int year;
-    private int released;
+    private long released;
     private String url;
     private String trailer;
     private int runtime;
     private String tagline;
     private String overview;
     private String certification;
-    private String imdb_id;
-    private int tmdb_id;
-    private int rt_id;
-    private int last_updated;
+    private String imdbId;
+    private int tmdbId;
+    private int rtId;
+    private long lastUpdated;
     private TraktImages images;
     private List<String> genres;
     private TraktRatings ratings;
@@ -47,11 +47,11 @@ public class TraktMovieResponse implements TraktResponse{
         this.year = year;
     }
 
-    public int getReleased() {
+    public long getReleased() {
         return released;
     }
 
-    public void setReleased(int released) {
+    public void setReleased(long released) {
         this.released = released;
     }
 
@@ -103,36 +103,36 @@ public class TraktMovieResponse implements TraktResponse{
         this.certification = certification;
     }
 
-    public String getImdb_id() {
-        return imdb_id;
+    public String getImdbId() {
+        return imdbId;
     }
 
-    public void setImdb_id(String imdb_id) {
-        this.imdb_id = imdb_id;
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
     }
 
-    public int getTmdb_id() {
-        return tmdb_id;
+    public int getTmdbId() {
+        return tmdbId;
     }
 
-    public void setTmdb_id(int tmdb_id) {
-        this.tmdb_id = tmdb_id;
+    public void setTmdbId(int tmdbId) {
+        this.tmdbId = tmdbId;
     }
 
-    public int getRt_id() {
-        return rt_id;
+    public int getRtId() {
+        return rtId;
     }
 
-    public void setRt_id(int rt_id) {
-        this.rt_id = rt_id;
+    public void setRtId(int rtId) {
+        this.rtId = rtId;
     }
 
-    public int getLast_updated() {
-        return last_updated;
+    public long getLastUpdated() {
+        return lastUpdated;
     }
 
-    public void setLast_updated(int last_updated) {
-        this.last_updated = last_updated;
+    public void setLastUpdated(long lastUpdated) {
+        this.lastUpdated = lastUpdated;
     }
 
     public TraktImages getImages() {
@@ -166,5 +166,12 @@ public class TraktMovieResponse implements TraktResponse{
     public void setPeople(TraktPeoples people) {
         this.people = people;
     }
+
+    @Override
+    public String toString() {
+        return "TraktMovieResponse{" + "title=" + title + ", year=" + year + ", released=" + released + ", url=" + url + ", trailer=" + trailer + ", runtime=" + runtime + ", tagline=" + tagline + ", overview=" + overview + ", certification=" + certification + ", imdbId=" + imdbId + ", tmdbId=" + tmdbId + ", rtId=" + rtId + ", lastUpdated=" + lastUpdated + ", images=" + images + ", genres=" + genres + ", ratings=" + ratings + ", people=" + people + '}';
+    }
+
+   
 
 }

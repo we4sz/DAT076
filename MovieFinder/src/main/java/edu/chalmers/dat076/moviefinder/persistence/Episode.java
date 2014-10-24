@@ -3,21 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package edu.chalmers.dat076.moviefinder.persistence;
 
 import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
-import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktResponse;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -25,14 +21,15 @@ import javax.persistence.Entity;
  */
 @Entity
 public class Episode extends Media implements Serializable {
-    
+
     @Column(nullable = false)
     private Integer season;
     @Column(nullable = false)
     private Integer episode;
-    
-    //private String sID;
-    
+
+    @ManyToOne
+    private Series series;
+
     protected Episode() {
     }
 
@@ -41,32 +38,31 @@ public class Episode extends Media implements Serializable {
         this.season = season;
         this.episode = episode;
     }
-    
-    public Episode(String filePath, TraktResponse data) {
+
+    public Episode(String filePath, TraktResponse data, Series s) {
+        this.series = s;
         if (data != null) {
             if (data instanceof TraktEpisodeResponse) {
                 setEpisode(filePath, (TraktEpisodeResponse) data);
             }
         }
     }
-    
+
     public Episode(String filePath, TraktEpisodeResponse data) {
         setEpisode(filePath, data);
     }
-    
-    private void setEpisode(String filePath, TraktEpisodeResponse data){
-        
+
+    private void setEpisode(String filePath, TraktEpisodeResponse data) {
+
         if (data != null) {
             this.season = data.getEpisode().getSeason();
             this.episode = data.getEpisode().getNumber();
             setFilePath(filePath);
             setTitle(data.getEpisode().getTitle());
-            setImdbRating(data.getEpisode().getRatings().getPercentage() / 10.0);
-            Calendar c = new GregorianCalendar();
-            c.setTimeInMillis(data.getEpisode().getFirst_aired());
-            setReleaseYear(c.get(Calendar.YEAR));
+            setImdbRating(data.getEpisode().getRatings().getPercentage() / 10.0);     
+            setReleaseTime(data.getEpisode().getFirstAired());
             setPlot(data.getEpisode().getOverview());
-            setImdbId(data.getEpisode().getImdb_id());
+            setImdbId(data.getEpisode().getImdbId());
             setRuntime(data.getShow().getRuntime());
             setActors(new LinkedList<Actor>());
             setGenres(data.getShow().getGenres());
@@ -75,7 +71,7 @@ public class Episode extends Media implements Serializable {
             setDirector(null);
         }
     }
-    
+
     public Integer getSeason() {
         return season;
     }
@@ -90,6 +86,14 @@ public class Episode extends Media implements Serializable {
 
     public void setEpisode(Integer episode) {
         this.episode = episode;
+    }
+
+    public Series getSeries() {
+        return series;
+    }
+
+    public void setSeries(Series series) {
+        this.series = series;
     }
 
     @Override

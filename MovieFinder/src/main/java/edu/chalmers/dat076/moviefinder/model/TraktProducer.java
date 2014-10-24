@@ -39,4 +39,11 @@ public class TraktProducer {
         this.images = images;
     }
 
+    @Override
+    public String toString() {
+        return "TraktProducer{" + "name=" + name + ", executive=" + executive + ", images=" + images + '}';
+    }
+    
+    
+
 }

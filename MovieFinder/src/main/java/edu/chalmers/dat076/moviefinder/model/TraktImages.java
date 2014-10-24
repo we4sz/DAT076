@@ -57,4 +57,9 @@ public class TraktImages {
         this.poster = poster;
     }
 
+    @Override
+    public String toString() {
+        return "TraktImages{" + "headshot=" + headshot + ", fanart=" + fanart + ", banner=" + banner + ", poster=" + poster + ", screen=" + screen + '}';
+    }
+
 }

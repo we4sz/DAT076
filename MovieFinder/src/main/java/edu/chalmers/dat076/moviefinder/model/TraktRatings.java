@@ -48,4 +48,10 @@ public class TraktRatings {
         this.hated = hated;
     }
 
+    @Override
+    public String toString() {
+        return "TraktRatings{" + "percentage=" + percentage + ", votes=" + votes + ", loved=" + loved + ", hated=" + hated + '}';
+    }
+
+    
 }

@@ -13,14 +13,14 @@ public class TraktEpisode {
 
     private int season;
     private int number;
-    private int tvdb_id;
-    private String imdb_id;
+    private int tvdbId;
+    private String imdbId;
     private String title;
     private String overview;
     private String url;
-    private int first_aired;
-    private String first_aired_iso;
-    private int first_aired_utc;
+    private long firstAired;
+    private String firstAiredIso;
+    private long firstAiredUtc;
     private TraktImages images;
     private TraktRatings ratings;
 
@@ -38,22 +38,6 @@ public class TraktEpisode {
 
     public void setNumber(int number) {
         this.number = number;
-    }
-
-    public int getTvdb_id() {
-        return tvdb_id;
-    }
-
-    public void setTvdb_id(int tvdb_id) {
-        this.tvdb_id = tvdb_id;
-    }
-
-    public String getImdb_id() {
-        return imdb_id;
-    }
-
-    public void setImdb_id(String imdb_id) {
-        this.imdb_id = imdb_id;
     }
 
     public String getTitle() {
@@ -80,28 +64,44 @@ public class TraktEpisode {
         this.url = url;
     }
 
-    public int getFirst_aired() {
-        return first_aired;
+    public int getTvdbId() {
+        return tvdbId;
     }
 
-    public void setFirst_aired(int first_aired) {
-        this.first_aired = first_aired;
+    public void setTvdbId(int tvdbId) {
+        this.tvdbId = tvdbId;
     }
 
-    public String getFirst_aired_iso() {
-        return first_aired_iso;
+    public String getImdbId() {
+        return imdbId;
     }
 
-    public void setFirst_aired_iso(String first_aired_iso) {
-        this.first_aired_iso = first_aired_iso;
+    public void setImdbId(String imdbId) {
+        this.imdbId = imdbId;
     }
 
-    public int getFirst_aired_utc() {
-        return first_aired_utc;
+    public long getFirstAired() {
+        return firstAired;
     }
 
-    public void setFirst_aired_utc(int first_aired_utc) {
-        this.first_aired_utc = first_aired_utc;
+    public void setFirstAired(long firstAired) {
+        this.firstAired = firstAired;
+    }
+
+    public String getFirstAiredIso() {
+        return firstAiredIso;
+    }
+
+    public void setFirstAiredIso(String firstAiredIso) {
+        this.firstAiredIso = firstAiredIso;
+    }
+
+    public long getFirstAiredUtc() {
+        return firstAiredUtc;
+    }
+
+    public void setFirstAiredUtc(long firstAiredUtc) {
+        this.firstAiredUtc = firstAiredUtc;
     }
 
     public TraktImages getImages() {
@@ -118,6 +118,11 @@ public class TraktEpisode {
 
     public void setRatings(TraktRatings ratings) {
         this.ratings = ratings;
+    }
+
+    @Override
+    public String toString() {
+        return "TraktEpisode{" + "season=" + season + ", number=" + number + ", tvdbId=" + tvdbId + ", imdbId=" + imdbId + ", title=" + title + ", overview=" + overview + ", url=" + url + ", firstAired=" + firstAired + ", firstAiredIso=" + firstAiredIso + ", firstAiredUtc=" + firstAiredUtc + ", images=" + images + ", ratings=" + ratings + '}';
     }
 
 }

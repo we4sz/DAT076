@@ -50,4 +50,11 @@ public class TraktPeoples {
         return writers;
     }
 
+    @Override
+    public String toString() {
+        return "TraktPeoples{" + "producers=" + producers + ", actors=" + actors + ", writers=" + writers + ", directors=" + directors + '}';
+    }
+    
+    
+
 }

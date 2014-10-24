@@ -39,4 +39,9 @@ public class TraktActor {
         this.images = images;
     }
 
+    @Override
+    public String toString() {
+        return "TraktActor{" + "name=" + name + ", character=" + character + ", images=" + images + '}';
+    }
+
 }

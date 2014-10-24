@@ -30,4 +30,11 @@ public class TraktEpisodeResponse implements TraktResponse{
         this.show = show;
     }
 
+    @Override
+    public String toString() {
+        return "TraktEpisodeResponse{" + "episode=" + episode + ", show=" + show + '}';
+    }
+
+    
+    
 }

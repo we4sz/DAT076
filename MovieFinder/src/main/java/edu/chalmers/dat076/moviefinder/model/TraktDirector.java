@@ -30,4 +30,11 @@ public class TraktDirector {
         this.images = images;
     }
 
+    @Override
+    public String toString() {
+        return "TraktDirector{" + "name=" + name + ", images=" + images + '}';
+    }
+    
+    
+
 }
