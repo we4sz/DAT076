@@ -28,8 +28,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
 
-    //  @Autowired
-    // private TraktHandler traktHandler;
+    @Autowired
+    private TraktHandler traktHandler;
+
     @Autowired
     private MovieRepository movieRepository;
 
@@ -47,7 +48,7 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
             public void run() {
 
                 TemporaryMedia temporaryMedia = new TitleParser().parseMedia(path.getFileName().toString());
-                TraktResponse traktData = new TraktHandler().getByTmpMedia(temporaryMedia);
+                TraktResponse traktData = traktHandler.getByTmpMedia(temporaryMedia);
                 if (traktData != null) {
                     if (traktData instanceof TraktMovieResponse) {
                         Movie movie = new Movie(path.toString(), traktData);
@@ -64,7 +65,7 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                             s = seriesRepository.findByImdbId(epr.getShow().getImdbId());
 
                             if (s == null) {
-                                TraktShowReponse sr = new TraktHandler().getByShowName(temporaryMedia.getName());
+                                TraktShowReponse sr = traktHandler.getByShowName(temporaryMedia.getName());
                                 if (sr != null) {
                                     synchronized (seriesRepository) {
                                         s = new Series(sr);

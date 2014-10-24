@@ -30,6 +30,21 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TraktHandler {
+    
+    private HttpClient httpClient;
+
+    public TraktHandler() {
+        httpClient = HttpClientBuilder.create().build();
+    } 
+
+    public HttpClient getHttpClient() {
+        return httpClient;
+    }
+
+    public void setHttpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
+    
 
     /**
      * Looks up omdb data by Title and if possible year. Best used with movies
@@ -94,8 +109,7 @@ public class TraktHandler {
         String url = "http://api.trakt.tv/show/episode/summary.json/a93c5b3dee40604933b1b8069883a844/" + title.replace(" ", "-") + "/" + season + "/" + episode;
         try {
             TraktEpisodeResponse episodeData = getGson().fromJson(readJsonFromUrl(url), TraktEpisodeResponse.class);
-            if (episodeData == null || episodeData.getEpisode() == null || episodeData.getEpisode().getTitle() == null) {
-                System.out.println(url);                
+            if (episodeData == null || episodeData.getEpisode() == null || episodeData.getEpisode().getTitle() == null) {         
                 return null;
             }
             return episodeData;
@@ -105,13 +119,12 @@ public class TraktHandler {
 
     }
 
-    private static JsonObject readJsonFromUrl(String url) throws IOException {
-        HttpClient client = HttpClientBuilder.create().build();
+    private JsonObject readJsonFromUrl(String url) throws IOException {
         HttpGet request = new HttpGet(url);
         request.addHeader("Content-Type", "application/json;charset=UTF-8");
         request.addHeader("Accept-Language", "sv-SE");
         request.addHeader("Accept", "application/json");
-        HttpResponse response = client.execute(request);
+        HttpResponse response = getHttpClient().execute(request);
         return (JsonObject) new JsonParser().parse(EntityUtils.toString(response.getEntity(), "UTF-8"));
     }
 }
