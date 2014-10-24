@@ -22,6 +22,28 @@
                                     return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
                                 }
                             }
+                        }).when('/movies', {
+                            templateUrl: 'partials/movies.html',
+                            controller: 'MoviesCtrl as moviesCtrl',
+                            resolve: {
+                                'moviesCtrlData' : function(moviesCtrlDataLoader) {
+                                    return moviesCtrlDataLoader();
+                                },
+                                auth: function(authHelper) {
+                                    return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
+                                }
+                            }
+                        }).when('/series', {
+                            templateUrl: 'partials/series.html',
+                            controller: 'MoviesCtrl as moviesCtrl',
+                            resolve: {
+                                'moviesCtrlData' : function(moviesCtrlDataLoader) {
+                                    return moviesCtrlDataLoader();
+                                },
+                                auth: function(authHelper) {
+                                    return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
+                                }
+                            }
                         }).when('/movie/:id', {
                             templateUrl: 'partials/movie-details.html',
                             controller: 'MovieDetailsCtrl as movieDetailsCtrl',

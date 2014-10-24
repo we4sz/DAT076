@@ -1,0 +1,207 @@
+<div>
+    <ul class="nav nav-pills">
+        <li class="active"><a href="#/movies">Movies</a></li>
+        <li><a href="#/series">Series</a></li>
+    </ul>
+    
+    <hr class="browse-divider">
+    
+    <div class="row">
+        <div class="col-md-3">
+            <div>
+
+                <span class="text-muted"><span class="glyphicon glyphicon-folder-close"></span> COLLECTIONS</span>
+
+                <div>
+                    <table class="sort-option">
+                        <tbody>
+                            <tr>
+                                <td> Show newcomers</td>
+                            </tr>
+                            <tr>
+                                <td>Show listed</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr class="browse-divider">
+
+                <span class="text-muted"><span class="glyphicon glyphicon-time"></span> DECADES/YEARS</span>
+
+                <div>
+                    <table class="sort-option">
+                        <tbody>
+                            <tr>
+                                <td>2010s</td>
+                                <td>2000s</td>
+                                <td>90s</td>
+                                <td>80s</td>
+                            </tr>
+                            <tr>
+                                <td>70s</td>
+                                <td>60s</td>
+                                <td>50s</td>
+                                <td>40s</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr class="browse-divider">
+
+                <span class="text-muted"><span class="glyphicon glyphicon-th-large"></span> GENRES</span>
+
+                <div>
+                    <table class="sort-option">
+                        <tbody>
+                            <tr>
+                                <td>Action</td>
+                                <td>Adventure</td>
+                                <td>Animation</td>
+                                <td>Biography</td>
+                            </tr>
+                            <tr>
+                                <td>Comedy</td>
+                                <td>Crime</td>
+                                <td>Documentary</td>
+                                <td>Drama</td>
+                            </tr>
+                            <tr>
+                                <td>Family</td>
+                                <td>Fantasy</td>
+                                <td>Film-Noir</td>
+                                <td>Game-Show</td>
+                            </tr>
+                            <tr>
+                                <td>History</td>
+                                <td>Horror</td>
+                                <td>Music</td>
+                                <td>Musical</td>
+                            </tr>
+                            <tr>
+                                <td>Mystery</td>
+                                <td>News</td>
+                                <td>Reality-TV</td>
+                                <td>Romance</td>
+                            </tr>
+                            <tr>
+                                <td>Sci-Fi</td>
+                                <td>Sport</td>
+                                <td>Talk-Show</td>
+                                <td>Thriller</td>
+                            </tr>
+                            <tr>
+                                <td>War</td>
+                                <td>Western</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr class="browse-divider">
+
+                <span class="text-muted"><span class="glyphicon glyphicon-star"></span> IMDb RATING</span>
+
+                <div>
+                    <table class="sort-option">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <form>
+                                        <input class="input-rating" value=0 type="number" name="score" min="0" max="10" step="0.1">
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <hr class="browse-divider">
+
+                <span class="text-muted"><span class="glyphicon glyphicon-time"></span> RUNTIME</span>
+
+                <div>  
+                    <table class="sort-option">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <form>
+                                        <input class="input-rating" value=0 type="number" name="runtime" min="0" max="300" step="1">
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <hr class="browse-divider">
+
+                <span class="text-muted"><span class="glyphicon glyphicon-comment"></span> LANGUAGE</span>
+
+                <div>  
+                    <table class="sort-option">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select name="language">
+                                        <option value="all">All</option>
+                                        <option value="english">English</option>                    
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <hr class="browse-divider">
+
+                <span class="text-muted"><span class="glyphicon glyphicon-globe"></span> COUNTRY</span>
+
+                <div>  
+                    <table class="sort-option">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <select name="country">
+                                        <option value="all">All</option>
+                                        <option value="usa">USA</option>                    
+                                    </select></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <table class="list table table-hover table-striped ">
+                <thead>
+                    <tr>
+                        <td>Title</td>
+                        <td class="hidden-xs">Director</td>
+                        <td class="hidden-xs">Genre</td>
+                        <td>Rating</td> 
+                        <td>Runtime</td>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="movie in moviesCtrl.movies">
+                        <td ng-click="moviesCtrl.goTo('/movie/', movie)">{{movie.title}}</td>
+                        <td ng-click="moviesCtrl.goTo('/movie/', movie)" class="hidden-xs">{{movie.director}}</td>
+                        <td ng-click="moviesCtrl.goTo('/movie/', movie)" class="hidden-xs">
+                            <span ng-repeat="genre in movie.genres">
+                                {{genre}}<span ng-if="!$last">,</span>
+                            </span>
+                        </td>
+                        <td ng-click="moviesCtrl.goTo('/movie/', movie)">{{movie.imdbRating}}</td>
+                        <td ng-click="moviesCtrl.goTo('/movie/', movie)">{{movie.runtime}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
