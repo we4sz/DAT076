@@ -27,7 +27,5 @@ public interface EpisodeRepository extends PagingAndSortingRepository<Episode, L
     public Episode findByImdbId(String imdbId);
     
     public Episode findByReleaseYear(Integer releaseYear);
-    
-    public List<Episode> findAllBySeries(Series series);
         
 }
