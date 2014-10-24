@@ -11,12 +11,23 @@
                 $routeProvider
                         .when('/', {
                             templateUrl: 'partials/welcome.html',
-                        }).when('/browse', {
-                            templateUrl: 'partials/browse.html',
-                            controller: 'BrowseCtrl as browseCtrl',
+                        }).when('/movies', {
+                            templateUrl: 'partials/movies.html',
+                            controller: 'MoviesCtrl as moviesCtrl',
                             resolve: {
-                                'browseCtrlData' : function(browseCtrlDataLoader) {
-                                    return browseCtrlDataLoader();
+                                'moviesCtrlData' : function(moviesCtrlDataLoader) {
+                                    return moviesCtrlDataLoader();
+                                },
+                                auth: function(authHelper) {
+                                    return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
+                                }
+                            }
+                        }).when('/series', {
+                            templateUrl: 'partials/series.html',
+                            controller: 'MoviesCtrl as moviesCtrl',
+                            resolve: {
+                                'moviesCtrlData' : function(moviesCtrlDataLoader) {
+                                    return moviesCtrlDataLoader();
                                 },
                                 auth: function(authHelper) {
                                     return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);

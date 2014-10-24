@@ -3,7 +3,7 @@
 }
 
 .browse-divider {
-    margin: 10px 0; /* Space out the Bootstrap <hr> more */
+    margin: 10px 0;
     opacity: 0;
 }
 
@@ -15,11 +15,9 @@
 
 .input-rating {
     width: 100%;
-    opacity: 0.7;
 }
 
 select {
     width: 100%;
-    opacity: 0.7;
     color: #000;
 }

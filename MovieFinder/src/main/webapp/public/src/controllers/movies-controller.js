@@ -5,9 +5,9 @@
 (function () {
     'use strict';
     angular.module('movieFinder.controllers')
-            .controller('BrowseCtrl', function (movie, browseCtrlData, $location) {
+            .controller('MoviesCtrl', function (movie, moviesCtrlData, $location) {
                 var _this = this;
-                this.movies = browseCtrlData.movies;
+                this.movies = moviesCtrlData.movies;
 
                 this.filterMovies = function (rating) {
                     movie.getMoviesByFilter({imdbRating: rating}).then(function (data) {

@@ -40,6 +40,8 @@
         <link href="public/css/welcome.css" rel="stylesheet">
         <!-- Browse -->
         <link href="public/css/browse.css" rel="stylesheet">
+        <!-- Movies -->
+        <link href="public/css/movies.css" rel="stylesheet">
 
     </head>
     <body class="no-js">
@@ -71,6 +73,7 @@
         <script src="public/src/services/admin-service.js"></script>
         <script src="public/src/services/movie-service.js"></script>
         <script src="public/src/services/browse-ctrl-data-loader-service.js"></script>
+        <script src="public/src/services/movies-ctrl-data-loader-service.js"></script>
         <script src="public/src/services/movie-details-ctrl-data-loader-service.js"></script>
         <!-- Controllers --> 
         <script src="public/src/controllers/app-controller.js"></script>
@@ -78,6 +81,7 @@
         <script src="public/src/controllers/nav-controller.js"></script>
         <script src="public/src/controllers/login-view-controller.js"></script>
         <script src="public/src/controllers/browse-controller.js"></script>
+        <script src="public/src/controllers/movies-controller.js"></script>
         <script src="public/src/controllers/movie-details-controller.js"></script>
         <!-- Directives -->
         <script src="public/src/directives/error-directive.js"></script>
