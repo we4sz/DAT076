@@ -1,15 +1,14 @@
 //
-// movie-service.js
-// Service for retrieving movies.
+// series-service.js
+// Service for retrieving series.
 //
-
 (function () {
     'use strict';
 
     angular.module('movieFinder.services')
-        .factory('movieService', function (MediaService) {
+        .factory('seriesService', function (MediaService) {
             
-            var mediaService = new MediaService('api/files/');
+            var mediaService = new MediaService('api/files/series/');
             
             return {
                 'getList': function () {
