@@ -222,7 +222,7 @@ public abstract class Media extends AbstractEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "Movie{"
+        return "Media{"
                 + "title='" + title + '\''
                 + ", filePath='" + filePath + '\''
                 + ", imdbRating=" + imdbRating
