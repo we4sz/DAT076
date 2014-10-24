@@ -38,8 +38,6 @@
         <link href="public/css/movie-details.css" rel="stylesheet">
         <!-- Welcome -->
         <link href="public/css/welcome.css" rel="stylesheet">
-        <!-- Browse -->
-        <link href="public/css/browse.css" rel="stylesheet">
         <!-- Movies -->
         <link href="public/css/movies.css" rel="stylesheet">
 
@@ -72,17 +70,19 @@
         <script src="public/src/services/user-service.js"></script>
         <script src="public/src/services/admin-service.js"></script>
         <script src="public/src/services/movie-service.js"></script>
-        <script src="public/src/services/browse-ctrl-data-loader-service.js"></script>
-        <script src="public/src/services/movies-ctrl-data-loader-service.js"></script>
-        <script src="public/src/services/movie-details-ctrl-data-loader-service.js"></script>
+        <script src="public/src/services/media-service.js"></script>
+        <script src="public/src/services/series-service.js"></script>
+        <script src="public/src/services/episode-service.js"></script>
         <!-- Controllers --> 
         <script src="public/src/controllers/app-controller.js"></script>
         <script src="public/src/controllers/admin-controller.js"></script>
         <script src="public/src/controllers/nav-controller.js"></script>
         <script src="public/src/controllers/login-view-controller.js"></script>
-        <script src="public/src/controllers/browse-controller.js"></script>
         <script src="public/src/controllers/movies-controller.js"></script>
         <script src="public/src/controllers/movie-details-controller.js"></script>
+        <script src="public/src/controllers/series-controller.js"></script>
+        <script src="public/src/controllers/series-details-controller.js"></script>
+        <script src="public/src/controllers/episode-details-controller.js"></script>
         <!-- Directives -->
         <script src="public/src/directives/error-directive.js"></script>
     </body>

@@ -41,8 +41,8 @@
                             <b>Director: </b> {{movieDetailsCtrl.movie.director}}
                         </p>
                         <p>
-                            <b>Stars:  </b> <span ng-repeat="actor in movieDetailsCtrl.movie.actors">
-                                <a href="#/actor/{{actor.id}}">{{actor.name}}</a> as {{actor.character}}<span ng-if="!$last">,</span>
+                            <b>Stars:  </b> <span ng-repeat="actor in movieDetailsCtrl.movie.actors | limitTo: 5">
+                                <a href="#/actors/{{actor.id}}">{{actor.name}}</a> as {{actor.character}}<span ng-if="!$last">,</span>
                             </span>
                         </p>
                     </div>
