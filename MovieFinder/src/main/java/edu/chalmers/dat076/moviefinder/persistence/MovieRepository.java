@@ -26,4 +26,8 @@ public interface MovieRepository extends PagingAndSortingRepository<Movie, Long>
     public Movie findByFilePath(String filePath);
 
     public List<Movie> findAllByFilePathStartingWith(String filePath);
+    
+    public Movie findByImdbId(String imdbId);
+    
+    public Movie findByReleaseYear(Integer releaseYear);
 }
