@@ -24,6 +24,8 @@ public interface EpisodeRepository extends PagingAndSortingRepository<Episode, L
 
     public Episode findByFilePath(String filePath);
     
+    public List<Episode> findAllByFilePathStartingWith(String filePath);
+    
     public Episode findByImdbId(String imdbId);
     
     public Episode findByReleaseYear(Integer releaseYear);

@@ -26,4 +26,5 @@ public interface SeriesRepository extends PagingAndSortingRepository<Series, Lon
     
     public Movie findByReleaseYear(Integer releaseYear);
 
+    
 }
