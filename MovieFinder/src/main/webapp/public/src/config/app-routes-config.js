@@ -11,17 +11,6 @@
                 $routeProvider
                         .when('/', {
                             templateUrl: 'partials/welcome.html',
-                        }).when('/browse', {
-                            templateUrl: 'partials/browse.html',
-                            controller: 'BrowseCtrl as browseCtrl',
-                            resolve: {
-                                'browseCtrlData' : function(browseCtrlDataLoader) {
-                                    return browseCtrlDataLoader();
-                                },
-                                auth: function(authHelper) {
-                                    return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
-                                }
-                            }
                         }).when('/movies', {
                             templateUrl: 'partials/movies.html',
                             controller: 'MoviesCtrl as moviesCtrl',
