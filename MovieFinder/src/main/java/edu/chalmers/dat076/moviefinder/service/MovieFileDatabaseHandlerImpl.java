@@ -62,13 +62,14 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                         Series s;
                         synchronized (seriesRepository) {
                             s = seriesRepository.findByImdbId(epr.getShow().getImdbId());
-                        }
-                        if (s == null) {
-                            TraktShowReponse sr = new TraktHandler().getByShowName(temporaryMedia.getName());
-                            if (sr != null) {
-                                synchronized (seriesRepository) {
-                                    s = new Series(sr);
-                                    seriesRepository.save(s);
+
+                            if (s == null) {
+                                TraktShowReponse sr = new TraktHandler().getByShowName(temporaryMedia.getName());
+                                if (sr != null) {
+                                    synchronized (seriesRepository) {
+                                        s = new Series(sr);
+                                        seriesRepository.save(s);
+                                    }
                                 }
                             }
                         }
