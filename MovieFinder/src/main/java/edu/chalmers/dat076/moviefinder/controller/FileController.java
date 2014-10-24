@@ -4,6 +4,9 @@ import edu.chalmers.dat076.moviefinder.model.Range;
 import edu.chalmers.dat076.moviefinder.persistence.Movie;
 import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
 import edu.chalmers.dat076.moviefinder.persistence.MovieSpecs;
+import edu.chalmers.dat076.moviefinder.persistence.Series;
+import edu.chalmers.dat076.moviefinder.persistence.SeriesRepository;
+import edu.chalmers.dat076.moviefinder.persistence.SeriesSpecs;
 import edu.chalmers.dat076.moviefinder.utils.FileControllerUtils;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -48,6 +51,9 @@ public class FileController {
 
     @Autowired
     MovieRepository movieRepository;
+    
+    @Autowired
+    SeriesRepository seriesRepository;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public @ResponseBody
@@ -66,6 +72,25 @@ public class FileController {
             filter = filter.and(MovieSpecs.hasRuntimeAbove(runtime));
         }
         return movieRepository.findAll(filter, pageRequest);
+    }
+    
+    @RequestMapping(value = "/series/", method = RequestMethod.GET)
+    public @ResponseBody
+    Page<Series> listSeries(
+            @RequestParam(value = "imdbRating", required = false) Double imdbRating,
+            @RequestParam(value = "runtime", required = false) Integer runtime
+    ) {
+        PageRequest pageRequest = new PageRequest(0, 25);
+
+        Specifications<Series> filter = where(null);
+
+        if (imdbRating != null) {
+            filter = filter.and(SeriesSpecs.hasImdbRatingAbove(imdbRating));
+        }
+        if (runtime != null) {
+            filter = filter.and(SeriesSpecs.hasRuntimeAbove(runtime));
+        }
+        return seriesRepository.findAll(filter, pageRequest);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)

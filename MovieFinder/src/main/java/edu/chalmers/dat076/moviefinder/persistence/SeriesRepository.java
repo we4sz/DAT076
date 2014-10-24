@@ -24,6 +24,6 @@ public interface SeriesRepository extends PagingAndSortingRepository<Series, Lon
 
     public Series findByImdbId(String imdb_id);
     
-    public Movie findByReleaseYear(Integer releaseYear);
+    public Series findByReleaseYear(Integer releaseYear);
 
 }
