@@ -36,5 +36,14 @@ public class MovieSpecs {
     };
     }
     
+    public static Specification<Movie> hasRealeaseYear(final int releaseYear){
+        return new Specification<Movie>(){
+            @Override
+            public Predicate toPredicate(Root<Movie> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+                return cb.equal(root.get(Movie_.releaseYear), releaseYear);
+            }
+    };
+    }
+    
     
 }

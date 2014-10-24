@@ -27,6 +27,14 @@ public class EpisodeSpecs {
     };
     }
     
+    public static Specification<Episode> hasRealeaseYear(final int releaseYear){
+        return new Specification<Episode>(){
+            @Override
+            public Predicate toPredicate(Root<Episode> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+                return cb.equal(root.get(Episode_.releaseYear), releaseYear);
+            }
+    };
+    }
     
     
 }

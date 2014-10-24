@@ -27,11 +27,11 @@ public class SeriesSpecs {
     };
     }
     
-    public static Specification<Series> hasRuntimeAbove(final int runtime){
+    public static Specification<Series> hasRealeaseYear(final int releaseYear){
         return new Specification<Series>(){
             @Override
             public Predicate toPredicate(Root<Series> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
-                return cb.greaterThanOrEqualTo(root.get(Series_.runtime), runtime);
+                return cb.equal(root.get(Series_.releaseYear), releaseYear);
             }
     };
     }
