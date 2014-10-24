@@ -105,6 +105,20 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                 removeFile(new File(m.getFilePath()).toPath());
             }
         }
+
+        Iterable<Episode> episodes = episodeRepository.findAll();
+        for (Episode e : episodes) {
+            boolean foundParent = false;
+            for (Path p : paths) {
+                if (e.getFilePath().startsWith(p.toString())) {
+                    foundParent = true;
+                    break;
+                }
+            }
+            if (!foundParent) {
+                removeFile(new File(e.getFilePath()).toPath());
+            }
+        }
     }
 
     @Override
@@ -136,6 +150,35 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
         for (Movie m : movies) {
             removeFile(new File(m.getFilePath()).toPath());
         }
+
+        List<Episode> episodes;
+        synchronized (episodeRepository) {
+            synchronized (seriesRepository) {
+                episodes = episodeRepository.findAllByFilePathStartingWith(basePath.toString());
+            }
+        }
+        for (Episode m : episodes) {
+            for (int i = 0; i < paths.size(); i++) {
+                if (paths.toString().equals(m.getFilePath())) {
+                    paths.remove(i);
+                    break;
+                }
+            }
+        }
+
+        for (Path p : paths) {
+            saveFile(p);
+            for (int i = 0; i < movies.size(); i++) {
+                if (movies.get(i).getFilePath().equals(p.toString())) {
+                    movies.remove(i);
+                    break;
+                }
+            }
+        }
+
+        for (Episode m : episodes) {
+            removeFile(new File(m.getFilePath()).toPath());
+        }
     }
 
     @Override
@@ -145,6 +188,22 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
             List<Movie> movies = movieRepository.findAllByFilePathStartingWith(path.toString());
             for (Movie m : movies) {
                 movieRepository.delete(m);
+            }
+        }
+        System.out.println(path);
+        synchronized (seriesRepository) {
+            synchronized (episodeRepository) {
+                List<Episode> episodes = episodeRepository.findAllByFilePathStartingWith(path.toString());
+                for (Episode m : episodes) {
+                    Series s = m.getSeries();
+                    s.getEpisodes().remove(m);
+                    episodeRepository.delete(m);
+                    if (s.getEpisodes().isEmpty()) {
+                        seriesRepository.delete(s);
+                    } else {
+                        seriesRepository.save(s);
+                    }
+                }
             }
         }
     }

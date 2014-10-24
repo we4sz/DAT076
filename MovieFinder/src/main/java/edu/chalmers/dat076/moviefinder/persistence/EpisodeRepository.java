@@ -5,6 +5,7 @@
  */
 package edu.chalmers.dat076.moviefinder.persistence;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -22,5 +23,7 @@ public interface EpisodeRepository extends PagingAndSortingRepository<Episode, L
     public Page<Episode> findByTitleContaining(String name, Pageable pageable);
 
     public Episode findByFilePath(String filePath);
+    
+    public List<Episode> findAllByFilePathStartingWith(String filePath);
         
 }
