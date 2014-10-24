@@ -7,6 +7,7 @@ package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.model.HttpGetWithEquals;
 import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
+import edu.chalmers.dat076.moviefinder.test.config.TestApplicationConfig;
 import java.io.IOException;
 import org.apache.http.client.HttpClient;
 import static org.junit.Assert.*;
@@ -24,14 +25,30 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.message.BasicStatusLine;
 
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 /**
  *
  * @author Carl Jansson
  */
-//@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
-//@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(loader=AnnotationConfigContextLoader.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TraktHandlerTest {
+    
+    @Configuration
+    static class ContextConfiguration {
+        @Bean
+        public TraktHandler traktHandler() {
+            return new TraktHandler();
+        }
 
+    }
+    @Autowired
     private TraktHandler instance;
 
     private String episodeTGW = "{\"show\":{\"title\":\"The Good Wife\",\"year\":2009,\"url\":\"http://trakt.tv/show/the-good-wife\",\"first_aired\":1253678400,\"first_aired_iso\":\"2009-09-22T21:00:00-04:00\",\"first_aired_utc\":1253667600,\"country\":\"United States\",\"overview\":\"The Good Wife is a drama starring Emmy Award winner Julianna Margulies as a wife and mother who must assume full responsibility for her family and re-enter the workforce after her husband's very public sex and political corruption scandal lands him in jail.\",\"runtime\":60,\"network\":\"CBS\",\"air_day\":\"Sunday\",\"air_time\":\"9:00pm\",\"certification\":\"TV-14\",\"imdb_id\":\"tt1442462\",\"tvdb_id\":95451,\"tvrage_id\":22755,\"images\":{\"poster\":\"http://slurm.trakt.us/images/posters/338.10.jpg\",\"fanart\":\"http://slurm.trakt.us/images/fanart/338.10.jpg\",\"banner\":\"http://slurm.trakt.us/images/banners/338.10.jpg\"},\"ratings\":{\"percentage\":87,\"votes\":2454,\"loved\":2341,\"hated\":113},\"genres\":[\"Drama\",\"Crime\",\"Mystery\"]},\"episode\":{\"season\":6,\"number\":3,\"tvdb_id\":4999282,\"imdb_id\":\"\",\"title\":\"Dear God\",\"overview\":\"Joy Grubick, a pretrial service officer, interviews Cary's colleagues to determine if he should remain behind bars; a client's case ends up in Christian arbitration.\",\"url\":\"http://trakt.tv/show/the-good-wife/season/6/episode/3\",\"first_aired\":1412568000,\"first_aired_iso\":\"2014-10-05T21:00:00-04:00\",\"first_aired_utc\":1412557200,\"images\":{\"screen\":\"http://slurm.trakt.us/images/episodes/338-6-3.10.jpg\"},\"ratings\":{\"percentage\":83,\"votes\":266,\"loved\":264,\"hated\":2}}}";
@@ -43,7 +60,6 @@ public class TraktHandlerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        instance = new TraktHandler();
         instance.setHttpClient(defaultHttpClient);
     }
 
@@ -67,42 +83,5 @@ public class TraktHandlerTest {
         request.addHeader("Accept", "application/json");
         return request;
     }
-    /*
-     @Test
-     public void testGetOMDBInfoByTitleYear() {
-     mockServer.expect(requestTo("http://api.trakt.tv/movie/summary.json/a93c5b3dee40604933b1b8069883a844/" + "TestTitle".replace(" ", "-") + "-" + 2014)).andRespond(withSuccess(
-     "{\"title\":\"TestTitle\", \"imdb_id\":\"tt1403865\"}",
-     MediaType.APPLICATION_JSON));
-
-     TraktMovieResponse response = instance.getByTitleYear("TestTitle", 2014);
-
-     assertEquals(response.getTitle(), "TestTitle");
-     assertEquals(response.getImdb_id(), "tt1403865");
-
-     mockServer.verify();
-     }
- 
-     public void testGetNonExistingMovie() {
-     // This test simulates a request for a movie that doesn't exist on OMDB
-     mockServer.expect(requestTo("http://www.omdbapi.com/?t=TestTitle")).andRespond(withSuccess(
-     "{\"Response\":\"False\",\"Error\":\"Movie not found!\"}",
-     MediaType.APPLICATION_JSON));
-
-     OmdbMediaResponse response = instance.getByTitle("TestTitle");
-     assertNull(response);
-     }
- 
-     @Test
-     public void testGetMoreOMDB() {
-     mockServer.expect(requestTo("http://www.omdbapi.com/?i=tt1403865")).andRespond(withSuccess(
-     "{\"Title\":\"TestTitle\", \"imdbID\":\"tt1403865\"}",
-     MediaType.APPLICATION_JSON));
-
-     OmdbMediaResponse response = instance.getByImdbId("tt1403865");
-
-     assertEquals(response.getTitle(), "TestTitle");
-     assertEquals(response.getImdbID(), "tt1403865");
-
-     mockServer.verify();
-     }*/
+    
 }
