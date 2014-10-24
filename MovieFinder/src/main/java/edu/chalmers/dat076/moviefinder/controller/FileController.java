@@ -34,6 +34,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specifications;
 import static org.springframework.data.jpa.domain.Specifications.where;
 import org.springframework.stereotype.Controller;
@@ -65,54 +66,77 @@ public class FileController {
     public @ResponseBody
     Page<Movie> listMovies(
             @RequestParam(value = "imdbRating", required = false) Double imdbRating,
-            @RequestParam(value = "runtime", required = false) Integer runtime
+            @RequestParam(value = "runtime", required = false) Integer runtime,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "asc", required = false) Boolean asc
     ) {
-        PageRequest pageRequest = new PageRequest(0, 25);
-
+        
         Specifications<Movie> filter = where(null);
-
+        
         if (imdbRating != null) {
             filter = filter.and(MovieSpecs.hasImdbRatingAbove(imdbRating));
         }
         if (runtime != null) {
             filter = filter.and(MovieSpecs.hasRuntimeAbove(runtime));
         }
-        return movieRepository.findAll(filter, pageRequest);
+        return movieRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
     
     @RequestMapping(value = "/series/", method = RequestMethod.GET)
     public @ResponseBody
     Page<Series> listSeries(
             @RequestParam(value = "imdbRating", required = false) Double imdbRating,
-            @RequestParam(value = "runtime", required = false) Integer runtime
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "asc", required = false) Boolean asc
     ) {
-        PageRequest pageRequest = new PageRequest(0, 25);
-
+        
         Specifications<Series> filter = where(null);
 
         if (imdbRating != null) {
             filter = filter.and(SeriesSpecs.hasImdbRatingAbove(imdbRating));
         }
-        if (runtime != null) {
-            filter = filter.and(SeriesSpecs.hasRuntimeAbove(runtime));
-        }
-        return seriesRepository.findAll(filter, pageRequest);
+        return seriesRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
     
     @RequestMapping(value = "/episodes/", method = RequestMethod.GET)
     public @ResponseBody
     Page<Episode> listEpisodes(
-            @RequestParam(value = "imdbRating", required = false) Double imdbRating//,
-            //@RequestParam(value = "runtime", required = false) Integer runtime
+            @RequestParam(value = "imdbRating", required = false) Double imdbRating,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "asc", required = false) Boolean asc
     ) {
-        PageRequest pageRequest = new PageRequest(0, 25);
 
         Specifications<Episode> filter = where(null);
 
         if (imdbRating != null) {
             filter = filter.and(EpisodeSpecs.hasImdbRatingAbove(imdbRating));
         }
-        return episodeRepository.findAll(filter, pageRequest);
+        return episodeRepository.findAll(filter, getPageRequest(page, sort, asc));
+    }
+    
+    private PageRequest getPageRequest(Integer page, String sort, Boolean asc){
+        Sort s = null;
+        if (sort != null) {
+            if (asc != null){
+                if (asc){
+                    s = new Sort(Sort.Direction.ASC, sort);
+                } else {
+                    s = new Sort(Sort.Direction.DESC, sort);
+                }
+            } else {
+                s = new Sort(Sort.Direction.DESC, sort);
+            }
+        }
+        PageRequest pageRequest;
+        if (page != null){
+                pageRequest = new PageRequest(page, 25, s);
+        } else {
+                pageRequest = new PageRequest(0, 25, s);
+        }
+        return pageRequest;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -127,7 +151,7 @@ public class FileController {
         return seriesRepository.findOne(id);
     }
     
-    @RequestMapping(value = "/episdes/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/episodes/{id}", method = RequestMethod.GET)
     public @ResponseBody
     Episode getEpisodeById(@PathVariable long id) {
         return episodeRepository.findOne(id);
