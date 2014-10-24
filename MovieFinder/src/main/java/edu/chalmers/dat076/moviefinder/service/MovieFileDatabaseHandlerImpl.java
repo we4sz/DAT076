@@ -13,7 +13,11 @@ import edu.chalmers.dat076.moviefinder.persistence.Series;
 import edu.chalmers.dat076.moviefinder.persistence.SeriesRepository;
 import java.io.File;
 import java.nio.file.Path;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -40,9 +44,12 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
     @Autowired
     private EpisodeRepository episodeRepository;
 
+    private final Semaphore lock = new Semaphore(100);
+
     @Override
     public void saveFile(final Path path) {
         Runnable r = new Runnable() {
+
             @Override
             @Transactional
             public void run() {
@@ -67,10 +74,8 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                             if (s == null) {
                                 TraktShowReponse sr = traktHandler.getByShowName(temporaryMedia.getName());
                                 if (sr != null) {
-                                    synchronized (seriesRepository) {
-                                        s = new Series(sr);
-                                        seriesRepository.save(s);
-                                    }
+                                    s = new Series(sr);
+                                    seriesRepository.save(s);
                                 }
                             }
                         }
@@ -83,9 +88,15 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                     }
                 }
 
+                lock.release();
             }
 
         };
+
+        try {
+            lock.acquire();
+        } catch (InterruptedException ex) {
+        }
 
         new Thread(r).start();
     }
