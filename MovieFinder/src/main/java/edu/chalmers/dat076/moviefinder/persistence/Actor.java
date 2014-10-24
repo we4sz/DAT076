@@ -15,10 +15,11 @@ import javax.persistence.Entity;
  * @author John
  */
 @Entity
-public class Actor extends AbstractEntity implements Serializable{
+public class Actor extends AbstractEntity implements Serializable {
 
     private String name;
     private String actor_character;
+    private String poster;
 
     public Actor() {
     }
@@ -26,11 +27,21 @@ public class Actor extends AbstractEntity implements Serializable{
     public Actor(TraktActor a) {
         this.name = a.getName();
         this.actor_character = a.getCharacter();
+        this.poster = Media.getImage(a.getImages());
     }
 
     public Actor(String name, String character, TraktImages images) {
         this.name = name;
         this.actor_character = character;
+        this.poster = Media.getImage(images);
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
+    }
+
+    public String getPoster() {
+        return poster;
     }
 
     public String getName() {

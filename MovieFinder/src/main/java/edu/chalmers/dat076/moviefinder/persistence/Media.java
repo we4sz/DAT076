@@ -69,7 +69,7 @@ public abstract class Media extends AbstractEntity implements Serializable {
         this.title = title;
     }
 
-    protected List<Actor> toActors(List<TraktActor> actors) {
+    protected static List<Actor> toActors(List<TraktActor> actors) {
         List<Actor> _a = new LinkedList<>();
         for (TraktActor a : actors) {
             _a.add(new Actor(a));
@@ -77,7 +77,7 @@ public abstract class Media extends AbstractEntity implements Serializable {
         return _a;
     }
 
-    protected String getImage(TraktImages i) {
+    protected static String getImage(TraktImages i) {
         if (i.getPoster() != null) {
             return i.getPoster();
         } else if (i.getFanart() != null) {
