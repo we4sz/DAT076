@@ -23,6 +23,8 @@ public interface SeriesRepository extends PagingAndSortingRepository<Series, Lon
     public Page<Series> findByTitleContaining(String SeriesName, Pageable pageable);
 
     public Series findByImdbId(String imdb_id);
+    
+    public Movie findByReleaseYear(Integer releaseYear);
 
     
 }

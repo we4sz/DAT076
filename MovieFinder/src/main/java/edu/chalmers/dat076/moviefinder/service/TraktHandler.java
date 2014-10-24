@@ -10,6 +10,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import edu.chalmers.dat076.moviefinder.model.HttpGetWithEquals;
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
 import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
@@ -120,7 +121,7 @@ public class TraktHandler {
     }
 
     private JsonObject readJsonFromUrl(String url) throws IOException {
-        HttpGet request = new HttpGet(url);
+        HttpGetWithEquals request = new HttpGetWithEquals(url);
         request.addHeader("Content-Type", "application/json;charset=UTF-8");
         request.addHeader("Accept-Language", "sv-SE");
         request.addHeader("Accept", "application/json");
