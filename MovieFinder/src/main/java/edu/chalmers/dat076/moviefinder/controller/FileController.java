@@ -67,6 +67,7 @@ public class FileController {
     Page<Movie> listMovies(
             @RequestParam(value = "imdbRating", required = false) Double imdbRating,
             @RequestParam(value = "runtime", required = false) Integer runtime,
+            @RequestParam(value = "releaseYear", required = false) Integer releaseYear,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "sort", required = false) String sort,
             @RequestParam(value = "asc", required = false) Boolean asc
@@ -80,6 +81,9 @@ public class FileController {
         if (runtime != null) {
             filter = filter.and(MovieSpecs.hasRuntimeAbove(runtime));
         }
+        if (releaseYear != null){
+            filter = filter.and(MovieSpecs.hasRealeaseYear(releaseYear));
+        }
         return movieRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
     
@@ -87,6 +91,7 @@ public class FileController {
     public @ResponseBody
     Page<Series> listSeries(
             @RequestParam(value = "imdbRating", required = false) Double imdbRating,
+            @RequestParam(value = "releaseYear", required = false) Integer releaseYear,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "sort", required = false) String sort,
             @RequestParam(value = "asc", required = false) Boolean asc
@@ -97,6 +102,9 @@ public class FileController {
         if (imdbRating != null) {
             filter = filter.and(SeriesSpecs.hasImdbRatingAbove(imdbRating));
         }
+        if (releaseYear != null){
+            filter = filter.and(SeriesSpecs.hasRealeaseYear(releaseYear));
+        }
         return seriesRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
     
@@ -104,6 +112,7 @@ public class FileController {
     public @ResponseBody
     Page<Episode> listEpisodes(
             @RequestParam(value = "imdbRating", required = false) Double imdbRating,
+            @RequestParam(value = "releaseYear", required = false) Integer releaseYear,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "sort", required = false) String sort,
             @RequestParam(value = "asc", required = false) Boolean asc
@@ -113,6 +122,9 @@ public class FileController {
 
         if (imdbRating != null) {
             filter = filter.and(EpisodeSpecs.hasImdbRatingAbove(imdbRating));
+        }
+        if (releaseYear != null){
+            filter = filter.and(EpisodeSpecs.hasRealeaseYear(releaseYear));
         }
         return episodeRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
@@ -156,7 +168,7 @@ public class FileController {
     Episode getEpisodeById(@PathVariable long id) {
         return episodeRepository.findOne(id);
     }
-
+    
     @RequestMapping(value = "/sub/{id}", method = RequestMethod.GET)
     public void getSubtitle(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Movie m = movieRepository.findOne(id);
