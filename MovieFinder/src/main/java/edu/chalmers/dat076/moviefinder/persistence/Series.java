@@ -37,6 +37,7 @@ public class Series extends Media implements Serializable {
     public Series(String seriesName, String imdb_id) {
         this.title = seriesName;
         this.imdbId = imdb_id;
+        this.filePath = imdb_id;
     }
 
     public Series(TraktShowReponse data) {

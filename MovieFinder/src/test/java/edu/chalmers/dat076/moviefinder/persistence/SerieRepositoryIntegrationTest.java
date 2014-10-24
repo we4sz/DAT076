@@ -72,7 +72,7 @@ public class SerieRepositoryIntegrationTest extends AbstractIntegrationTest {
         s = repository.findByImdbId("NonExistingSID");
         assertTrue(s == null);
     }
-    /*
+    
      @Test
      public void saveAndGetSeriesWithEpisodes() {
      Series serie = new Series("EpisodeSeriesTest", "estID");
@@ -113,5 +113,5 @@ public class SerieRepositoryIntegrationTest extends AbstractIntegrationTest {
         
      e = eRepository.findByFilePath("path2");
      assertEquals("title", e.getTitle());
-     }*/
+     }
 }
