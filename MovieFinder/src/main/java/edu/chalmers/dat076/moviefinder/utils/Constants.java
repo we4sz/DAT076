@@ -16,7 +16,7 @@ import java.util.List;
 public class Constants {
 
     /**
-     * A list of file endings that indicates that the file is a movie file.
+     * A list of file endings indicating that there is no more useful information.
      */
     public static final List<String> MOVIE_FILE_ENDING_WORDS = Collections.unmodifiableList(new ArrayList<String>() {
         {
