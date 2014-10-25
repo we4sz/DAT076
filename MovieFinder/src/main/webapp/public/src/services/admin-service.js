@@ -7,11 +7,23 @@
     'use strict';
 
     angular.module('movieFinder.services')
-            .factory('admin', function ($http) {
+            .factory('adminService', function ($http, $q) {
                 return {
                     'addPath': function (path) {
                         return $http.post('api/admin/addPath', {listeningPath: path});
                     },
+                    'removePath': function(id) {
+                        return $http.delete('api/admin/removePath/' + id);
+                    },
+                    'getPaths': function() {
+                        return $q(function (resolve, reject) {
+                            $http.get('api/admin/getPaths').success(function (data) {
+                                resolve(data.content);
+                            }).error(function (err) {
+                                reject(err);
+                            });
+                        });
+                    }
                 };
             });
 })();
