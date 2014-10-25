@@ -22,6 +22,9 @@
                 <li data-match-route="^/series">
                     <a href="#/series/">Series</a>
                 </li>
+                <li data-match-route="^/admin" ng-if="appCtrl.user.hasRole('ADMIN')">
+                    <a href="#/admin/">Admin</a>
+                </li>
             </ul>
             <form class="navbar-form navbar-right hide-no-js"
                 ng-hide="appCtrl.user.isLoggedIn() || navCtrl.isLoginPage">
