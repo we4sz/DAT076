@@ -70,8 +70,8 @@ public class FileController {
      * returned
      * @param runtime Only movies with a runtime equal or above runtime returned
      * @param releaseYear Only movies released releaseYear returned
-     * @param page What page to return. Page 1 is indexed as 0
-     * @param sort Database field to sort by. Default it is set as descending
+     * @param page What page to return. Page 1 is indexed as 0. Default value is 0.
+     * @param sort Database field to sort by. Default is title with asc=true
      * @param asc Set true and sorting will be done ascending instead of
      * descending.
      * @return
@@ -98,6 +98,13 @@ public class FileController {
         if (releaseYear != null){
             filter = filter.and(MovieSpecs.hasReleaseYear(releaseYear));
         }
+        if (sort == null){
+            sort = "title";
+            if (asc == null){
+                asc = true;
+            }
+        }
+        
         return movieRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
     
@@ -108,7 +115,7 @@ public class FileController {
      * @param imdbRating Only Series with a rating equal or above imdbRating returned
      * @param releaseYear Only Series released releaseYear returned
      * @param page What page to return. Page 1 is indexed as 0. Default value is 0.
-     * @param sort Database field to sort by. Default it is set as descending
+     * @param sort Database field to sort by. Default is title with asc=true
      * @param asc Set true and sorting will be done ascending instead of descending.
      */
     @RequestMapping(value = "/series/", method = RequestMethod.GET)
@@ -129,18 +136,26 @@ public class FileController {
         if (releaseYear != null){
             filter = filter.and(SeriesSpecs.hasReleaseYear(releaseYear));
         }
+        if (sort == null){
+            sort = "title";
+            if (asc == null){
+                asc = true;
+            }
+        }
         return seriesRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
     
     /**
-     * Method for accessing Episodes. If no params defined It will return the first
-     * 25 Episodes that is found.
-     * 
-     * @param imdbRating Only Episodes with a rating equal or above imdbRating returned
+     * Method for accessing Episodes. If no params defined It will return the
+     * first 25 Episodes that is found.
+     *
+     * @param imdbRating Only Episodes with a rating equal or above imdbRating
+     * returned
      * @param releaseYear Only Episodes released releaseYear returned
-     * @param page What page to return. Page 1 is indexed as 0. Default value is 0.
+     * @param page What page to return. Page 1 is indexed as 0. Default is 0.
      * @param sort Database field to sort by. Default it is set as descending
-     * @param asc Set true and sorting will be done ascending instead of descending.
+     * @param asc Set true and sorting will be done ascending instead of
+     * descending.
      */
     @RequestMapping(value = "/episodes/", method = RequestMethod.GET)
     public @ResponseBody
