@@ -17,6 +17,8 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 /**
+ * A class for saving series into the database. It extends Media due to many
+ * similar fields.
  *
  * @author Carl Jansson
  */

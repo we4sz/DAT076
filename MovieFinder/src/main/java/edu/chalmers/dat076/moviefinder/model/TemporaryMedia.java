@@ -20,8 +20,9 @@ public class TemporaryMedia {
     private int season;
     private int episode;
     
-    
-    
+    /**
+     * Creates a new TemporaryMedia that is set to be a movie.
+     */
     public TemporaryMedia(){
         this.isMovie = true;
     }

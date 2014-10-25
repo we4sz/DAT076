@@ -106,7 +106,7 @@ public class TitleParserTest {
         assertEquals( 2, t.getEpisode());
         assertEquals(2012, t.getYear());
         t = instance.parseMedia("min.serie!.2012-01x02.1080p.mkv");
-        assertEquals("min serie!", t.getName());
+        assertEquals("min serie! 2012", t.getName());
         assertTrue( !t.IsMovie());
         assertEquals( 1, t.getSeason());
         assertEquals( 2, t.getEpisode());

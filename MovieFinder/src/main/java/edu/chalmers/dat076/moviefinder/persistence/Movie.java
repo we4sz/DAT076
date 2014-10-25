@@ -11,7 +11,8 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 
 /**
- * A movie entity.
+ * A movie entity. All fields defined in Media. This class is simply the
+ * receiver of a TraktMovieResponse so it is saved correctly.
  *
  * @author Peter
  */
