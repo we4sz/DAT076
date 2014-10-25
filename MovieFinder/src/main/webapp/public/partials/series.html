@@ -24,28 +24,36 @@
 
                 <button class="btn btn-block btn-primary" ng-click="seriesCtrl.filterSeries(models.filterRaiting)">Filter</button>
             </form>
+            <hr class="browse-divider">
         </div>
 
         <div class="col-sm-9">
-            <table class="list table table-hover table-striped">
+            <table id="browsingTable" class="list table table-hover table-bordered table-striped table-responsive">
                 <thead>
                     <tr>
-                        <td>Title</td>
+                        <td>Name</td>
                         <td>Rating</td> 
                     </tr>
                 </thead>
                 <tbody ng-show="seriesCtrl.series.length">
-                    <tr ng-repeat="series in seriesCtrl.series" ng-click="seriesCtrl.goTo('/series/' + series.id)">
+                    <tr class="browsingRow" ng-repeat="series in seriesCtrl.series" ng-click="seriesCtrl.goTo('/series/' + series.id)">
                         <td>{{series.title}}</td>
                         <td>{{series.imdbRating}}</td>
                     </tr>
                 </tbody>
             </table>
-            <div ng-hide="seriesCtrl.series.length">
-                No results
-            </div>
+            <table class="list table table-bordered table-striped">
+                <tbody>
+                    <tr class="noResult" ng-hide="seriesCtrl.series.length">
+                        <td>No result</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>                   
+                </tbody>
+            </table>
         </div>
     </div>
-
-
 </div>
