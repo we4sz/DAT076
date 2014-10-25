@@ -51,7 +51,21 @@
         </div>
     </div>
 </div>
-
+<div class="col-md-8 col-md-offset-2">
+    <div class="panel-body">
+        <div class="panel-heading"> <h3>Cast overview</h3></div>
+        <table class="list table table-striped" >
+            <tbody>
+                <tr class="actorRow" ng-repeat="actor in episodeDetailsCtrl.series.actors">
+                    <td class="actorIcon"><img ng-src="{{actor.poster}}" class="img-responsive"/></td>
+                    <td><a href="#/actors/{{actor.id}}">{{actor.name}}</a> </td>
+                    <td>...</td>
+                    <td>{{actor.character}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 
 
