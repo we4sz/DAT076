@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
- * A Episode repository. Note that this interface is automagically implemented
+ * A Episode repository. Note that this interface is automatically implemented
  * by spring-data. The method names are used by spring to generate the queries,
  * see http://docs.spring.io/spring-data/jpa/docs/1.7.0.RELEASE/reference/html/#jpa.query-methods
  * for all available query methods.
@@ -25,9 +25,5 @@ public interface EpisodeRepository extends PagingAndSortingRepository<Episode, L
     public Episode findByFilePath(String filePath);
     
     public List<Episode> findAllByFilePathStartingWith(String filePath);
-    
-    public Episode findByImdbId(String imdbId);
-    
-    public Episode findByReleaseYear(Integer releaseYear);
         
 }

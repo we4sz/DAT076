@@ -6,15 +6,12 @@
 package edu.chalmers.dat076.moviefinder.initializer;
 
 import edu.chalmers.dat076.moviefinder.config.ApplicationConfig;
-import edu.chalmers.dat076.moviefinder.config.RepositoryConfig;
-import edu.chalmers.dat076.moviefinder.config.WebConfig;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletRegistration;
-
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRegistration;
 
 /**
  * Starts the web application, and sets the required configuration.

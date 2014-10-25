@@ -39,7 +39,7 @@ public class WatchThread extends Thread {
 
     private WatchService watcher;
     private final Path watchPath;
-    private static final List<String> videoTypes = Arrays.asList(new String[]{"avi", "mkv", "mp4","mov"});
+    private static final List<String> videoTypes = Arrays.asList("avi", "mkv", "mp4","mov");
     private Map<WatchKey, Path> keys;
     private FileSystemListener listener;
     private final static Logger LOGGER = Logger.getLogger(FileThreadServiceImpl.class.getName());
@@ -122,7 +122,7 @@ public class WatchThread extends Thread {
     }
 
     @SuppressWarnings("unchecked")
-    static <T> WatchEvent<T> cast(WatchEvent<?> event) {
+    private static <T> WatchEvent<T> cast(WatchEvent<?> event) {
         return (WatchEvent<T>) event;
     }
 
@@ -134,7 +134,6 @@ public class WatchThread extends Thread {
             registerAll(watchPath,true);
         } catch (IOException ex) {
             LOGGER.log(Level.WARNING, ex.getMessage(), ex);
-            System.out.println("mamma");
             System.out.println(ex.getMessage());
         }
 
@@ -177,7 +176,7 @@ public class WatchThread extends Thread {
                             }
                         }
                     } catch (IOException x) {
-                        // ignore to keep sample readbale
+                        // ignore to keep sample readable
                     }
                 } else if (kind == ENTRY_DELETE) {
                     listener.oldPath(child);

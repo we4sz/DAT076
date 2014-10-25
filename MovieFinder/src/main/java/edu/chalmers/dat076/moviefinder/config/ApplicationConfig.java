@@ -33,27 +33,4 @@ public class ApplicationConfig {
         ppc.setIgnoreUnresolvablePlaceholders(true);
         return ppc;
     }
-
-    @Bean(name = "JacksonHtmlRestTemplate")
-    public RestTemplate jacksonHtmlRestOperations() {
-        RestTemplate restTemplate = new RestTemplate();
-
-        MappingJackson2HttpMessageConverter jacksonConverter = new MappingJackson2HttpMessageConverter();
-
-        // OMDB returns json but with the HTTP Content-Type header set to "text/html",
-        // so we have to add that as an accepted contet type for our jackson converter
-        // or it will not trigger for the response
-        List<MediaType> mediaTypes = new ArrayList<>();
-        mediaTypes.add(new MediaType("text", "html", AbstractJackson2HttpMessageConverter.DEFAULT_CHARSET));
-        jacksonConverter.setSupportedMediaTypes(mediaTypes);
-
-        // Add the custom jacksonConverter to the available messageConverters
-        // of the restTemplate
-        List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
-        messageConverters.add(jacksonConverter);
-        restTemplate.setMessageConverters(messageConverters);
-
-
-        return restTemplate;
-    }
 }

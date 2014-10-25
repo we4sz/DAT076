@@ -17,8 +17,6 @@ public interface FileSystemListener {
 
     /**
      * initFile is called the first time a file is seen.
-     * @param path The absolute path to the file. Includes the name of the file.
-     * @param name The name of the file.
      */
     public void initFiles(List<Path> paths, Path basePath);
 

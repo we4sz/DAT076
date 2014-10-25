@@ -14,7 +14,7 @@ package edu.chalmers.dat076.moviefinder.model;
 public class TemporaryMedia {
     
     private String name;
-    // If it isnt a movie it must be a series
+    // If it isn't a movie it must be a series
     private boolean isMovie;
     private int year;
     private int season;

@@ -36,7 +36,7 @@ public class MovieSpecs {
     };
     }
     
-    public static Specification<Movie> hasRealeaseYear(final int releaseYear){
+    public static Specification<Movie> hasReleaseYear(final int releaseYear){
         return new Specification<Movie>(){
             @Override
             public Predicate toPredicate(Root<Movie> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {

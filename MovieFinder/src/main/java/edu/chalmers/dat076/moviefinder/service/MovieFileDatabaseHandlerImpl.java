@@ -1,31 +1,20 @@
 package edu.chalmers.dat076.moviefinder.service;
 
-import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
-import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
-import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
-import edu.chalmers.dat076.moviefinder.model.TraktResponse;
-import edu.chalmers.dat076.moviefinder.model.TraktShowReponse;
-import edu.chalmers.dat076.moviefinder.persistence.Episode;
-import edu.chalmers.dat076.moviefinder.persistence.EpisodeRepository;
-import edu.chalmers.dat076.moviefinder.persistence.Movie;
-import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
-import edu.chalmers.dat076.moviefinder.persistence.Series;
-import edu.chalmers.dat076.moviefinder.persistence.SeriesRepository;
-import java.io.File;
-import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.Semaphore;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import edu.chalmers.dat076.moviefinder.model.*;
+import edu.chalmers.dat076.moviefinder.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.concurrent.Semaphore;
+
 /**
  * A service for saving and removing files from the database. New files are
- * looked up via OMDB to try and get information about them.
+ * looked up via a third party media API to try and get information about them.
  *
  * @author Peter
  */
@@ -72,7 +61,7 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
                             s = seriesRepository.findByImdbId(epr.getShow().getImdbId());
 
                             if (s == null) {
-                                TraktShowReponse sr = traktHandler.getByShowName(temporaryMedia.getName());
+                                TraktShowResponse sr = traktHandler.getByShowName(temporaryMedia.getName());
                                 if (sr != null) {
                                     s = new Series(sr);
                                     seriesRepository.save(s);
