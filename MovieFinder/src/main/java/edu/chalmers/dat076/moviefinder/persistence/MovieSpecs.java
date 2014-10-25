@@ -18,6 +18,11 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public class MovieSpecs {
     
+    /**
+     * 
+     * @param imdbRating
+     * @return returns all movies with a rating equal to or above imdbRating.
+     */
     public static Specification<Movie> hasImdbRatingAbove(final double imdbRating){
         return new Specification<Movie>(){
             @Override
@@ -27,6 +32,11 @@ public class MovieSpecs {
     };
     }
     
+    /**
+     * 
+     * @param runtime
+     * @return All movies with an runtime equal to or above runtime.
+     */
     public static Specification<Movie> hasRuntimeAbove(final int runtime){
         return new Specification<Movie>(){
             @Override
@@ -36,6 +46,11 @@ public class MovieSpecs {
     };
     }
     
+    /**
+     * 
+     * @param releaseYear
+     * @return All movies with the release year releaseYear.
+     */
     public static Specification<Movie> hasReleaseYear(final int releaseYear){
         return new Specification<Movie>(){
             @Override

@@ -18,6 +18,11 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public class EpisodeSpecs {
     
+    /**
+     * 
+     * @param imdbRating
+     * @return All Episodes with a rating equal to or above imdbRating
+     */
     public static Specification<Episode> hasImdbRatingAbove(final double imdbRating){
         return new Specification<Episode>(){
             @Override
@@ -27,6 +32,11 @@ public class EpisodeSpecs {
     };
     }
     
+    /**
+     * 
+     * @param releaseYear
+     * @return All Episodes released the year releaseYear
+     */
     public static Specification<Episode> hasReleaseYear(final int releaseYear){
         return new Specification<Episode>(){
             @Override

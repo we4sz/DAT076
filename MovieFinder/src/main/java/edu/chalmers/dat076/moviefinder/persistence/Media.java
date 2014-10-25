@@ -23,6 +23,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 /**
+ * Abstract class for saving media. Main use is for Movies and Episodes.
  *
  * @author Carl Jansson
  */
@@ -45,8 +46,6 @@ public abstract class Media extends AbstractEntity implements Serializable {
     @OrderColumn
     protected List<String> genres;
 
-    //@ElementCollection(fetch = FetchType.EAGER)
-    //@CollectionTable(name = "Actors", joinColumns = @JoinColumn(name = "movie_id"))
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     protected List<Actor> actors;
@@ -58,10 +57,6 @@ public abstract class Media extends AbstractEntity implements Serializable {
     protected String director;
 
     protected Media() {
-    }
-
-    public Media(String filePath) {
-        this.filePath = filePath;
     }
 
     public Media(String title, String filePath) {
@@ -164,6 +159,11 @@ public abstract class Media extends AbstractEntity implements Serializable {
         this.plot = plot;
     }
 
+    /**
+     * Sets day, month and year that this Media was released.
+     *
+     * @param seconds
+     */
     public void setReleaseTime(long seconds) {
         Calendar c = new GregorianCalendar();
         c.setTimeInMillis(seconds * 1000);

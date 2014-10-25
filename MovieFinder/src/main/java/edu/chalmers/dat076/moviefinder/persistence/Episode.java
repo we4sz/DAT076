@@ -16,6 +16,8 @@ import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
+ * An Episode entity. It has all fields a movie has but adds season, episode and
+ * an reference to what series it is part of.
  *
  * @author Carl Jansson
  */

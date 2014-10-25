@@ -18,6 +18,11 @@ import org.springframework.data.jpa.domain.Specification;
  */
 public class SeriesSpecs {
     
+    /**
+     * 
+     * @param imdbRating
+     * @return All Series with a rating equal to or above imdbRating
+     */
     public static Specification<Series> hasImdbRatingAbove(final double imdbRating){
         return new Specification<Series>(){
             @Override
@@ -27,6 +32,11 @@ public class SeriesSpecs {
     };
     }
     
+    /**
+     * 
+     * @param releaseYear
+     * @return All series first released the year releaseYear
+     */
     public static Specification<Series> hasReleaseYear(final int releaseYear){
         return new Specification<Series>(){
             @Override
