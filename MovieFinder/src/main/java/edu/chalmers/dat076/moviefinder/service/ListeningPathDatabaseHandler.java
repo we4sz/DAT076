@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package edu.chalmers.dat076.moviefinder.service;
+import edu.chalmers.dat076.moviefinder.persistence.ListeningPath;
 import java.nio.file.Path;
 import org.springframework.dao.DataIntegrityViolationException;
 
@@ -13,7 +14,7 @@ import org.springframework.dao.DataIntegrityViolationException;
  */
 public interface ListeningPathDatabaseHandler {
 
-    public void addPath(Path p) throws DataIntegrityViolationException;
+    public ListeningPath addPath(Path p) throws DataIntegrityViolationException;
 
     public void removePath(Path p) throws NullPointerException;
 }

@@ -22,8 +22,8 @@ public class ListeningPathDatabaseHandlerImpl implements ListeningPathDatabaseHa
     @Autowired
     ListeningPathRepository repository;
 
-    public void addPath(Path p) throws DataIntegrityViolationException{
-        repository.save(new ListeningPath(p.toString()));
+    public ListeningPath addPath(Path p) throws DataIntegrityViolationException{
+        return repository.save(new ListeningPath(p.toString()));
     }
 
     public void removePath(Path p) throws NullPointerException {
