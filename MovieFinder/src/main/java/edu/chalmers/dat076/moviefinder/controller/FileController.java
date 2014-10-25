@@ -62,6 +62,20 @@ public class FileController {
     @Autowired
     EpisodeRepository episodeRepository;
 
+    /**
+     * Method for accessing Movies. If no params defined It will return the first
+     * 25 movies that it finds.
+     *
+     * @param imdbRating Only movies with a rating equal or above imdbRating
+     * returned
+     * @param runtime Only movies with a runtime equal or above runtime returned
+     * @param releaseYear Only movies released releaseYear returned
+     * @param page What page to return. Page 1 is indexed as 0
+     * @param sort Database field to sort by. Default it is set as descending
+     * @param asc Set true and sorting will be done ascending instead of
+     * descending.
+     * @return
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public @ResponseBody
     Page<Movie> listMovies(
@@ -87,6 +101,16 @@ public class FileController {
         return movieRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
     
+    /**
+     * Method for accessing Series. If no params defined It will return the first
+     * 25 series that is found.
+     * 
+     * @param imdbRating Only Series with a rating equal or above imdbRating returned
+     * @param releaseYear Only Series released releaseYear returned
+     * @param page What page to return. Page 1 is indexed as 0. Default value is 0.
+     * @param sort Database field to sort by. Default it is set as descending
+     * @param asc Set true and sorting will be done ascending instead of descending.
+     */
     @RequestMapping(value = "/series/", method = RequestMethod.GET)
     public @ResponseBody
     Page<Series> listSeries(
@@ -108,6 +132,16 @@ public class FileController {
         return seriesRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
     
+    /**
+     * Method for accessing Episodes. If no params defined It will return the first
+     * 25 Episodes that is found.
+     * 
+     * @param imdbRating Only Episodes with a rating equal or above imdbRating returned
+     * @param releaseYear Only Episodes released releaseYear returned
+     * @param page What page to return. Page 1 is indexed as 0. Default value is 0.
+     * @param sort Database field to sort by. Default it is set as descending
+     * @param asc Set true and sorting will be done ascending instead of descending.
+     */
     @RequestMapping(value = "/episodes/", method = RequestMethod.GET)
     public @ResponseBody
     Page<Episode> listEpisodes(
@@ -129,6 +163,10 @@ public class FileController {
         return episodeRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
     
+    /**
+     * Creates a new PageRequest with what page to display and if possible set a
+     * sorting method.
+     */
     private PageRequest getPageRequest(Integer page, String sort, Boolean asc){
         Sort s = null;
         if (sort != null) {
@@ -151,18 +189,36 @@ public class FileController {
         return pageRequest;
     }
 
+    /**
+     * Returns the movie with database id id.
+     * 
+     * @param id
+     * @return  one Movie.
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public @ResponseBody
     Movie getMovieById(@PathVariable long id) {
         return movieRepository.findOne(id);
     }
     
+    /**
+     * Returns the series with database id id.
+     * 
+     * @param id
+     * @return one series with all its episode information.
+     */
     @RequestMapping(value = "/series/{id}", method = RequestMethod.GET)
     public @ResponseBody
     Series getSeriesById(@PathVariable long id) {
         return seriesRepository.findOne(id);
     }
     
+    /**
+     * Returns the Episode with database id id.
+     * 
+     * @param id
+     * @return One episode.
+     */
     @RequestMapping(value = "/episodes/{id}", method = RequestMethod.GET)
     public @ResponseBody
     Episode getEpisodeById(@PathVariable long id) {
