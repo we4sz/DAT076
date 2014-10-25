@@ -35,24 +35,25 @@
 
                 <button class="btn btn-block btn-primary" ng-click="moviesCtrl.filterMovies(models.filterRaiting, models.filterRuntime)">Filter</button>
             </form>
+             <hr class="browse-divider">
         </div>
 
         <div class="col-sm-9">
-            <table class="list table table-hover table-striped">
+            <table id="browsingTable" class="list table table-hover table-bordered table-striped table-responsive">
                 <thead>
                     <tr>
                         <td>Title</td>
-                        <td class="hidden-xs">Director</td>
-                        <td class="hidden-xs">Genre</td>
+                        <td>Director</td>
+                        <td>Genre</td>
                         <td>Rating</td> 
                         <td>Runtime</td>
                     </tr>
                 </thead>
                 <tbody ng-show="moviesCtrl.movies.length">
-                    <tr ng-repeat="movie in moviesCtrl.movies" ng-click="moviesCtrl.goTo('/movie/' + movie.id)">
+                    <tr class="bowsingRow" ng-repeat="movie in moviesCtrl.movies" ng-click="moviesCtrl.goTo('/movie/' + movie.id)">
                         <td>{{movie.title}}</td>
-                        <td class="hidden-xs">{{movie.director}}</td>
-                        <td class="hidden-xs">
+                        <td>{{movie.director}}</td>
+                        <td>
                             <span ng-repeat="genre in movie.genres">
                                 {{genre}}<span ng-if="!$last">,</span>
                             </span>
@@ -61,10 +62,21 @@
                         <td>{{movie.runtime}}</td>
                     </tr>
                 </tbody>
+
             </table>
-            <div ng-hide="moviesCtrl.movies.length">
-                No results
-            </div>
+            <table class="list table table-bordered table-striped">
+                <tbody>
+                    <tr class="noResult" ng-hide="moviesCtrl.movies.length">
+                        <td>No result</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>                   
+                </tbody>
+            </table>
+
         </div>
     </div>
 

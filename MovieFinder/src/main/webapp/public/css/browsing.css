@@ -1,4 +1,4 @@
-.list td { 
+.list .browsingRow { 
     cursor: pointer; 
 }
 
@@ -20,4 +20,8 @@
 select {
     width: 100%;
     color: #000;
+}
+
+#browsingTable {
+    margin-bottom: 0px;
 }

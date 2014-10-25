@@ -9,8 +9,9 @@
                 this.series = seriesCtrlResolve.series;
 
                 this.filterSeries = function (rating) {
-                    seriesService.getSeriesByFilter({
+                    seriesService.getListByFilter({
                         imdbRating: rating
+                        
                     }).then(function (data) {
                         _this.series = data;
                     });

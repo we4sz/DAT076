@@ -34,12 +34,12 @@
         <link href="public/css/main.css" rel="stylesheet">
         <!-- Loading animation -->
         <link href="public/css/loading.css" rel="stylesheet">
-        <!-- Movie Details -->
-        <link href="public/css/movie-details.css" rel="stylesheet">
+        <!-- Info Details -->
+        <link href="public/css/info-details.css" rel="stylesheet">
         <!-- Welcome -->
         <link href="public/css/welcome.css" rel="stylesheet">
-        <!-- Movies -->
-        <link href="public/css/movies.css" rel="stylesheet">
+        <!-- Browsing -->
+        <link href="public/css/browsing.css" rel="stylesheet">
 
     </head>
     <body class="no-js">

@@ -1,39 +1,39 @@
-<div class="row">
-    <div class="col-md-8 col-md-offset-2">
-        <ol class="breadcrumb">
-            <li><a href="#/movies">Movies</a></li>
-            <li class="active">{{movieDetailsCtrl.movie.title}}</li>
-        </ol>
-        <video ng-src="{{movieDetailsCtrl.video()}}" controls></video>                     
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-sm-5 hidden-xs">
-                        <div class="moviePosterContainer">
-                            <img ng-src="{{movieDetailsCtrl.movie.poster}}" class="img-responsive"/>
+<div class="col-md-8 col-md-offset-2">
+    <ol class="breadcrumb">
+        <li><a href="#/movies">Movies</a></li>
+        <li class="active">{{movieDetailsCtrl.movie.title}}</li>
+    </ol>
+    <video ng-src="{{movieDetailsCtrl.video()}}" controls></video>                     
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-5 hidden-xs">
+                    <div class="moviePosterContainer">
+                        <img ng-src="{{movieDetailsCtrl.movie.poster}}" class="img-responsive"/>
+                    </div>
+                </div>
+                <div class="col-sm-7">
+                    <h2>
+                        {{movieDetailsCtrl.movie.title}} <small>({{movieDetailsCtrl.movie.releaseYear}})</small>
+                    </h2>
+                    <p>
+                        [{{movieDetailsCtrl.movie.rated}}] 
+                        {{movieDetailsCtrl.movie.runtime}} min 
+                        -
+                        <span ng-repeat="genre in movieDetailsCtrl.movie.genres">
+                            {{genre}}<span ng-if="!$last">,</span>
+                        </span>
+                        -
+                        {{movieDetailsCtrl.movie.releaseYear}}
+                    </p>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: calc({{movieDetailsCtrl.movie.imdbRating}}%*10);">
+                            {{movieDetailsCtrl.movie.imdbRating}} 
+                            <span class="glyphicon glyphicon-star"></span> 
                         </div>
                     </div>
-                    <div class="col-sm-7">
-                        <h2>
-                            {{movieDetailsCtrl.movie.title}} <small>({{movieDetailsCtrl.movie.releaseYear}})</small>
-                        </h2>
-                        <p>
-                            [{{movieDetailsCtrl.movie.rated}}] 
-                            {{movieDetailsCtrl.movie.runtime}} min 
-                            -
-                            <span ng-repeat="genre in movieDetailsCtrl.movie.genres">
-                                {{genre}}<span ng-if="!$last">,</span>
-                            </span>
-                            -
-                            {{movieDetailsCtrl.movie.releaseYear}} 
-                            ({{movieDetailsCtrl.movie.country}})
-                        </p>
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: calc({{movieDetailsCtrl.movie.imdbRating}}%*10);">
-                                {{movieDetailsCtrl.movie.imdbRating}} 
-                                <span class="glyphicon glyphicon-star"></span> 
-                            </div>
-                        </div>
+
+                    <div class="borderedInfo">
                         <p>
                             {{movieDetailsCtrl.movie.plot}}
                         </p>
@@ -41,8 +41,8 @@
                             <b>Director: </b> {{movieDetailsCtrl.movie.director}}
                         </p>
                         <p>
-                            <b>Stars:  </b> <span ng-repeat="actor in movieDetailsCtrl.movie.actors | limitTo: 5">
-                                <a href="#/actors/{{actor.id}}">{{actor.name}}</a> as {{actor.character}}<span ng-if="!$last">,</span>
+                            <b>Stars:  </b> <span ng-repeat="actor in movieDetailsCtrl.movie.actors| limitTo: 4">
+                                <a href="#/actors/{{actor.id}}">{{actor.name}}</a><span ng-if="!$last">,</span>
                             </span>
                         </p>
                     </div>
@@ -50,8 +50,19 @@
             </div>
         </div>
     </div>
-
-
-
-
-
+</div>
+<div class="col-md-8 col-md-offset-2">
+    <div class="panel-body">
+        <div class="panel-heading"> <h3>Cast overview</h3></div>
+        <table class="list table table-striped" >
+            <tbody>
+                <tr class="actorRow" ng-repeat="actor in movieDetailsCtrl.movie.actors">
+                    <td class="actorIcon"><img ng-src="{{actor.poster}}" class="img-responsive"/></td>
+                    <td><a href="#/actors/{{actor.id}}">{{actor.name}}</a> </td>
+                    <td>...</td>
+                    <td>{{actor.character}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
