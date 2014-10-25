@@ -75,14 +75,7 @@
                             controller: 'AdminCtrl as adminCtrl',
                             resolve: {
                                 auth: function(authHelper) {
-                                    return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
-                                }
-                            }
-                        }).when('/viewer', {
-                            template: '<h1>viewer</h1>',
-                            resolve: {
-                                auth: function(authHelper) {
-                                    return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
+                                    return authHelper.restrictRoute([USER_ROLES.ADMIN]);
                                 }
                             }
                         }).otherwise({
