@@ -5,13 +5,14 @@
  */
 package edu.chalmers.dat076.moviefinder.persistence;
 
-import edu.chalmers.dat076.moviefinder.model.TraktShowReponse;
+import edu.chalmers.dat076.moviefinder.model.TraktShowResponse;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -39,7 +40,7 @@ public class Series extends Media implements Serializable {
         this.filePath = imdb_id;
     }
 
-    public Series(TraktShowReponse data) {
+    public Series(TraktShowResponse data) {
         if (data != null) {
             setReleaseTime(data.getFirstAired());
             firstAired = data.getFirstAired();

@@ -8,14 +8,12 @@ package edu.chalmers.dat076.moviefinder.persistence;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktResponse;
-import java.io.Serializable;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
+import java.util.LinkedList;
 
 /**
  *

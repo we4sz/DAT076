@@ -10,12 +10,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import edu.chalmers.dat076.moviefinder.model.HttpGetWithEquals;
-import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
-import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
-import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
-import edu.chalmers.dat076.moviefinder.model.TraktResponse;
-import edu.chalmers.dat076.moviefinder.model.TraktShowReponse;
+import edu.chalmers.dat076.moviefinder.model.*;
+import edu.chalmers.dat076.moviefinder.model.TraktShowResponse;
 import java.io.IOException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -92,10 +88,10 @@ public class TraktHandler {
                 .create();
     }
 
-    public TraktShowReponse getByShowName(String title) {
+    public TraktShowResponse getByShowName(String title) {
         String url = "http://api.trakt.tv/show/summary.json/a93c5b3dee40604933b1b8069883a844/" + title.replace(" ", "-");
         try {
-            TraktShowReponse showData = getGson().fromJson(readJsonFromUrl(url), TraktShowReponse.class);
+            TraktShowResponse showData = getGson().fromJson(readJsonFromUrl(url), TraktShowResponse.class);
             if (showData == null || showData.getTitle() == null) {
                 return null;
             }

@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author John
  */
-public class TraktShowReponse implements TraktResponse {
+public class TraktShowResponse implements TraktResponse {
 
     private String title;
     private int year;
@@ -241,7 +241,7 @@ public class TraktShowReponse implements TraktResponse {
 
     @Override
     public String toString() {
-        return "TraktShowReponse{" + "title=" + title + ", year=" + year + ", url=" + url + ", firstAired=" + firstAired + ", firstAiredIso=" + firstAiredIso + ", firstAiredUtc=" + firstAiredUtc + ", country=" + country + ", overview=" + overview + ", runtime=" + runtime + ", status=" + status + ", network=" + network + ", airDay=" + airDay + ", airDayUtc=" + airDayUtc + ", airTime=" + airTime + ", airTimeUtc=" + airTimeUtc + ", certification=" + certification + ", imdbId=" + imdbId + ", tvdbId=" + tvdbId + ", tvrageId=" + tvrageId + ", lastUpdated=" + lastUpdated + ", poster=" + poster + ", images=" + images + ", ratings=" + ratings + ", people=" + people + ", genres=" + genres + '}';
+        return "TraktShowResponse{" + "title=" + title + ", year=" + year + ", url=" + url + ", firstAired=" + firstAired + ", firstAiredIso=" + firstAiredIso + ", firstAiredUtc=" + firstAiredUtc + ", country=" + country + ", overview=" + overview + ", runtime=" + runtime + ", status=" + status + ", network=" + network + ", airDay=" + airDay + ", airDayUtc=" + airDayUtc + ", airTime=" + airTime + ", airTimeUtc=" + airTimeUtc + ", certification=" + certification + ", imdbId=" + imdbId + ", tvdbId=" + tvdbId + ", tvrageId=" + tvrageId + ", lastUpdated=" + lastUpdated + ", poster=" + poster + ", images=" + images + ", ratings=" + ratings + ", people=" + people + ", genres=" + genres + '}';
     }
 
 }

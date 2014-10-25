@@ -82,7 +82,7 @@ public class FileController {
             filter = filter.and(MovieSpecs.hasRuntimeAbove(runtime));
         }
         if (releaseYear != null){
-            filter = filter.and(MovieSpecs.hasRealeaseYear(releaseYear));
+            filter = filter.and(MovieSpecs.hasReleaseYear(releaseYear));
         }
         return movieRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
@@ -103,7 +103,7 @@ public class FileController {
             filter = filter.and(SeriesSpecs.hasImdbRatingAbove(imdbRating));
         }
         if (releaseYear != null){
-            filter = filter.and(SeriesSpecs.hasRealeaseYear(releaseYear));
+            filter = filter.and(SeriesSpecs.hasReleaseYear(releaseYear));
         }
         return seriesRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
@@ -124,7 +124,7 @@ public class FileController {
             filter = filter.and(EpisodeSpecs.hasImdbRatingAbove(imdbRating));
         }
         if (releaseYear != null){
-            filter = filter.and(EpisodeSpecs.hasRealeaseYear(releaseYear));
+            filter = filter.and(EpisodeSpecs.hasReleaseYear(releaseYear));
         }
         return episodeRepository.findAll(filter, getPageRequest(page, sort, asc));
     }

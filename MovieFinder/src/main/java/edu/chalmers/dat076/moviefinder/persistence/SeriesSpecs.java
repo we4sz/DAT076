@@ -27,7 +27,7 @@ public class SeriesSpecs {
     };
     }
     
-    public static Specification<Series> hasRealeaseYear(final int releaseYear){
+    public static Specification<Series> hasReleaseYear(final int releaseYear){
         return new Specification<Series>(){
             @Override
             public Predicate toPredicate(Root<Series> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
