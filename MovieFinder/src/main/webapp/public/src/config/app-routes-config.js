@@ -67,17 +67,20 @@
                                     return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
                                 }
                             }
-                        }).when(AUTH_LOGIN_PATH, {
-                            templateUrl: 'partials/login.html',
-                            controller: 'LoginViewCtrl as loginViewCtrl'
                         }).when('/admin', {
                             templateUrl: 'partials/admin.html',
                             controller: 'AdminCtrl as adminCtrl',
                             resolve: {
+                                'adminCtrlResolve': function (adminCtrlResolve) {
+                                    return adminCtrlResolve();
+                                },
                                 auth: function(authHelper) {
                                     return authHelper.restrictRoute([USER_ROLES.ADMIN]);
                                 }
                             }
+                        }).when(AUTH_LOGIN_PATH, {
+                            templateUrl: 'partials/login.html',
+                            controller: 'LoginViewCtrl as loginViewCtrl'
                         }).otherwise({
                             redirectTo: '/'
                         });

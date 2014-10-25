@@ -47,8 +47,8 @@ public class UserFilter extends OncePerRequestFilter {
         }
 
         User u = (User) o;
-        if (path.contains("/admin") && u.getRole() != UserRole.ADMIN) {
-            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        if (path.toLowerCase().startsWith("/api/admin") && u.getRole() != UserRole.ADMIN) {
+            res.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 

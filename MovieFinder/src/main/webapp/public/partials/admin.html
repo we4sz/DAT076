@@ -1,12 +1,61 @@
-<div class="container">
+<div class="row">
+    <h1>Admin</h1>
 
-    <h1>Add path</h1>
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h2 class="panel-title">Scanned Paths</h2>
+            </div>
+            <div class="panel-body">
+                <div class="alert alert-danger" role="alert" ng-show="adminCtrl.error">
+                    <p>
+                        <strong>An error occurred!</strong>
+                        <br>
+                        {{adminCtrl.error}}
+                    </p>
+                </div>
+                <div class="alert alert-info">
+                    <p class="info">Below is a list of all currently scanned paths. The scanning is done recursively, meaning that for any path added all sub-folders within the added path will also be scanned.</p>
+                </div>
 
-    <div ng-if="adminCtrl.error">{{adminCtrl.error}}</div>
-    <div ng-if="adminCtrl.added">{{adminCtrl.added}}</div>
-    <form  ng-submit="adminCtrl.addPath()">
-    <input ng-model="adminCtrl.path" type="text" required="true"/>
-    <button class="btn"  type="submit">Add path</button>
-    </form>
-
+                <table class="table table-striped table-hover table-bordered" ng-show="adminCtrl.paths.length">
+                    <thead>
+                        <tr>
+                            <td><strong>File path</strong></td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="path in adminCtrl.paths">
+                            <td>{{path.listeningPath}}</td>
+                            <td>
+                                <span class="pull-right">
+                                    <a href="" ng-click="adminCtrl.removePath(path)">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </a>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p ng-hide="adminCtrl.paths.length">
+                    <em>No paths has yet been added.</em>
+                </p>
+                <p>Add a new path</p>
+                <form role="form" name="adminAddPathForm">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="addPath" placeholder="Path" ng-model="models.addPath">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" 
+                            class="btn btn-primary pull-right"
+                            ng-disabled="adminCtrl.addingPath"
+                            ng-click="adminCtrl.addPath()">
+                            Add Path
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

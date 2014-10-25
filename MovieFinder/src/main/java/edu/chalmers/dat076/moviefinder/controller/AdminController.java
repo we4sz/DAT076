@@ -18,6 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,13 +49,13 @@ public class AdminController {
     private FileThreadService fileThreadService;
 
     @RequestMapping(value = "/addPath", method = RequestMethod.POST)
-    public ResponseEntity<String> addPath(@RequestBody ListeningPath path) {
+    public ResponseEntity<ListeningPath> addPath(@RequestBody ListeningPath path) {
         File f = new File(path.getListeningPath());
         if (f.exists() && f.isDirectory()) {
             try {
-                databaseHelper.addPath(f.toPath());
+                ListeningPath savedPath = databaseHelper.addPath(f.toPath());
                 fileThreadService.addListeningPath(f.toPath());
-                return new ResponseEntity<>(HttpStatus.OK);
+                return new ResponseEntity<>(savedPath, HttpStatus.OK);
             } catch (DataIntegrityViolationException e) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
@@ -63,16 +64,21 @@ public class AdminController {
         }
     }
 
-    @RequestMapping(value = "/removePath", method = RequestMethod.DELETE)
-    public ResponseEntity<String> removePath(@RequestBody ListeningPath path) {
-        File f = new File(path.getListeningPath());
-        try {
-            databaseHelper.removePath(f.toPath());
-            fileThreadService.removeListeningPath(f.toPath());
-            movieDatabaseHelper.removeFile(f.toPath());
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NullPointerException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    @RequestMapping(value = "/removePath/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> removePath(@PathVariable long id) {
+        ListeningPath lp = listeningPathRepository.findOne(id);
+        if(lp != null) {
+            File f = new File(lp.getListeningPath());
+            try {
+                databaseHelper.removePath(f.toPath());
+                fileThreadService.removeListeningPath(f.toPath());
+                movieDatabaseHelper.removeFile(f.toPath());
+                return new ResponseEntity<>(HttpStatus.OK);
+            } catch (NullPointerException e) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
