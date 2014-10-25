@@ -163,7 +163,7 @@ public class FileController {
         return episodeRepository.findAll(filter, getPageRequest(page, sort, asc));
     }
     
-    /**
+    /*
      * Creates a new PageRequest with what page to display and if possible set a
      * sorting method.
      */
