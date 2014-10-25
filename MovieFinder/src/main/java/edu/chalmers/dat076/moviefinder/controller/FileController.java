@@ -74,7 +74,7 @@ public class FileController {
      * @param sort Database field to sort by. Default is title with asc=true
      * @param asc Set true and sorting will be done ascending instead of
      * descending.
-     * @return
+     * @return A page with movies.
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public @ResponseBody
@@ -117,6 +117,7 @@ public class FileController {
      * @param page What page to return. Page 1 is indexed as 0. Default value is 0.
      * @param sort Database field to sort by. Default is title with asc=true
      * @param asc Set true and sorting will be done ascending instead of descending.
+     * @return a page with series.
      */
     @RequestMapping(value = "/series/", method = RequestMethod.GET)
     public @ResponseBody
@@ -156,6 +157,7 @@ public class FileController {
      * @param sort Database field to sort by. Default it is set as descending
      * @param asc Set true and sorting will be done ascending instead of
      * descending.
+     * @return a page with episodes.
      */
     @RequestMapping(value = "/episodes/", method = RequestMethod.GET)
     public @ResponseBody
