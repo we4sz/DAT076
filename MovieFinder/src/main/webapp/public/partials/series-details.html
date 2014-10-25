@@ -59,7 +59,7 @@
                     </tr>
                 </thead>
                 <tbody ng-show="seriesDetailsCtrl.series.episodes.length">
-                    <tr class="browsingRow" ng-repeat="episode in seriesDetailsCtrl.series.episodes" 
+                    <tr class="browsingRow" ng-repeat="episode in seriesDetailsCtrl.series.episodes | orderBy:['season','episode']" 
                         ng-click="seriesDetailsCtrl.goTo('series/' + seriesDetailsCtrl.series.id + '/episode/' + episode.id)">
                         <td>{{episode.title}}</td>
                         <td>{{episode.episode}}</td>
