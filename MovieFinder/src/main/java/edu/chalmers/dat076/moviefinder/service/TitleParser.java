@@ -33,6 +33,9 @@ public class TitleParser {
      * Parses a String and tries to derive comprehensive movie or series
      * information from it.
      *
+     * Information that can be returned is a title and if possible year or
+     * season and episode information.
+     *
      * @param fileName The file name to be parsed
      * @return TemporaryMedia with hopefully useful information
      */
@@ -50,11 +53,9 @@ public class TitleParser {
         return getInformation(sb);
     }
     
-    /**
-     * This method kind of controls everything...
-     *
-     * @param mySb
-     * @return TemporaryMedia with everything
+    /*
+     * Given a typical media file name this method parses it, finding a title
+     * and if possible year or season and episode information.
      */
     private TemporaryMedia getInformation(StringBuilder mySb) {
 
@@ -74,7 +75,8 @@ public class TitleParser {
                 if (Constants.MOVIE_FILE_ENDING_WORDS.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
                     finalWord = false;
-                    break;
+                    // final useful word found. No point in continuing.
+                    break; 
                 }
                 mySb.replace(i, i + 1, " ");
                 
@@ -86,25 +88,28 @@ public class TitleParser {
                 wordSb.setLength(0);
 
             } else if ( wordSb.length()==0 && (mySb.charAt(i) == 'S' || mySb.charAt(i) == 's' || Character.isDigit(mySb.charAt(i)))) {
-
+                // See if new word contains series and episode information.
+                
                 StringBuilder whatsLeft = new StringBuilder(mySb.subSequence(i, mySb.length()));
                 if (getEpisodePotential(whatsLeft)) {
                     TemporaryMedia tmpMedia = getEpisodeInfo(whatsLeft);
                     returnMedia.setIsMovie(false);
                     returnMedia.setSeason(tmpMedia.getSeason());
                     returnMedia.setEpisode(tmpMedia.getEpisode());
-                    mySb.delete(i, mySb.length() - whatsLeft.length());
-                    //if (i > 0){ if it becomes -1 it will become 0 next loop
-                    i--; // Need to compensate for deleting.
+                    mySb.delete(i, mySb.length());
+                    // series and episode information saved. No point in continuing.
+                    break; 
                     
                 } else {
                     wordSb.append(mySb.charAt(i));
                 }
             } else if (mySb.charAt(i) == '[' || mySb.charAt(i) == '(') {
+                // Brackets shoudl usually be removed. They could possibly contain realease year.
 
                 if (Constants.MOVIE_FILE_ENDING_WORDS.contains(wordSb.toString())) {
                     mySb.delete(i - (wordSb.length() + 1), mySb.length());
                     finalWord = false;
+                    // final useful word found. No point in continuing.
                     break;
                 }
                 tmpYear = checkForYear(wordSb);
@@ -126,6 +131,7 @@ public class TitleParser {
                 i--; // Need to compensate for removing bracket.
                 
             } else {
+                // Nothing useful here. Save the char and continue.
                 wordSb.append(mySb.charAt(i));
             }
         }
@@ -139,9 +145,9 @@ public class TitleParser {
                 deleteYear = true;
             }
         }
-        if (deleteYear) {
+        if (deleteYear && returnMedia.IsMovie()) {
             int i = mySb.lastIndexOf( year + "" );
-            mySb.delete( i, i+4 ) ;
+            mySb.delete( i, i+4 );
         }
         
         returnMedia.setYear(year);
