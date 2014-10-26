@@ -5,9 +5,7 @@
 (function () {
     'use strict';
     angular.module('movieFinder.controllers')
-            .controller('EpisodeDetailsCtrl', function (episodeDetailsCtrlResolve, $sce) {
-                console.log(episodeDetailsCtrlResolve);
-                
+            .controller('EpisodeDetailsCtrl', function (episodeDetailsCtrlResolve, $sce) {                
                 this.series = episodeDetailsCtrlResolve.seriesData;
                 this.episode = episodeDetailsCtrlResolve.episodeData;
 
