@@ -41,6 +41,7 @@ import org.hibernate.annotations.FetchMode;
  */
 @Entity
 public class Series extends Media implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private String airDay;
     private String airTime;

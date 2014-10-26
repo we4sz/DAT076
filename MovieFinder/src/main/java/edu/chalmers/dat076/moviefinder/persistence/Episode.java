@@ -40,6 +40,7 @@ import javax.persistence.ManyToOne;
  */
 @Entity
 public class Episode extends Media implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
     private Integer season;

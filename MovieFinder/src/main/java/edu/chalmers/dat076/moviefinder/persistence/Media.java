@@ -47,6 +47,7 @@ import org.hibernate.annotations.FetchMode;
  */
 @MappedSuperclass
 public abstract class Media extends AbstractEntity implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Column(nullable = false)
     protected String title;
