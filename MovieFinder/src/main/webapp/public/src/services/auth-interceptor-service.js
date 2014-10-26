@@ -6,8 +6,10 @@
 //
 // This is used so that the app can prompt the user to 
 // (re-)loggin if requests are being denied.
+// 
+// This service is registered in http-interceptors-config.js
 //
-
+//
 (function() {
     'use strict';
 

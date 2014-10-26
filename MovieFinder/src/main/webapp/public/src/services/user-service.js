@@ -1,6 +1,7 @@
 //
 // user-service.js
-// A representation of a user and various methods related to user, such as login and logout.
+// A representation of a user and various methods related to user, 
+// such as login and logout.
 //
 
 (function() {
@@ -71,7 +72,7 @@
 
             return {
                 /**
-                 * Un-sets the stored user model without contacting the server.
+                 * Un-sets the local user model without contacting the server.
                  */
                 'unset': function () {
                     _clearUserData();
@@ -125,8 +126,9 @@
                     return _role;
                 },
                 /**
-                 * Tests the user's role against a role or an array of roles. Returns true if the user's role
-                 * is the same as the role provided, or if an array, true if the role is an element of the array.
+                 * Tests the user's role against a role or an array of roles. Returns true if 
+                 * the user's role is the same as the role provided, or if an array, true if 
+                 * the role is an element of the array.
                  * @param {string|string[]} role
                  * @returns {boolean}
                  */

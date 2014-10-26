@@ -1,5 +1,6 @@
 //
 // episode-details-controller.js
+// Controller for the detailed episode view.
 //
 (function () {
     'use strict';
@@ -10,6 +11,8 @@
                 this.series = episodeDetailsCtrlResolve.seriesData;
                 this.episode = episodeDetailsCtrlResolve.episodeData;
 
+                // Must add video as trusted resource, see 
+                // https://docs.angularjs.org/api/ng/service/$sce
                 this.video = function () {
                     return $sce.trustAsResourceUrl('api/files/stream/' + episodeDetailsCtrlResolve.id);
                 };

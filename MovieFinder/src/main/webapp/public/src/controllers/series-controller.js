@@ -1,5 +1,6 @@
 //
 // series-controller.js
+// Controller for the series list view.
 //
 (function () {
     'use strict';
@@ -11,11 +12,9 @@
                 this.filterSeries = function (rating) {
                     seriesService.getListByFilter({
                         imdbRating: rating
-                        
                     }).then(function (data) {
                         _this.series = data;
                     });
-
                 };
 
                 this.goTo = function (path) {

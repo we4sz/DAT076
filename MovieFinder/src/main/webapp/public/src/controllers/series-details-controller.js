@@ -1,5 +1,6 @@
 //
 // series-details-controller.js
+// Controller for the series details view.
 //
 (function () {
     'use strict';
@@ -12,7 +13,7 @@
                 };
             })
             
-            // Resolve before MovieCtrl
+            // Resolve before SeriesDetailsCtrl
             .factory('seriesDetailsCtrlResolve', function($route, seriesService) {
                 return function() {
                     return seriesService.getById($route.current.params.id);

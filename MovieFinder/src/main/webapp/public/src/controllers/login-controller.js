@@ -1,5 +1,5 @@
 //
-// login-view-controller.js
+// login-controller.js
 // Contains the controller for the login view.
 //
 
@@ -7,7 +7,7 @@
     'use strict';
 
     angular.module('movieFinder.controllers')
-            .controller('LoginViewCtrl', function ($location, $scope, authHelper, user) {
+            .controller('LoginCtrl', function ($location, $scope, authHelper, user) {
                 var _this = this;
 
                 // If we get here without a reason and the user is

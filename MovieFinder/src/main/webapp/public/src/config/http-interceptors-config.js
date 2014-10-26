@@ -7,7 +7,7 @@
     'use strict';
 
     angular.module('movieFinder').config(function($httpProvider) {
-        // User interceptor for 401 and 403 responses
+        // Authentication interceptor for 401 and 403 responses
         $httpProvider.interceptors.push('authInterceptor');
     });
 })();

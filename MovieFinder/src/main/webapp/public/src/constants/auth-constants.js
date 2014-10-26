@@ -1,6 +1,6 @@
 //
 // auth-constants.js
-// Constants that has to do with auth.
+// Constants that has to do with authentication.
 //
 
 (function () {

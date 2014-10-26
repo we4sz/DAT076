@@ -77,7 +77,7 @@
         <script src="public/src/controllers/app-controller.js"></script>
         <script src="public/src/controllers/admin-controller.js"></script>
         <script src="public/src/controllers/nav-controller.js"></script>
-        <script src="public/src/controllers/login-view-controller.js"></script>
+        <script src="public/src/controllers/login-controller.js"></script>
         <script src="public/src/controllers/movies-controller.js"></script>
         <script src="public/src/controllers/movie-details-controller.js"></script>
         <script src="public/src/controllers/series-controller.js"></script>

@@ -70,7 +70,7 @@
                  * @param  {String|Array} allowedRoles A string or array of
                  *                                     allowed roles for the route.
                  * @return {Promise|Boolean} Returns a rejected promise if user is not allowed
-                 *                        to see the current route. Or true if authenticated.
+                 *                           to see the current route. Or true if authenticated.
                  */
                 'restrictRoute': function(allowedRoles) {
                     if (!user.hasRole(allowedRoles)) {
