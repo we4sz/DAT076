@@ -10,3 +10,6 @@ body.no-js .hide-no-js, body.js .hide-js {
     display: none !important;
 }
 
+#navbarBrandMovieFinder {
+    background-color: #DF691A;
+}
