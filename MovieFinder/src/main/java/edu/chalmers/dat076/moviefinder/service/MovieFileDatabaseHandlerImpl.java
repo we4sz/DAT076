@@ -68,8 +68,6 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
 
     private final Semaphore movieSemaphore = new Semaphore(1, true);
 
-    private final Semaphore episodeSemaphore = new Semaphore(1, true);
-
     @Override
     public void saveFile(final Path path) {
         Runnable r = new Runnable() {
@@ -77,60 +75,56 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
             @Override
             @Transactional
             public void run() {
-
-                TemporaryMedia temporaryMedia = new TitleParser().parseMedia(path.getFileName().toString());
-                TraktResponse traktData = new TraktHandler().getByTmpMedia(temporaryMedia);
-                if (traktData != null) {
-                    if (traktData instanceof TraktMovieResponse) {
-                        Movie movie = new Movie(path.toString(), traktData);
-                        try {
+                try {
+                    TemporaryMedia temporaryMedia = new TitleParser().parseMedia(path.getFileName().toString());
+                    TraktResponse traktData = new TraktHandler().getByTmpMedia(temporaryMedia);
+                    if (traktData != null) {
+                        if (traktData instanceof TraktMovieResponse) {
+                            Movie movie = new Movie(path.toString(), traktData);
                             try {
-                                movieSemaphore.acquire();
-                            } catch (InterruptedException ex) {
+                                try {
+                                    movieSemaphore.acquire();
+                                } catch (InterruptedException ex) {
+                                }
+                                movieRepository.save(movie);
+                            } catch (DataIntegrityViolationException e) {
+                            } finally {
+                                movieSemaphore.release();
                             }
-                            movieRepository.save(movie);
-                            movieSemaphore.release();
-                        } catch (DataIntegrityViolationException e) {
-                        }
-                    } else {
-                        TraktEpisodeResponse epr = (TraktEpisodeResponse) traktData;
-                        System.out.println("Hämtar: " + epr.getEpisode().getSeason() + "/" + epr.getEpisode().getNumber() + " - " + epr.getShow().getTitle());
-                        Series s;
-                        Semaphore sLock = serieLock.get(epr.getShow().getTitle());
-                        if (sLock == null) {
-                            System.out.println("Hämtar: " + epr.getShow().getTitle());
-                            sLock = new Semaphore(1, true);
-                            serieLock.put(epr.getShow().getTitle(), sLock);
-                        }
-                        try {
-                            sLock.acquire();
-                        } catch (InterruptedException ex) {
-                        }
-
-                        s = seriesRepository.findByImdbId(epr.getShow().getImdbId());
-                        if (s == null) {
-                            TraktShowResponse sr = new TraktHandler().getByShowName(temporaryMedia.getName());
-                            if (sr != null) {
-                                s = new Series(sr);
-                                seriesRepository.save(s);
+                        } else {
+                            TraktEpisodeResponse epr = (TraktEpisodeResponse) traktData;
+                            System.out.println("Hämtar: " + epr.getEpisode().getSeason() + "/" + epr.getEpisode().getNumber() + " - " + epr.getShow().getTitle());
+                            Semaphore sLock = serieLock.get(epr.getShow().getTitle());
+                            if (sLock == null) {
+                                System.out.println("Hämtar: " + epr.getShow().getTitle());
+                                sLock = new Semaphore(1, true);
+                                serieLock.put(epr.getShow().getTitle(), sLock);
                             }
-                        }
-                        sLock.release();
-
-                        if (s != null) {
-                            Episode ep = new Episode(path.toString(), traktData, s);
-
                             try {
-                                episodeSemaphore.acquire();
+                                sLock.acquire();
+                                Series s = seriesRepository.findByImdbId(epr.getShow().getImdbId());
+                                if (s == null) {
+                                    TraktShowResponse sr = new TraktHandler().getByShowName(temporaryMedia.getName());
+                                    if (sr != null) {
+                                        s = new Series(sr);
+                                        seriesRepository.save(s);
+                                    }
+                                }
+
+                                if (s != null) {
+                                    Episode ep = new Episode(path.toString(), traktData, s);
+                                    episodeRepository.save(ep);
+                                }
                             } catch (InterruptedException ex) {
+                            } finally {
+                                sLock.release();
                             }
-                            episodeRepository.save(ep);
-                            episodeSemaphore.release();
+
                         }
                     }
+                } finally {
+                    lock.release();
                 }
-
-                lock.release();
             }
 
         };
@@ -238,29 +232,38 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
     public void removeFile(Path path) {
         try {
             movieSemaphore.acquire();
+            List<Movie> movies = movieRepository.findAllByFilePathStartingWith(path.toString());
+            for (Movie m : movies) {
+                movieRepository.delete(m);
+            }
         } catch (InterruptedException ex) {
+        } finally {
+            movieSemaphore.release();
         }
-        List<Movie> movies = movieRepository.findAllByFilePathStartingWith(path.toString());
-        for (Movie m : movies) {
-            movieRepository.delete(m);
-        }
-        movieSemaphore.release();
-        System.out.println(path);
+
         List<Episode> episodes = episodeRepository.findAllByFilePathStartingWith(path.toString());
         for (Episode m : episodes) {
+            Semaphore sLock = serieLock.get(m.getSeries().getTitle());
+            if (sLock == null) {
+                sLock = new Semaphore(1, true);
+                serieLock.put(m.getSeries().getTitle(), sLock);
+            }
+
             try {
-                serieLock.get(m.getSeries().getTitle()).acquire();
+                sLock.acquire();
+                Series s = m.getSeries();
+                s.getEpisodes().remove(m);
+                episodeRepository.delete(m);
+                if (s.getEpisodes().isEmpty()) {
+                    seriesRepository.delete(s);
+                } else {
+                    seriesRepository.save(s);
+                }
             } catch (InterruptedException ex) {
+            } finally {
+                sLock.release();
             }
-            Series s = m.getSeries();
-            s.getEpisodes().remove(m);
-            episodeRepository.delete(m);
-            if (s.getEpisodes().isEmpty()) {
-                seriesRepository.delete(s);
-            } else {
-                seriesRepository.save(s);
-            }
-            serieLock.get(m.getSeries().getImdbId()).release();
+
         }
 
     }
