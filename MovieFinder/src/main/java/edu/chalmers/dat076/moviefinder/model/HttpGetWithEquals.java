@@ -45,5 +45,10 @@ public class HttpGetWithEquals extends HttpGet {
         }
         return false;
     }
+    
+    @Override
+    public int hashCode() {
+        return 7 * this.getURI().toString().length();
+    }
 
 }
