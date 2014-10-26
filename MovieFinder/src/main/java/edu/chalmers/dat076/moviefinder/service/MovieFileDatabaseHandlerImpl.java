@@ -171,20 +171,24 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
     @Transactional
     public void updateFiles(List<Path> paths, Path basePath) {
         List<Movie> movies = movieRepository.findAllByFilePathStartingWith(basePath.toString());
-        for (Movie m : movies) {
+        for (int j = 0; j < movies.size(); j++) {
             for (int i = 0; i < paths.size(); i++) {
-                if (paths.toString().equals(m.getFilePath())) {
+                if (paths.get(i).toString().equals(movies.get(j).getFilePath())) {
                     paths.remove(i);
+                    movies.remove(j);
+                    j--;
                     break;
                 }
             }
         }
 
         List<Episode> episodes = episodeRepository.findAllByFilePathStartingWith(basePath.toString());
-        for (Episode m : episodes) {
+        for (int j = 0; j < movies.size(); j++) {
             for (int i = 0; i < paths.size(); i++) {
-                if (paths.toString().equals(m.getFilePath())) {
+                if (paths.get(i).toString().equals(episodes.get(j).getFilePath())) {
                     paths.remove(i);
+                    episodes.remove(j);
+                    j--;
                     break;
                 }
             }
@@ -192,30 +196,14 @@ public class MovieFileDatabaseHandlerImpl implements MovieFileDatabaseHandler {
 
         for (Path p : paths) {
             saveFile(p);
-            TemporaryMedia temporaryMedia = new TitleParser().parseMedia(p.getFileName().toString());
-            if (temporaryMedia.IsMovie()) {
-                for (int i = 0; i < movies.size(); i++) {
-                    if (movies.get(i).getFilePath().equals(p.toString())) {
-                        movies.remove(i);
-                        break;
-                    }
-                }
-            } else {
-                for (int i = 0; i < episodes.size(); i++) {
-                    if (episodes.get(i).getFilePath().equals(p.toString())) {
-                        episodes.remove(i);
-                        break;
-                    }
-                }
-            }
         }
 
         for (Movie m : movies) {
             removeFile(new File(m.getFilePath()).toPath());
         }
 
-        for (Episode m : episodes) {
-            removeFile(new File(m.getFilePath()).toPath());
+        for (Episode e : episodes) {
+            removeFile(new File(e.getFilePath()).toPath());
         }
     }
 
