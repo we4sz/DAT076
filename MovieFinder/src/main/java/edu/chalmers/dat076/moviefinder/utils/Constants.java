@@ -46,6 +46,7 @@ public class Constants {
      * A list of file endings indicating that there is no more useful information.
      */
     public static final List<String> MOVIE_FILE_ENDING_WORDS = Collections.unmodifiableList(new ArrayList<String>() {
+        private static final long serialVersionUID = 1L;
         {
             add("1080p");
             add("720p");
