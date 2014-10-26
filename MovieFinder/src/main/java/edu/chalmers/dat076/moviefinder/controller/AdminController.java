@@ -68,7 +68,7 @@ public class AdminController {
 
     @RequestMapping(value = "/addPath", method = RequestMethod.POST)
     public ResponseEntity<ListeningPath> addPath(@RequestBody ListeningPath path) {
-        File f = new File(path.getListeningPath());
+        File f = new File(path.getListeningPath().toLowerCase());
         if (f.exists() && f.isDirectory()) {
             try {
                 ListeningPath savedPath = databaseHelper.addPath(f.toPath());

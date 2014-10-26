@@ -76,10 +76,9 @@ public class FileThreadServiceImpl implements FileThreadService, FileSystemListe
                 movieDatabaseHelper.removeFile(f.toPath());
             }
         }
-        
+
         movieDatabaseHelper.setPaths(checkPaths);
     }
-
 
     @Override
     public void addListeningPath(Path p) {

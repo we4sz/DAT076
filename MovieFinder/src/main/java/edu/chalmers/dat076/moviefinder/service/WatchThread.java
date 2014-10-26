@@ -155,7 +155,6 @@ public class WatchThread extends Thread {
             registerAll(watchPath,true);
         } catch (IOException ex) {
             LOGGER.log(Level.WARNING, ex.getMessage(), ex);
-            System.out.println(ex.getMessage());
         }
 
         while (!keys.isEmpty()) {
@@ -167,7 +166,6 @@ public class WatchThread extends Thread {
             }
             Path dir = keys.get(key);
             if (dir == null) {
-                // System.err.println("WatchKey not recognized!!");
                 continue;
             }
 
