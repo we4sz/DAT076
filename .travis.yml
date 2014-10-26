@@ -1,0 +1,18 @@
+language: java
+jdk:
+  - oraclejdk7
+
+script: cd MovieFinder && mvn test --batch-mode --quiet --errors
+
+branches:
+    only:
+        - master
+        - develop
+
+notifications:
+    email: false
+
+cache:
+  directories:
+    - MovieFinder/src/main/webapp/public/node_modules
+    - MovieFinder/src/main/webapp/public/bower_components

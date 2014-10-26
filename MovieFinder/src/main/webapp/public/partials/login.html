@@ -1,0 +1,66 @@
+<div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h1 class="panel-title" ng-switch="loginCtrl.loginReason">
+                    <span ng-switch-when="auth-forbidden">Forbidden</span>
+                    <span ng-switch-when="auth-loginRequired">Login Required</span>
+                    <span ng-switch-default>Sign In</span>
+                </h1>
+            </div>
+            <div class="panel-body">
+                <div class="alert alert-danger" ng-show="loginCtrl.loginReason">
+                    <p ng-show="loginCtrl.loginReason == 'auth-forbidden'">
+                        <strong>You are not allowed access to this resource!</strong>
+                        <br>
+                        Your current account does not have the required permisions to view this resource. Please sign in as a user that does.
+                    </p>
+                    <p ng-show="loginCtrl.loginReason == 'auth-loginRequired'">
+                        <strong>You must login to access this resource!</strong>
+                        <br>
+                        Sign in is required to view this resource. Please sign in below.
+                    </p>
+                </div>
+
+                <div class="alert alert-danger" role="alert" ng-show="loginCtrl.error.signIn">
+                    <p>
+                        <strong>An error occurred while signing in!</strong>
+                        <br>
+                        {{loginCtrl.error.signIn}}
+                    </p>
+                </div>
+
+                <form class="form-horizontal" role="form" name="signInForm">
+                    <div class="form-group">
+                        <label for="signInUsername" class="col-md-2 control-label">Username</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" id="signInUsername" 
+                            placeholder="Username" ng-model="signInUsername">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="signInPassword" class="col-sm-3 col-md-2 control-label">Password</label>
+                        <div class="col-md-10">
+                            <input type="password" class="form-control" id="signInPassword" 
+                            placeholder="Password" ng-model="signInPassword">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button type="submit" 
+                                class="btn btn-primary"
+                                ng-click="loginCtrl.login(signInUsername, signInPassword)">
+                                Sign in
+                            </button>
+                            <button type="button"
+                                    class="btn btn-link"
+                                    ng-click="loginCtrl.cancelLogin();">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+.list .browsingRow { 
+    cursor: pointer; 
+}
+
+.browse-divider {
+    margin: 10px 0;
+    opacity: 0;
+}
+
+.sort-option {
+    width: 100%;
+    border-collapse:separate; 
+    border-spacing:10px;
+}
+
+.input-rating {
+    width: 100%;
+}
+
+select {
+    width: 100%;
+    color: #000;
+}
+
+#browsingTable {
+    margin-bottom: 0px;
+}

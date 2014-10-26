@@ -1,0 +1,74 @@
+<div>    
+    <ol class="breadcrumb">
+        <li><a href="#/series">Series</a></li>
+        <li class="active">{{seriesDetailsCtrl.series.title}}</li>
+    </ol>
+
+    <hr class="browse-divider">
+
+    <div class="row">
+        <div class="col-sm-3 hidden-xs">
+
+            
+                <div class="panel-body">
+                    <img ng-src="{{seriesDetailsCtrl.series.poster}}" class="img-responsive"/>
+                
+                <h2>
+                    {{seriesDetailsCtrl.series.title}} <small>({{seriesDetailsCtrl.series.releaseYear}})</small>
+                </h2>
+                <p>
+                    [{{seriesDetailsCtrl.series.rated}}] 
+                    {{seriesDetailsCtrl.series.runtime}} min 
+                    -
+                    <span ng-repeat="genre in seriesDetailsCtrl.series.genres">
+                        {{genre}}<span ng-if="!$last">,</span>
+                    </span>
+                    -
+                    {{seriesDetailsCtrl.series.releaseYear}}
+                </p>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: calc({{seriesDetailsCtrl.series.imdbRating}}%*10);">
+                        {{seriesDetailsCtrl.series.imdbRating}} 
+                        <span class="glyphicon glyphicon-star"></span> 
+                    </div>
+                </div>
+
+                <div>
+                    <hr>
+                    <p>
+                        {{seriesDetailsCtrl.series.plot}}
+                    </p>
+                     <hr>
+                    <p>
+                        <b>Stars:  </b> <span ng-repeat="actor in seriesDetailsCtrl.series.actors| limitTo: 4">
+                            <a href="#/actors/{{actor.id}}">{{actor.name}}</a><span ng-if="!$last">,</span>
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-sm-9 col-xs-12">
+            <table class="list table table-hover table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <td>Title</td>
+                        <td>Episode</td>
+                        <td>Season</td>
+                    </tr>
+                </thead>
+                <tbody ng-show="seriesDetailsCtrl.series.episodes.length">
+                    <tr class="browsingRow" ng-repeat="episode in seriesDetailsCtrl.series.episodes | orderBy:['season','episode']" 
+                        ng-click="seriesDetailsCtrl.goTo('series/' + seriesDetailsCtrl.series.id + '/episode/' + episode.id)">
+                        <td>{{episode.title}}</td>
+                        <td>{{episode.episode}}</td>
+                        <td>{{episode.season}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>

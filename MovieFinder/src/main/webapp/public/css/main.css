@@ -1,0 +1,15 @@
+
+body > .container {
+  padding-top: 40px;
+}
+
+/* 
+Hide elements with hide-(no-)js depedning 
+on if the user has javascript or not */
+body.no-js .hide-no-js, body.js .hide-js {
+    display: none !important;
+}
+
+#navbarBrandMovieFinder {
+    background-color: #DF691A;
+}

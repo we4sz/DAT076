@@ -1,0 +1,84 @@
+<div>
+    <ul class="nav nav-pills">
+        <li class="active"><a href="#/movies">Movies</a></li>
+        <li><a href="#/series">Series</a></li>
+    </ul>
+
+    <hr class="browse-divider">
+
+    <div class="row">
+        <div class="col-sm-3">
+            <form>
+                <div class="form-group">
+                    <label for="filterRaiting" class="text-muted"><span class="glyphicon glyphicon-star"></span> RATING</label>
+                    <input class="form-control" 
+                           type="number"
+                           placeholder="Raiting (0-10)"
+                           id="filterRaiting"
+                           min="0" 
+                           max="10" 
+                           step="0.1"
+                           ng-model="models.filterRaiting">
+                </div>
+                <hr class="browse-divider">
+                <div class="form-group">
+                    <label for="filterRuntime" class="text-muted"><span class="glyphicon glyphicon-time"></span> RUNTIME</label>
+                    <input class="form-control" 
+                           type="number" 
+                           id="filterRuntime" 
+                           min="0" 
+                           ng-model="models.filterRuntime" 
+                           placeholder="Runtime (Min)">
+                </div>
+
+                <hr class="browse-divider">
+
+                <button class="btn btn-block btn-primary" ng-click="moviesCtrl.filterMovies(models.filterRaiting, models.filterRuntime)">Filter</button>
+            </form>
+             <hr class="browse-divider">
+        </div>
+
+        <div class="col-sm-9">
+            <table id="browsingTable" class="list table table-hover table-bordered table-striped table-responsive">
+                <thead>
+                    <tr>
+                        <td>Title</td>
+                        <td>Director</td>
+                        <td>Genre</td>
+                        <td>Rating</td> 
+                        <td>Runtime</td>
+                    </tr>
+                </thead>
+                <tbody ng-show="moviesCtrl.movies.length">
+                    <tr class="browsingRow" ng-repeat="movie in moviesCtrl.movies" ng-click="moviesCtrl.goTo('/movies/' + movie.id)">
+                        <td>{{movie.title}}</td>
+                        <td>{{movie.director}}</td>
+                        <td>
+                            <span ng-repeat="genre in movie.genres">
+                                {{genre}}<span ng-if="!$last">,</span>
+                            </span>
+                        </td>
+                        <td>{{movie.imdbRating}}</td>
+                        <td>{{movie.runtime}}</td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <table class="list table table-bordered table-striped">
+                <tbody>
+                    <tr class="noResult" ng-hide="moviesCtrl.movies.length">
+                        <td>No result</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>                   
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+</div>

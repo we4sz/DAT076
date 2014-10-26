@@ -1,0 +1,27 @@
+{
+  "laxcomma": true,       // Suppresses warnings about comma-first coding style http://www.jshint.com/docs/options/#laxcomma
+  "quotmark": "single",   // Use single quotes http://www.jshint.com/docs/options/#quotmark
+  "devel": true,          // Defines globals that are used for logging: console, alert, etc http://www.jshint.com/docs/options/#devel
+  "browser": true,        // This option defines globals exposed by modern browsers http://www.jshint.com/docs/options/#browser
+  "jquery": true,         // This option defines globals exposed by the jQuery JavaScript library http://www.jshint.com/docs/options/#jquery
+  "indent": 4,            // This option enforces specific tab width for your code http://www.jshint.com/docs/options/#indent
+  "noarg": true,          // This option prohibits the use of arguments.caller and arguments.callee. http://www.jshint.com/docs/options/#noarg
+  "eqeqeq": true,         // This options prohibits the use of == and != in favor of === and !== http://www.jshint.com/docs/options/#eqeqeq
+  "noempty": true,        // This option warns when you have an empty block in your code http://www.jshint.com/docs/options/#noempty
+  "unused": true,         // This option warns when you define and never use your variables http://www.jshint.com/docs/options/#unused
+  "undef": true,          // This option prohibits the use of explicitly undeclared variables http://www.jshint.com/docs/options/#undef
+  "curly": true,          // This option requires you to always put curly braces around blocks in loops and conditionals http://www.jshint.com/docs/options/#curly
+  "forin": true,          // This option requires all for in loops to filter object's items http://www.jshint.com/docs/options/#forin
+  "strict": true,         // This option requires all functions to run in ECMAScript 5's strict mode. http://www.jshint.com/docs/options/#strict
+  "globals": {
+    "angular": false,
+    "describe": false,
+    "it": false,
+    "expect": false,
+    "beforeEach": false,
+    "afterEach": false,
+    "module": false,
+    "inject": false,
+    "spyOn": false
+  }
+}
