@@ -172,10 +172,9 @@ public class WatchThread extends Thread {
             }
 
             for (WatchEvent<?> event : key.pollEvents()) {
-                WatchEvent.Kind kind = event.kind();
 
                 // TBD - provide example of how OVERFLOW event is handled
-                if (kind == OVERFLOW) {
+                if (event.kind() == OVERFLOW) {
                     continue;
                 }
 
@@ -184,7 +183,7 @@ public class WatchThread extends Thread {
                 Path name = ev.context();
                 Path child = dir.resolve(name);
 
-                if (kind == ENTRY_CREATE) {
+                if (event.kind() == ENTRY_CREATE) {
                     try {
                         if (Files.isDirectory(child, NOFOLLOW_LINKS)) {
                             registerAll(child,false);
@@ -199,7 +198,7 @@ public class WatchThread extends Thread {
                     } catch (IOException x) {
                         // ignore to keep sample readable
                     }
-                } else if (kind == ENTRY_DELETE) {
+                } else if (event.kind() == ENTRY_DELETE) {
                     listener.oldPath(child);
                 }
             }
