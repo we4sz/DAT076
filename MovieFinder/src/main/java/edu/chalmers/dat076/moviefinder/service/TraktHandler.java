@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import edu.chalmers.dat076.moviefinder.model.HttpGetWithEquals;
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
 import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
@@ -49,12 +50,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TraktHandler {
-    
+
     private HttpClient httpClient;
 
     public TraktHandler() {
         httpClient = HttpClientBuilder.create().build();
-    } 
+    }
 
     public HttpClient getHttpClient() {
         return httpClient;
@@ -63,7 +64,6 @@ public class TraktHandler {
     public void setHttpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
     }
-    
 
     /**
      * Looks up omdb data by Title and if possible year. Best used with movies
@@ -99,7 +99,7 @@ public class TraktHandler {
                 return null;
             }
             return movie;
-        } catch (IOException ex) {
+        } catch (IOException | JsonSyntaxException ex) {
             return null;
         }
     }
@@ -118,7 +118,7 @@ public class TraktHandler {
                 return null;
             }
             return showData;
-        } catch (IOException ex) {
+        } catch (IOException | JsonSyntaxException ex) {
             return null;
         }
 
@@ -128,17 +128,17 @@ public class TraktHandler {
         String url = "http://api.trakt.tv/show/episode/summary.json/" + Constants.TRAKT_API_KEY + "/" + title.replace(" ", "-") + "/" + season + "/" + episode;
         try {
             TraktEpisodeResponse episodeData = getGson().fromJson(readJsonFromUrl(url), TraktEpisodeResponse.class);
-            if (episodeData == null || episodeData.getEpisode() == null || episodeData.getEpisode().getTitle() == null) {         
+            if (episodeData == null || episodeData.getEpisode() == null || episodeData.getEpisode().getTitle() == null) {
                 return null;
             }
             return episodeData;
-        } catch (IOException ex) {
+        } catch (IOException | JsonSyntaxException ex) {
             return null;
         }
 
     }
 
-    private JsonObject readJsonFromUrl(String url) throws IOException {
+    private JsonObject readJsonFromUrl(String url) throws IOException, JsonSyntaxException {
         HttpGetWithEquals request = new HttpGetWithEquals(url);
         request.addHeader("Content-Type", "application/json;charset=UTF-8");
         request.addHeader("Accept-Language", "sv-SE");
