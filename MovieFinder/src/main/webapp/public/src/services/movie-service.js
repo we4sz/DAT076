@@ -9,7 +9,7 @@
     angular.module('movieFinder.services')
         .factory('movieService', function (MediaService) {
             
-            var mediaService = new MediaService('api/files/');
+            var mediaService = new MediaService('api/files/movies/');
             
             return {
                 'getList': function () {

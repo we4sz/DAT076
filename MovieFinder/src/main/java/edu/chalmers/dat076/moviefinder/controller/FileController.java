@@ -27,6 +27,7 @@ import edu.chalmers.dat076.moviefinder.model.Range;
 import edu.chalmers.dat076.moviefinder.persistence.Episode;
 import edu.chalmers.dat076.moviefinder.persistence.EpisodeRepository;
 import edu.chalmers.dat076.moviefinder.persistence.EpisodeSpecs;
+import edu.chalmers.dat076.moviefinder.persistence.Media;
 import edu.chalmers.dat076.moviefinder.persistence.Movie;
 import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
 import edu.chalmers.dat076.moviefinder.persistence.MovieSpecs;
@@ -100,7 +101,7 @@ public class FileController {
      * descending.
      * @return A page with movies.
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/movies/", method = RequestMethod.GET)
     public @ResponseBody
     Page<Movie> listMovies(
             @RequestParam(value = "imdbRating", required = false) Double imdbRating,
@@ -236,7 +237,7 @@ public class FileController {
      * @param id
      * @return  one Movie.
      */
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "movies/{id}", method = RequestMethod.GET)
     public @ResponseBody
     Movie getMovieById(@PathVariable long id) {
         return movieRepository.findOne(id);
@@ -264,6 +265,44 @@ public class FileController {
     public @ResponseBody
     Episode getEpisodeById(@PathVariable long id) {
         return episodeRepository.findOne(id);
+    }
+    
+    /**
+     * Returns a stream for the movie file with id id.
+     * @param id
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
+    @RequestMapping(value = "/movies/{id}/stream/", method = RequestMethod.GET)
+    public void getMovieStream(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Movie m = movieRepository.findOne(id);
+        
+        if (m == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        processRequest(request, response, true, m.getFilePath(), "video/mp4");
+    }
+    
+    /**
+     * Returns a stream for the episode file with id id.
+     * @param id
+     * @param request
+     * @param response
+     * @throws IOException 
+     */
+    @RequestMapping(value = "/episodes/{id}/stream/", method = RequestMethod.GET)
+    public void getEpisodeStream(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Episode e = episodeRepository.findOne(id);
+        
+        if (e == null) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        processRequest(request, response, true, e.getFilePath(), "video/mp4");
     }
     
     @RequestMapping(value = "/sub/{id}", method = RequestMethod.GET)
@@ -321,17 +360,6 @@ public class FileController {
         System.arraycopy(A, 0, C, 0, aLen);
         System.arraycopy(B, 0, C, aLen, bLen);
         return C;
-    }
-
-    @RequestMapping(value = "/stream/{id}", method = RequestMethod.GET)
-    public void getMovieStream(@PathVariable long id, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Movie m = movieRepository.findOne(id);
-        if (m == null) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            return;
-        }
-
-        processRequest(request, response, true, m.getFilePath(), "video/mp4");
     }
 
     /**
