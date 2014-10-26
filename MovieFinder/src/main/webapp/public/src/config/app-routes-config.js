@@ -22,7 +22,7 @@
                                     return authHelper.restrictRoute([USER_ROLES.ADMIN, USER_ROLES.VIEWER]);
                                 }
                             }
-                        }).when('/movie/:id', {
+                        }).when('/movies/:id', {
                             templateUrl: 'partials/movie-details.html',
                             controller: 'MovieDetailsCtrl as movieDetailsCtrl',
                             resolve: {
@@ -80,7 +80,7 @@
                             }
                         }).when(AUTH_LOGIN_PATH, {
                             templateUrl: 'partials/login.html',
-                            controller: 'LoginViewCtrl as loginViewCtrl'
+                            controller: 'LoginCtrl as loginCtrl'
                         }).otherwise({
                             redirectTo: '/'
                         });

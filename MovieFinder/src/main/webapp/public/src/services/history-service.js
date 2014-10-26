@@ -1,5 +1,6 @@
 //
 // history-service.js
+// Service for keeping track of history and providing a goBack method.
 //
 
 (function() {

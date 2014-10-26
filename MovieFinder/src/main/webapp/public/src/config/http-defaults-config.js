@@ -1,6 +1,6 @@
 //
 // http-defaults-config.js
-// File for modifying the http defaults
+// File for modifying the $http defaults.
 //
 
 (function() {

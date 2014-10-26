@@ -2,8 +2,8 @@
 // app-controller.js
 // Contains the main controller for the app.
 //
-// The main controller is used to catch route change (error)
-// and similar global events.
+// The main controller is used to catch route change (error),
+// auth events, and other similar global events.
 //
 
 (function () {
@@ -88,7 +88,7 @@
 
                 // Event triggered when the user is logged out.
                 // Reload current route to make sure user is still authenticated.
-                $rootScope.$on(AUTH_EVENTS.logoutSuccessful, function(){
+                $rootScope.$on(AUTH_EVENTS.logoutSuccessful, function() {
                     $route.reload();
                 });
             });

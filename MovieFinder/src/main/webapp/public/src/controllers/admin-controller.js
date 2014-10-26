@@ -1,6 +1,6 @@
 //
-// view-movies-controller.js
-// Holds the BrowseCtrl, controller for the browsing screen.
+// admin-controller.js
+// The controller for the admin view.
 //
 (function () {
     'use strict';

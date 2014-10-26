@@ -1,5 +1,6 @@
 //
 // episode-service.js
+// A service for fetching information about an episode of a series.
 //
 
 (function () {

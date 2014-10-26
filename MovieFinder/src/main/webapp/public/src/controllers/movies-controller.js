@@ -1,6 +1,6 @@
 //
 // movies-controller.js
-// Holds the BrowseCtrl, controller for the browsing screen.
+// Holds the MoviesCtrl, controller for the movie list view.
 //
 (function () {
     'use strict';
@@ -23,7 +23,7 @@
                 };
             })
             
-            // Resolve before MovieCtrl
+            // Resolve before MoviesCtrl
             .factory('moviesCtrlResolve', function(movieService) {
                 return function() {
                     return movieService.getList().then(function(data) {

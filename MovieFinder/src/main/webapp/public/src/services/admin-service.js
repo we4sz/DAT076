@@ -1,6 +1,6 @@
 //
-// user-service.js
-// A representation of a user and various methods related to user, such as login and logout.
+// admin-service.js
+// Service for admin specific tasks.
 //
 
 (function () {
