@@ -33,6 +33,7 @@ import edu.chalmers.dat076.moviefinder.persistence.MovieSpecs;
 import edu.chalmers.dat076.moviefinder.persistence.Series;
 import edu.chalmers.dat076.moviefinder.persistence.SeriesRepository;
 import edu.chalmers.dat076.moviefinder.persistence.SeriesSpecs;
+import edu.chalmers.dat076.moviefinder.utils.Constants;
 import edu.chalmers.dat076.moviefinder.utils.FileControllerUtils;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -222,9 +223,9 @@ public class FileController {
         }
         PageRequest pageRequest;
         if (page != null){
-                pageRequest = new PageRequest(page, 25, s);
+                pageRequest = new PageRequest(page, Constants.MEDIA_DISPLAYED, s);
         } else {
-                pageRequest = new PageRequest(0, 25, s);
+                pageRequest = new PageRequest(0, Constants.MEDIA_DISPLAYED, s);
         }
         return pageRequest;
     }
