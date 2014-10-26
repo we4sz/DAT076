@@ -21,7 +21,7 @@
         <meta name="description" content="Scan, browse and stream your personal movie and series library">
 
         <!-- Favicon -->
-        <link rel="icon" type="image/png" href="public/img/icon.png" />
+        <link rel="icon" type="image/png" href="build/img/icon.png" />
 
         <!-- <title ng:bind-template="{{'Movie Finder' : appCtrl.pageTitle}}"> -->
         <title>Movie Finder</title>
