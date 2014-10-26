@@ -7,9 +7,8 @@ package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
 import edu.chalmers.dat076.moviefinder.utils.Constants;
-import org.springframework.stereotype.Service;
-
 import java.util.Calendar;
+import org.springframework.stereotype.Service;
 
 
 /**

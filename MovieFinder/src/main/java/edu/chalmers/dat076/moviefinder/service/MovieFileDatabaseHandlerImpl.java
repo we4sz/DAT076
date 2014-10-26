@@ -1,19 +1,25 @@
 package edu.chalmers.dat076.moviefinder.service;
 
-import edu.chalmers.dat076.moviefinder.model.*;
-import edu.chalmers.dat076.moviefinder.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
+import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
+import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
+import edu.chalmers.dat076.moviefinder.model.TraktResponse;
+import edu.chalmers.dat076.moviefinder.model.TraktShowResponse;
+import edu.chalmers.dat076.moviefinder.persistence.Episode;
+import edu.chalmers.dat076.moviefinder.persistence.EpisodeRepository;
+import edu.chalmers.dat076.moviefinder.persistence.Movie;
+import edu.chalmers.dat076.moviefinder.persistence.MovieRepository;
+import edu.chalmers.dat076.moviefinder.persistence.Series;
+import edu.chalmers.dat076.moviefinder.persistence.SeriesRepository;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Semaphore;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A service for saving and removing files from the database. New files are

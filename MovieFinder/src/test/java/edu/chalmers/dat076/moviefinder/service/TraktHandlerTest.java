@@ -7,25 +7,22 @@ package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.model.HttpGetWithEquals;
 import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
-import edu.chalmers.dat076.moviefinder.test.config.TestApplicationConfig;
 import java.io.IOException;
-import org.apache.http.client.HttpClient;
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-import org.apache.http.HttpStatus;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
+import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
+import org.apache.http.client.HttpClient;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.DefaultHttpResponseFactory;
 import org.apache.http.message.BasicStatusLine;
-
+import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

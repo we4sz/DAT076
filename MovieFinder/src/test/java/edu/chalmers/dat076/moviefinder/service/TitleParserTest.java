@@ -7,9 +7,8 @@ package edu.chalmers.dat076.moviefinder.service;
 
 
 import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
-import static org.junit.Assert.*;
-
-import edu.chalmers.dat076.moviefinder.service.TitleParser;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 

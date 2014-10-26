@@ -6,16 +6,19 @@
 package edu.chalmers.dat076.moviefinder.service;
 
 import com.google.gson.FieldNamingPolicy;
-import com.google.gson.JsonParser;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import edu.chalmers.dat076.moviefinder.model.*;
+import com.google.gson.JsonParser;
+import edu.chalmers.dat076.moviefinder.model.HttpGetWithEquals;
+import edu.chalmers.dat076.moviefinder.model.TemporaryMedia;
+import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
+import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
+import edu.chalmers.dat076.moviefinder.model.TraktResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktShowResponse;
 import java.io.IOException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;

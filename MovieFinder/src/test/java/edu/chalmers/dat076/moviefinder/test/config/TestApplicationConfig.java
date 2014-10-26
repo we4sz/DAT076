@@ -1,7 +1,5 @@
 package edu.chalmers.dat076.moviefinder.test.config;
 
-import edu.chalmers.dat076.moviefinder.test.config.TestRepositoryConfig;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 

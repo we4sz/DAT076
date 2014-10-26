@@ -8,19 +8,16 @@ package edu.chalmers.dat076.moviefinder.service;
 import edu.chalmers.dat076.moviefinder.listener.FileSystemListener;
 import edu.chalmers.dat076.moviefinder.persistence.ListeningPath;
 import edu.chalmers.dat076.moviefinder.persistence.ListeningPathRepository;
-
 import java.io.File;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
