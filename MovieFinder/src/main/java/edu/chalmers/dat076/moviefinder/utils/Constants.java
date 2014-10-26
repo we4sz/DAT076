@@ -31,6 +31,16 @@ import java.util.List;
  * @author Carl Jansson
  */
 public class Constants {
+    
+    /**
+     * Api key used to access media information from trakt.tv
+     */
+    public static final String TRAKT_API_KEY = "a93c5b3dee40604933b1b8069883a844";
+    
+    /**
+     * The number of media to display in every list view.
+     */
+    public static final int MEDIA_DISPLAYED = 25;
 
     /**
      * A list of file endings indicating that there is no more useful information.

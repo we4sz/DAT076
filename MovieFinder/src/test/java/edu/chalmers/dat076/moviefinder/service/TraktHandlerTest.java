@@ -25,6 +25,7 @@ package edu.chalmers.dat076.moviefinder.service;
 
 import edu.chalmers.dat076.moviefinder.model.HttpGetWithEquals;
 import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
+import edu.chalmers.dat076.moviefinder.utils.Constants;
 import java.io.IOException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseFactory;
@@ -83,7 +84,7 @@ public class TraktHandlerTest {
         HttpResponseFactory factory = new DefaultHttpResponseFactory();
         HttpResponse response = factory.newHttpResponse(new BasicStatusLine(HttpVersion.HTTP_1_1, HttpStatus.SC_OK, null), null);
         response.setEntity(new StringEntity(episodeHIMYM, "UTF-8"));
-        Mockito.when(defaultHttpClient.execute(getRequest("http://api.trakt.tv/show/episode/summary.json/a93c5b3dee40604933b1b8069883a844/how-i-met-your-mother/" + 3 + "/" + 6))).thenReturn(response);
+        Mockito.when(defaultHttpClient.execute(getRequest("http://api.trakt.tv/show/episode/summary.json/" + Constants.TRAKT_API_KEY + "/how-i-met-your-mother/" + 3 + "/" + 6))).thenReturn(response);
         TraktEpisodeResponse r = instance.getBySeasonEpisode("how i met your mother", 3, 6);
         
         

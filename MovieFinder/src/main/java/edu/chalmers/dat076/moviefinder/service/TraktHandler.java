@@ -34,6 +34,7 @@ import edu.chalmers.dat076.moviefinder.model.TraktEpisodeResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktMovieResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktResponse;
 import edu.chalmers.dat076.moviefinder.model.TraktShowResponse;
+import edu.chalmers.dat076.moviefinder.utils.Constants;
 import java.io.IOException;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -90,7 +91,7 @@ public class TraktHandler {
      * null if no movie could be found.
      */
     public TraktMovieResponse getByTitleYear(String title, int year) throws NullPointerException {
-        String url = "http://api.trakt.tv/movie/summary.json/a93c5b3dee40604933b1b8069883a844/" + title.replace(" ", "-") + "-" + year;
+        String url = "http://api.trakt.tv/movie/summary.json/" + Constants.TRAKT_API_KEY + "/" + title.replace(" ", "-") + "-" + year;
 
         try {
             TraktMovieResponse movie = getGson().fromJson(readJsonFromUrl(url), TraktMovieResponse.class);
@@ -110,7 +111,7 @@ public class TraktHandler {
     }
 
     public TraktShowResponse getByShowName(String title) {
-        String url = "http://api.trakt.tv/show/summary.json/a93c5b3dee40604933b1b8069883a844/" + title.replace(" ", "-");
+        String url = "http://api.trakt.tv/show/summary.json/" + Constants.TRAKT_API_KEY + "/" + title.replace(" ", "-");
         try {
             TraktShowResponse showData = getGson().fromJson(readJsonFromUrl(url), TraktShowResponse.class);
             if (showData == null || showData.getTitle() == null) {
@@ -124,7 +125,7 @@ public class TraktHandler {
     }
 
     public TraktEpisodeResponse getBySeasonEpisode(String title, int season, int episode) {
-        String url = "http://api.trakt.tv/show/episode/summary.json/a93c5b3dee40604933b1b8069883a844/" + title.replace(" ", "-") + "/" + season + "/" + episode;
+        String url = "http://api.trakt.tv/show/episode/summary.json/" + Constants.TRAKT_API_KEY + "/" + title.replace(" ", "-") + "/" + season + "/" + episode;
         try {
             TraktEpisodeResponse episodeData = getGson().fromJson(readJsonFromUrl(url), TraktEpisodeResponse.class);
             if (episodeData == null || episodeData.getEpisode() == null || episodeData.getEpisode().getTitle() == null) {         
