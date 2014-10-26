@@ -18,8 +18,7 @@
         <meta name="_user_username" content="${sessionScope.user.username}" />
         <meta name="_user_role" content="${sessionScope.user.role}" />
 
-        <!-- TODO: Description! -->
-        <meta name="description" content="">
+        <meta name="description" content="Scan, browse and stream your personal movie and series library">
 
         <!-- TODO: Favicon -->
         <!-- <link rel="icon" type="image/png" href="/img/favicon.png" /> -->
